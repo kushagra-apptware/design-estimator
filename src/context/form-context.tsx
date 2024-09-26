@@ -45,7 +45,6 @@ interface FormProviderProps {
 
 export const FormProvider: React.FC<FormProviderProps> = ({ children }) => {
     const [formData, setFormData] = useState<FormData>({});
-    console.log('formData: ', formData);
     const [currentStep, setCurrentStep] = useState<number>(1);
 
     const nextStep = () => setCurrentStep((prev) => prev + 1);

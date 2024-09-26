@@ -6,36 +6,52 @@ import Stepper from '../../component/stepper';
 import { useForm } from '../../context/form-context';
 import { ErrorMessages, TOTAL_STEPS } from '../../utils/constants';
 import ErrorText from '../../component/error-text';
+import { form1Schema } from '../../utils/schema';
 
 const Step1 = () => {
-
   const { updateFormData, nextStep, currentStep, formData } = useForm();
 
-  const [validationError, setValidationError] = useState(false)
+  const [validationError, setValidationError] = useState(false);
+  const [errorMessage, setErrorMessage] = useState('');
 
   const handleUpdateName = (e: any) => {
-    setValidationError(false)
-    updateFormData({ step1Data: {
-      ...formData.step1Data,
-      projectName: e.target.value
-    }})
-  }
+    setValidationError(false);
+    updateFormData({
+      step1Data: {
+        ...formData.step1Data,
+        projectName: e.target.value
+      }
+    });
+  };
 
   const handleUpdateDescription = (e: any) => {
-    setValidationError(false)
-    updateFormData({ step1Data: {
-      ...formData.step1Data,
-      projectDescription: e.target.value
-    }})
-  }
+    setValidationError(false);
+    updateFormData({
+      step1Data: {
+        ...formData.step1Data,
+        projectDescription: e.target.value
+      }
+    });
+  };
 
   const handleNextStepChange = () => {
-    if(!formData.step1Data?.projectDescription || !formData.step1Data.projectName) {
+    if (
+      !formData.step1Data?.projectDescription ||
+      !formData.step1Data.projectName
+    ) {
       setValidationError(true);
       return;
     }
-    nextStep()
-  }
+    const validationResult = form1Schema.safeParse(formData.step1Data);
+
+    if (validationResult.error) {
+      const message = validationResult.error.issues[0].message;
+      setErrorMessage(message);
+      setValidationError(true);
+      return;
+    }
+    nextStep();
+  };
 
   return (
     <div>
@@ -63,9 +79,9 @@ const Step1 = () => {
         onChange={handleUpdateDescription}
         required
       />
-      {
-        validationError && <ErrorText message={ErrorMessages.inputFieldError}/>
-      }
+      {validationError && (
+        <ErrorText message={errorMessage || ErrorMessages.inputFieldError} />
+      )}
       <div>
         <Button onClick={handleNextStepChange}>Next</Button>
       </div>

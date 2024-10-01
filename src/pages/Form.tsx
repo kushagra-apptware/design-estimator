@@ -25,9 +25,7 @@ const Form = () => {
   return (
     <div className="form-wrapper">
       <div className="form-parent">
-        {/* <FormProvider> */}
         <FormStepper />
-        {/* </FormProvider> */}
       </div>
       <div>
         <img

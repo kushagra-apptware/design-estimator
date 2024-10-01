@@ -1,18 +1,18 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
-import Button from '../../component/Button';
-import FormDescription from '../../component/FormDescription';
-import Input from '../../component/Input';
-import Stepper from '../../component/Stepper';
+import Button from '../../components/Button';
+import FormDescription from '../../components/FormDescription';
+import Input from '../../components/Input';
+import Stepper from '../../components/Stepper';
 import { useForm } from '../../context/FormContext';
 import { ButtonTypes, ErrorMessages, TOTAL_STEPS } from '../../utils/constants';
-import ErrorText from '../../component/ErrorText';
+import ErrorText from '../../components/ErrorText';
 
 const Step5 = () => {
   const navigate = useNavigate();
   const [validationError, setValidationError] = useState(false);
-  const { updateFormData, currentStep, prevStep, formData } = useForm();
+  const { updateFormData, currentStep, goToPrevStep, formData } = useForm();
 
   const handleUpdateEmail = (e: any) => {
     setValidationError(false);
@@ -71,7 +71,7 @@ const Step5 = () => {
       <div className="button-container">
         <Button
           variant={ButtonTypes.SECONDARY}
-          onClick={prevStep}
+          onClick={goToPrevStep}
         >
           Back
         </Button>

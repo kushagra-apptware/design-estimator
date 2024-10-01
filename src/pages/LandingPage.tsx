@@ -1,5 +1,5 @@
 import { Link } from 'react-router-dom';
-import Button from '../component/Button';
+import Button from '../components/Button';
 
 const LandingPage = () => {
   return (

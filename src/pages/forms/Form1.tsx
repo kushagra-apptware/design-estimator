@@ -1,14 +1,14 @@
 import { useState } from 'react';
-import Button from '../../component/Button';
-import FormDescription from '../../component/FormDescription';
-import Input from '../../component/Input';
-import Stepper from '../../component/Stepper';
+import Button from '../../components/Button';
+import FormDescription from '../../components/FormDescription';
+import Input from '../../components/Input';
+import Stepper from '../../components/Stepper';
 import { useForm } from '../../context/FormContext';
 import { ErrorMessages, TOTAL_STEPS } from '../../utils/constants';
-import ErrorText from '../../component/ErrorText';
+import ErrorText from '../../components/ErrorText';
 
 const Step1 = () => {
-  const { updateFormData, nextStep, currentStep, formData } = useForm();
+  const { updateFormData, goToNextStep, currentStep, formData } = useForm();
 
   const [validationError, setValidationError] = useState(false);
 
@@ -40,7 +40,7 @@ const Step1 = () => {
       setValidationError(true);
       return;
     }
-    nextStep();
+    goToNextStep();
   };
 
   return (

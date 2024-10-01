@@ -1,8 +1,8 @@
 import { useState } from 'react';
-import Button from '../../component/Button';
-import Card from '../../component/Card';
-import FormDescription from '../../component/FormDescription';
-import Stepper from '../../component/Stepper';
+import Button from '../../components/Button';
+import Card from '../../components/Card';
+import FormDescription from '../../components/FormDescription';
+import Stepper from '../../components/Stepper';
 import { useForm } from '../../context/FormContext';
 import {
   ButtonTypes,
@@ -10,25 +10,24 @@ import {
   PROJECT_TYPES,
   TOTAL_STEPS
 } from '../../utils/constants';
-import ErrorText from '../../component/ErrorText';
+import ErrorText from '../../components/ErrorText';
 
 const Step2 = () => {
   const [validationError, setValidationError] = useState(false);
 
   const {
-    nextStep,
+    goToNextStep,
     currentStep,
-    prevStep,
+    goToPrevStep,
     formData: { step2Data },
     updateFormData
   } = useForm();
 
   const handleAddProject = (selectedCategory: string) => {
     setValidationError(false);
-    const isCategoryAlreadyExist =
-      step2Data?.projectType?.includes(selectedCategory);
+    const isExistingValue = step2Data?.projectType?.includes(selectedCategory);
 
-    if (isCategoryAlreadyExist) {
+    if (isExistingValue) {
       const updatedArray = step2Data?.projectType?.filter(
         (item) => item !== selectedCategory
       );
@@ -38,13 +37,13 @@ const Step2 = () => {
         }
       });
     } else {
-      const updatetArray = [
+      const updatedArray = [
         ...(step2Data?.projectType || []),
         selectedCategory
       ];
       updateFormData({
         step2Data: {
-          projectType: updatetArray
+          projectType: updatedArray
         }
       });
     }
@@ -55,7 +54,7 @@ const Step2 = () => {
       setValidationError(true);
       return;
     }
-    nextStep();
+    goToNextStep();
   };
 
   return (
@@ -70,16 +69,16 @@ const Step2 = () => {
       />
       <div className="card-container">
         <Card
-          categories={PROJECT_TYPES}
-          currentCategories={step2Data?.projectType || []}
-          handleUpdateCategory={handleAddProject}
+          values={PROJECT_TYPES}
+          currentValues={step2Data?.projectType || []}
+          handleUpdateValues={handleAddProject}
         />
       </div>
       {validationError && <ErrorText message={ErrorMessages.cardError} />}
       <div className="button-container">
         <Button
           variant={ButtonTypes.SECONDARY}
-          onClick={prevStep}
+          onClick={goToPrevStep}
         >
           Back
         </Button>

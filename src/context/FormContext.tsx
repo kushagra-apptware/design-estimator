@@ -23,8 +23,8 @@ interface FormData {
 interface FormContextType {
     formData: FormData;
     currentStep: number;
-    nextStep: () => void;
-    prevStep: () => void;
+    goToNextStep: () => void;
+    goToPrevStep: () => void;
     setInitialStep: () => void;
     updateFormData: (data: Partial<FormData>) => void;
 }
@@ -47,13 +47,13 @@ export const FormProvider: React.FC<FormProviderProps> = ({ children }) => {
     const [formData, setFormData] = useState<FormData>({});
     const [currentStep, setCurrentStep] = useState<number>(1);
 
-    const nextStep = () => setCurrentStep((prev) => prev + 1);
-    const prevStep = () => setCurrentStep((prev) => prev - 1);
+    const goToNextStep = () => setCurrentStep((prev) => prev + 1);
+    const goToPrevStep = () => setCurrentStep((prev) => prev - 1);
     const setInitialStep = () => setCurrentStep(1)
     const updateFormData = (data: Partial<FormData>) => setFormData((prev) => ({ ...prev, ...data }));
 
     return (
-        <FormContext.Provider value={{ formData, currentStep, nextStep, prevStep, setInitialStep,  updateFormData }}>
+        <FormContext.Provider value={{ formData, currentStep, goToNextStep, goToPrevStep, setInitialStep,  updateFormData }}>
             {children}
         </FormContext.Provider>
     );

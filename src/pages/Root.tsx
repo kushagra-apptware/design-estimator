@@ -1,5 +1,5 @@
 import { Outlet, useLocation } from 'react-router-dom';
-import Navbar from '../component/Navbar';
+import Navbar from '../components/Navbar';
 import { FormProvider } from '../context/FormContext';
 
 const Root = () => {

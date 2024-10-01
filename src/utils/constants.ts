@@ -5,77 +5,77 @@ export enum ButtonTypes {
 
 export const TOTAL_STEPS = 5;
 
-export interface ProjectInfoInterface {
+export interface CardDetails {
   name: string;
   imageUrl: string;
 }
 
-export const PROJECT_TYPES: ProjectInfoInterface[] = [
+export const PROJECT_TYPES: CardDetails[] = [
   {
     name: 'Branding',
-    imageUrl: 'Branding'
+    imageUrl: 'branding'
   },
   {
     name: 'Mobile App',
-    imageUrl: 'MobileApp'
+    imageUrl: 'mobile-app'
   },
   {
     name: 'Ux Audit',
-    imageUrl: 'UxAudit'
+    imageUrl: 'ux-audit'
   },
   {
     name: 'Web App',
-    imageUrl: 'WebApp'
+    imageUrl: 'web-app'
   },
   {
     name: 'Website',
-    imageUrl: 'Website'
+    imageUrl: 'website'
   }
 ];
 
-export const PROJECT_DOMAIN: ProjectInfoInterface[] = [
+export const PROJECT_DOMAINS: CardDetails[] = [
   {
     name: 'AI',
-    imageUrl: 'AI'
+    imageUrl: 'ai'
   },
   {
     name: 'Data Analytics',
-    imageUrl: 'DataAnalytics'
+    imageUrl: 'data-analytics'
   },
   {
     name: 'Finance',
-    imageUrl: 'Finance'
+    imageUrl: 'finance'
   },
   {
     name: 'Healthcare',
-    imageUrl: 'Healthcare'
+    imageUrl: 'healthcare'
   },
   {
     name: 'Other',
-    imageUrl: 'Other'
+    imageUrl: 'other'
   }
 ];
 
-export const PROJECT_STAGE: ProjectInfoInterface[] = [
+export const PROJECT_STAGES: CardDetails[] = [
   {
     name: 'Concept',
-    imageUrl: 'Concept'
+    imageUrl: 'concept'
   },
   {
     name: 'Planning',
-    imageUrl: 'Planning'
+    imageUrl: 'planning'
   },
   {
     name: 'Imminent',
-    imageUrl: 'Imminent'
+    imageUrl: 'imminent'
   },
   {
     name: 'Execution',
-    imageUrl: 'Execution'
+    imageUrl: 'execution'
   },
   {
     name: 'Review',
-    imageUrl: 'Review'
+    imageUrl: 'review'
   } 
 ];
 

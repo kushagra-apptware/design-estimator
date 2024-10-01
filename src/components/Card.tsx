@@ -1,18 +1,18 @@
-import { ProjectInfoInterface } from '../utils/constants';
+import { CardDetails } from '../utils/constants';
 
 interface CardProps {
-  categories: ProjectInfoInterface[];
-  currentCategories: Array<string>;
-  handleUpdateCategory: (categoryName: string) => void;
+  values: CardDetails[];
+  currentValues: Array<string>;
+  handleUpdateValues: (categoryName: string) => void;
 }
 
-const Card = ({
-  categories,
-  currentCategories,
-  handleUpdateCategory
+const CardCheckBox = ({
+  values,
+  currentValues,
+  handleUpdateValues
 }: CardProps) => {
   const isProjectSelected = (projectName: string) =>
-    currentCategories?.includes(projectName);
+    currentValues?.includes(projectName);
 
   const styleForSelectedProject = (projectName: string) =>
     isProjectSelected(projectName)
@@ -40,18 +40,18 @@ const Card = ({
       />
     );
 
-  const AllCards = categories.map(
-    ({ name, imageUrl }: ProjectInfoInterface, index) => (
+  const AllCards = values.map(
+    ({ name, imageUrl }: CardDetails, index) => (
       <div
         className="card"
         key={index}
         style={styleForSelectedCard(name)}
-        onClick={() => handleUpdateCategory(name)}
+        onClick={() => handleUpdateValues(name)}
       >
         {selectedIcon(name)}
         <img
           className="card-logo"
-          src={`/project/${imageUrl}Selected.svg`}
+          src={`/project/${imageUrl}.svg`}
           style={styleForSelectedProject(name)}
         />
         <span
@@ -67,4 +67,4 @@ const Card = ({
   return AllCards;
 };
 
-export default Card;
+export default CardCheckBox;

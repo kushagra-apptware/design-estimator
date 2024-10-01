@@ -1,4 +1,4 @@
-import { useRouteError } from 'react-router-dom';
+import { useNavigate, useRouteError } from 'react-router-dom';
 
 interface RouteError {
   message: string;
@@ -8,9 +8,10 @@ interface RouteError {
 export default function ErrorPage() {
   const error = useRouteError() as RouteError;
   console.error(error);
+  const navigate = useNavigate();
 
   const handleReload = () => {
-    window.location.reload();
+    navigate('/')
   };
 
   return (

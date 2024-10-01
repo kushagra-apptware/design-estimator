@@ -1,24 +1,26 @@
 import { Outlet, useLocation } from 'react-router-dom';
-import Navbar from '../component/navbar';
-import { FormProvider } from '../context/form-context';
+import Navbar from '../component/Navbar';
+import { FormProvider } from '../context/FormContext';
 
 const Root = () => {
-
   const { pathname } = useLocation();
 
   /** Styles  for setting background image*/
   const style = {
-    backgroundImage: pathname === "/" ? 'url("/Background.png")' : 'none',
-    backgroundSize: 'cover', 
+    backgroundImage: pathname === '/' ? 'url("/Background.png")' : 'none',
+    backgroundSize: 'cover',
     backgroundPosition: 'center',
     height: '100vh'
   };
 
   return (
-    <div className="app" style={style}>
+    <div
+      className="app"
+      style={style}
+    >
       <Navbar />
       <FormProvider>
-      <Outlet />
+        <Outlet />
       </FormProvider>
     </div>
   );

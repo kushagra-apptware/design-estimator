@@ -1,13 +1,13 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
-import Button from '../../component/button';
-import FormDescription from '../../component/form-description';
-import Input from '../../component/input';
-import Stepper from '../../component/stepper';
-import { useForm } from '../../context/form-context';
+import Button from '../../component/Button';
+import FormDescription from '../../component/FormDescription';
+import Input from '../../component/Input';
+import Stepper from '../../component/Stepper';
+import { useForm } from '../../context/FormContext';
 import { ButtonTypes, ErrorMessages, TOTAL_STEPS } from '../../utils/constants';
-import ErrorText from '../../component/error-text';
+import ErrorText from '../../component/ErrorText';
 
 const Step5 = () => {
   const navigate = useNavigate();

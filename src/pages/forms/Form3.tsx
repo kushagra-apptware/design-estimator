@@ -1,15 +1,19 @@
 import { useState } from 'react';
-import Button from '../../component/button';
-import Card from '../../component/card';
-import FormDescription from '../../component/form-description';
-import Stepper from '../../component/stepper';
-import { useForm } from '../../context/form-context';
-import { ButtonTypes, ErrorMessages, PROJECT_DOMAIN, TOTAL_STEPS } from '../../utils/constants';
-import ErrorText from '../../component/error-text';
+import Button from '../../component/Button';
+import Card from '../../component/Card';
+import FormDescription from '../../component/FormDescription';
+import Stepper from '../../component/Stepper';
+import { useForm } from '../../context/FormContext';
+import {
+  ButtonTypes,
+  ErrorMessages,
+  PROJECT_DOMAIN,
+  TOTAL_STEPS
+} from '../../utils/constants';
+import ErrorText from '../../component/ErrorText';
 
 const Step3 = () => {
-
-  const [validationError, setValidationError] = useState(false)
+  const [validationError, setValidationError] = useState(false);
 
   const {
     nextStep,
@@ -47,12 +51,12 @@ const Step3 = () => {
   };
 
   const handleNextStepChange = () => {
-    if(!step3Data || step3Data?.projectDomain?.length ===  0) {
-      setValidationError(true)
+    if (!step3Data || step3Data?.projectDomain?.length === 0) {
+      setValidationError(true);
       return;
     }
-    nextStep()
-  }
+    nextStep();
+  };
 
   return (
     <div>
@@ -71,11 +75,14 @@ const Step3 = () => {
           handleUpdateCategory={handleAddProject}
         />
       </div>
-      {
-        validationError && <ErrorText message={ErrorMessages.cardError}/>
-      }
-      <div className='button-container'>
-        <Button variant={ButtonTypes.SECONDARY} onClick={prevStep}>Back</Button>
+      {validationError && <ErrorText message={ErrorMessages.cardError} />}
+      <div className="button-container">
+        <Button
+          variant={ButtonTypes.SECONDARY}
+          onClick={prevStep}
+        >
+          Back
+        </Button>
         <Button onClick={handleNextStepChange}>Next</Button>
       </div>
     </div>

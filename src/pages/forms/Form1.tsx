@@ -1,41 +1,47 @@
 import { useState } from 'react';
-import Button from '../../component/button';
-import FormDescription from '../../component/form-description';
-import Input from '../../component/input';
-import Stepper from '../../component/stepper';
-import { useForm } from '../../context/form-context';
+import Button from '../../component/Button';
+import FormDescription from '../../component/FormDescription';
+import Input from '../../component/Input';
+import Stepper from '../../component/Stepper';
+import { useForm } from '../../context/FormContext';
 import { ErrorMessages, TOTAL_STEPS } from '../../utils/constants';
-import ErrorText from '../../component/error-text';
+import ErrorText from '../../component/ErrorText';
 
 const Step1 = () => {
-
   const { updateFormData, nextStep, currentStep, formData } = useForm();
 
-  const [validationError, setValidationError] = useState(false)
+  const [validationError, setValidationError] = useState(false);
 
   const handleUpdateName = (e: any) => {
-    setValidationError(false)
-    updateFormData({ step1Data: {
-      ...formData.step1Data,
-      projectName: e.target.value
-    }})
-  }
+    setValidationError(false);
+    updateFormData({
+      step1Data: {
+        ...formData.step1Data,
+        projectName: e.target.value
+      }
+    });
+  };
 
   const handleUpdateDescription = (e: any) => {
-    setValidationError(false)
-    updateFormData({ step1Data: {
-      ...formData.step1Data,
-      projectDescription: e.target.value
-    }})
-  }
+    setValidationError(false);
+    updateFormData({
+      step1Data: {
+        ...formData.step1Data,
+        projectDescription: e.target.value
+      }
+    });
+  };
 
   const handleNextStepChange = () => {
-    if(!formData.step1Data?.projectDescription || !formData.step1Data.projectName) {
+    if (
+      !formData.step1Data?.projectDescription ||
+      !formData.step1Data.projectName
+    ) {
       setValidationError(true);
       return;
     }
-    nextStep()
-  }
+    nextStep();
+  };
 
   return (
     <div>
@@ -63,9 +69,7 @@ const Step1 = () => {
         onChange={handleUpdateDescription}
         required
       />
-      {
-        validationError && <ErrorText message={ErrorMessages.inputFieldError}/>
-      }
+      {validationError && <ErrorText message={ErrorMessages.inputFieldError} />}
       <div>
         <Button onClick={handleNextStepChange}>Next</Button>
       </div>

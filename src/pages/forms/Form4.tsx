@@ -1,15 +1,19 @@
 import { useState } from 'react';
-import Button from '../../component/button';
-import Card from '../../component/card';
-import FormDescription from '../../component/form-description';
-import Stepper from '../../component/stepper';
-import { useForm } from '../../context/form-context';
-import { ButtonTypes, ErrorMessages, PROJECT_STAGE, TOTAL_STEPS } from '../../utils/constants';
-import ErrorText from '../../component/error-text';
+import Button from '../../component/Button';
+import Card from '../../component/Card';
+import FormDescription from '../../component/FormDescription';
+import Stepper from '../../component/Stepper';
+import { useForm } from '../../context/FormContext';
+import {
+  ButtonTypes,
+  ErrorMessages,
+  PROJECT_STAGE,
+  TOTAL_STEPS
+} from '../../utils/constants';
+import ErrorText from '../../component/ErrorText';
 
 const Step4 = () => {
-
-  const [validationError, setValidationError] = useState(false)
+  const [validationError, setValidationError] = useState(false);
 
   const {
     nextStep,
@@ -20,7 +24,7 @@ const Step4 = () => {
   } = useForm();
 
   const handleAddProject = (selectedCategory: string) => {
-    setValidationError(false)
+    setValidationError(false);
     const isCategoryAlreadyExist =
       step4Data?.projectStage?.includes(selectedCategory);
 
@@ -47,12 +51,12 @@ const Step4 = () => {
   };
 
   const handleNextStepChange = () => {
-    if(!step4Data || step4Data?.projectStage?.length ===  0) {
-      setValidationError(true)
+    if (!step4Data || step4Data?.projectStage?.length === 0) {
+      setValidationError(true);
       return;
     }
-    nextStep()
-  }
+    nextStep();
+  };
 
   return (
     <div>
@@ -71,9 +75,7 @@ const Step4 = () => {
           handleUpdateCategory={handleAddProject}
         />
       </div>
-      {
-        validationError && <ErrorText message={ErrorMessages.cardError}/>
-      }
+      {validationError && <ErrorText message={ErrorMessages.cardError} />}
       <div className="button-container">
         <Button
           variant={ButtonTypes.SECONDARY}

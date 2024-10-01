@@ -1,10 +1,9 @@
-import { useForm } from '../context/form-context';
-import Step1 from './forms/form1';
-import Step2 from './forms/form2';
-import Step3 from './forms/form3';
-import Step4 from './forms/form4';
-import Step5 from './forms/form5';
-
+import { useForm } from '../context/FormContext';
+import Step1 from './forms/Form1';
+import Step2 from './forms/Form2';
+import Step3 from './forms/Form3';
+import Step4 from './forms/Form4';
+import Step5 from './forms/Form5';
 
 const FormStepper = () => {
   const { currentStep } = useForm();
@@ -17,7 +16,7 @@ const FormStepper = () => {
       return <Step3 />;
     case 4:
       return <Step4 />;
-    case 5: 
+    case 5:
       return <Step5 />;
   }
 };
@@ -27,7 +26,7 @@ const Form = () => {
     <div className="form-wrapper">
       <div className="form-parent">
         {/* <FormProvider> */}
-          <FormStepper />
+        <FormStepper />
         {/* </FormProvider> */}
       </div>
       <div>

@@ -1,7 +1,7 @@
 import { useNavigate } from 'react-router-dom';
-import Button from '../component/button';
+import Button from '../component/Button';
 import { ButtonTypes } from '../utils/constants';
-import { useForm } from '../context/form-context';
+import { useForm } from '../context/FormContext';
 
 const ProjectEstimation = () => {
   const { setInitialStep } = useForm();
@@ -20,7 +20,7 @@ const ProjectEstimation = () => {
       </div>
       <div>Gantt Chart</div>
       <div>
-        <div className='flex-center'>
+        <div className="flex-center">
           <Button
             onClick={handleEditDetails}
             variant={ButtonTypes.SECONDARY}

@@ -1,10 +1,10 @@
-import './App.css';
+import './App.scss';
 import { createBrowserRouter, RouterProvider } from 'react-router-dom';
-import ErrorPage from './pages/error-page.tsx';
-import Root from './pages/root.tsx';
-import LandingPage from './pages/landing-page.tsx';
-import Form from './pages/form.tsx';
-import ProjectEstimation from './pages/project-estimation.tsx';
+import ErrorPage from './pages/ErrorPage.tsx';
+import Root from './pages/Root.tsx';
+import LandingPage from './pages/LandingPage.tsx';
+import Form from './pages/Form.tsx';
+import ProjectEstimation from './pages/ProjectEstimation.tsx';
 
 const router = createBrowserRouter([
   {

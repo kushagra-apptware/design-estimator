@@ -8,11 +8,14 @@ import Stepper from '../../components/Stepper';
 import { useForm } from '../../context/FormContext';
 import { ButtonTypes, ErrorMessages, TOTAL_STEPS } from '../../utils/constants';
 import ErrorText from '../../components/ErrorText';
+import { form5Schema } from '../../utils/schema';
 
 const Step5 = () => {
   const navigate = useNavigate();
-  const [validationError, setValidationError] = useState(false);
   const { updateFormData, currentStep, goToPrevStep, formData } = useForm();
+
+  const [validationError, setValidationError] = useState(false);
+  const [errorMessage, setErrorMessage] = useState('');
 
   const handleUpdateEmail = (e: any) => {
     setValidationError(false);
@@ -39,6 +42,16 @@ const Step5 = () => {
       setValidationError(true);
       return;
     }
+
+    const validationResult = form5Schema.safeParse(formData.step5Data);
+
+    if (validationResult.error) {
+      const message = validationResult.error.issues[0].message;
+      setErrorMessage(message);
+      setValidationError(true);
+      return;
+    }
+
     navigate('/project-estimation');
   };
   return (
@@ -67,7 +80,7 @@ const Step5 = () => {
         onChange={handleUpdateName}
         required
       />
-      {validationError && <ErrorText message={ErrorMessages.inputFieldError} />}
+      {validationError && <ErrorText message={errorMessage || ErrorMessages.inputFieldError} />}
       <div className="button-container">
         <Button
           variant={ButtonTypes.SECONDARY}

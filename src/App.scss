@@ -200,6 +200,8 @@
                 flex-direction: row;
                 flex-wrap: wrap;
                 gap: 15px;
+                height: 50vh;
+                overflow: auto;
 
                 .card {
                     display: flex;
@@ -228,6 +230,7 @@
                         width: 18px;
                     }
                     span {
+                        text-align: center;
                         font-family: base.$font-mulish;
                         font-size: 18px;
                         font-weight: 400;

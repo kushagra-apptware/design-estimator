@@ -6,11 +6,13 @@ import Stepper from '../../components/Stepper';
 import { useForm } from '../../context/FormContext';
 import { ErrorMessages, TOTAL_STEPS } from '../../utils/constants';
 import ErrorText from '../../components/ErrorText';
+import { form1Schema } from '../../utils/schema';
 
 const Step1 = () => {
   const { updateFormData, goToNextStep, currentStep, formData } = useForm();
 
   const [validationError, setValidationError] = useState(false);
+  const [errorMessage, setErrorMessage] = useState('');
 
   const handleUpdateName = (e: any) => {
     setValidationError(false);
@@ -40,6 +42,16 @@ const Step1 = () => {
       setValidationError(true);
       return;
     }
+
+    const validationResult = form1Schema.safeParse(formData.step1Data);
+
+    if (validationResult.error) {
+      const message = validationResult.error.issues[0].message;
+      setErrorMessage(message);
+      setValidationError(true);
+      return;
+    }
+
     goToNextStep();
   };
 
@@ -69,7 +81,7 @@ const Step1 = () => {
         onChange={handleUpdateDescription}
         required
       />
-      {validationError && <ErrorText message={ErrorMessages.inputFieldError} />}
+      {validationError && <ErrorText message={errorMessage || ErrorMessages.inputFieldError} />}
       <div>
         <Button onClick={handleNextStepChange}>Next</Button>
       </div>

@@ -1,4 +1,5 @@
 import { useNavigate, useRouteError } from 'react-router-dom';
+import Button from '../components/Button';
 
 interface RouteError {
   message: string;
@@ -11,15 +12,22 @@ export default function ErrorPage() {
   const navigate = useNavigate();
 
   const handleReload = () => {
-    navigate('/')
+    window.location.reload();
   };
+
+  const handleGoToHome = () => {
+    navigate('/')
+  }
 
   return (
     <div id="error-page">
       <h1>Oops!</h1>
       <p>Sorry, an unexpected error has occurred.</p>
       <p>{error?.message}</p>
-      <button onClick={handleReload}>Click to reload</button>
+      <div>
+      <Button onClick={handleReload}>Reload page</Button>
+      <Button onClick={handleGoToHome}>Go back to Homepage</Button>
+      </div>
     </div>
   );
 }

@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import Button from '../../components/Button';
-import Card from '../../components/Card';
+import Card from '../../components/CardCheckBox';
 import FormDescription from '../../components/FormDescription';
 import Stepper from '../../components/Stepper';
 import { useForm } from '../../context/FormContext';

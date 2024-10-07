@@ -7,50 +7,38 @@ import { useForm } from '../../context/FormContext';
 import {
   ButtonTypes,
   ErrorMessages,
-  PROJECT_STAGES,
+  PROJECT_DOMAINS,
   TOTAL_STEPS
 } from '../../utils/constants';
 import ErrorText from '../../components/ErrorText';
 
-const Step4 = () => {
+const ProjectDomain = () => {
   const [validationError, setValidationError] = useState(false);
 
   const {
     goToNextStep,
     currentStep,
     goToPrevStep,
-    formData: { step4Data },
+    formData: { domain },
     updateFormData
   } = useForm();
 
   const handleAddProject = (selectedCategory: string) => {
     setValidationError(false);
-    const isExistingValue = step4Data?.projectStage?.includes(selectedCategory);
+    const isExistingValue =
+      domain?.projectDomain?.includes(selectedCategory);
 
-    if (isExistingValue) {
-      const updatedArray = step4Data?.projectStage?.filter(
-        (item) => item !== selectedCategory
-      );
+    if (!isExistingValue) {
       updateFormData({
-        step4Data: {
-          projectStage: updatedArray
-        }
-      });
-    } else {
-      const updatedArray = [
-        ...(step4Data?.projectStage || []),
-        selectedCategory
-      ];
-      updateFormData({
-        step4Data: {
-          projectStage: updatedArray
+        domain: {
+          projectDomain: [selectedCategory]
         }
       });
     }
   };
 
   const handleNextStepChange = () => {
-    if (!step4Data || step4Data?.projectStage?.length === 0) {
+    if (!domain || domain?.projectDomain?.length === 0) {
       setValidationError(true);
       return;
     }
@@ -58,19 +46,21 @@ const Step4 = () => {
   };
 
   return (
+    <>
     <div>
-      <Stepper
+    <Stepper
         currentStep={currentStep}
         totalSteps={TOTAL_STEPS}
       />
       <FormDescription
-        title="What stage is the project at?"
+        title="What’s the project’s domain?"
         description="This information is collected to better understand needs and preferences. It will help us tailor the timeline that will suit specific requirements."
       />
+    </div>
       <div className="card-container">
         <Card
-          values={PROJECT_STAGES}
-          currentValues={step4Data?.projectStage || []}
+          values={PROJECT_DOMAINS}
+          currentValues={domain?.projectDomain || []}
           handleUpdateValues={handleAddProject}
         />
       </div>
@@ -84,8 +74,8 @@ const Step4 = () => {
         </Button>
         <Button onClick={handleNextStepChange}>Next</Button>
       </div>
-    </div>
+    </>
   );
 };
 
-export default Step4;
+export default ProjectDomain;

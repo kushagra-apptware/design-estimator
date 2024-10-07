@@ -10,7 +10,7 @@ import { ButtonTypes, ErrorMessages, TOTAL_STEPS } from '../../utils/constants';
 import ErrorText from '../../components/ErrorText';
 import { form5Schema } from '../../utils/schema';
 
-const Step5 = () => {
+const ClientDetails = () => {
   const navigate = useNavigate();
   const { updateFormData, currentStep, goToPrevStep, formData } = useForm();
 
@@ -20,8 +20,8 @@ const Step5 = () => {
   const handleUpdateEmail = (e: any) => {
     setValidationError(false);
     updateFormData({
-      step5Data: {
-        ...formData.step5Data,
+      clientDetails: {
+        ...formData.clientDetails,
         clientEmail: e.target.value
       }
     });
@@ -30,23 +30,24 @@ const Step5 = () => {
   const handleUpdateName = (e: any) => {
     setValidationError(false);
     updateFormData({
-      step5Data: {
-        ...formData.step5Data,
+      clientDetails: {
+        ...formData.clientDetails,
         clientName: e.target.value
       }
     });
   };
 
   const handleNextStepChange = () => {
-    if (!formData.step5Data?.clientEmail || !formData.step5Data.clientName) {
+    if (!formData.clientDetails?.clientEmail || !formData.clientDetails.clientName || formData.clientDetails.clientName.trim() === '' ||
+    formData.clientDetails.clientEmail.trim() === '' ) {
       setValidationError(true);
       return;
     }
 
-    const validationResult = form5Schema.safeParse(formData.step5Data);
+    const validation = form5Schema.safeParse(formData.clientDetails)
 
-    if (validationResult.error) {
-      const message = validationResult.error.issues[0].message;
+    if(!validation.success) {
+      const message = validation.error.issues[0].message;
       setErrorMessage(message);
       setValidationError(true);
       return;
@@ -55,8 +56,9 @@ const Step5 = () => {
     navigate('/project-estimation');
   };
   return (
-    <div>
-      <Stepper
+    <>
+  <div>
+  <Stepper
         currentStep={currentStep}
         totalSteps={TOTAL_STEPS}
       />
@@ -64,11 +66,12 @@ const Step5 = () => {
         title="Share some more details"
         description="This information is collected to better understand needs and preferences. It will help us tailor the timeline that will suit specific requirements."
       />
+  </div>
       <Input
         type="text"
         label="Your email"
         placeholder="johndoe121@gmail.com"
-        value={formData.step5Data?.clientEmail}
+        value={formData.clientDetails?.clientEmail}
         onChange={handleUpdateEmail}
         required
       />
@@ -76,7 +79,7 @@ const Step5 = () => {
         type="tex"
         label="Your name"
         placeholder="John Doe"
-        value={formData.step5Data?.clientName}
+        value={formData.clientDetails?.clientName}
         onChange={handleUpdateName}
         required
       />
@@ -90,8 +93,8 @@ const Step5 = () => {
         </Button>
         <Button onClick={handleNextStepChange}>Next</Button>
       </div>
-    </div>
+    </>
   );
 };
 
-export default Step5;
+export default ClientDetails;

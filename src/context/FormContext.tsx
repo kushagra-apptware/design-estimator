@@ -1,20 +1,20 @@
 import React, { createContext, ReactNode, useContext, useState } from 'react';
 
 interface FormData {
-    step1Data?: {
+    projectDetails?: {
         projectName?: string;
         projectDescription?: string;
     };
-    step2Data?: {
-        projectType?: Array<string>
+    projectType?: {
+        projectTypes?: Array<string>
     };
-    step3Data?: {
+    domain?: {
         projectDomain?: Array<string>
     },
-    step4Data?: {
+    phase?: {
         projectStage?: Array<string>
     },
-    step5Data?: {
+    clientDetails?: {
         clientEmail?: string;
         clientName?: string;
     }
@@ -44,7 +44,25 @@ interface FormProviderProps {
 }
 
 export const FormProvider: React.FC<FormProviderProps> = ({ children }) => {
-    const [formData, setFormData] = useState<FormData>({});
+    const [formData, setFormData] = useState<FormData>({
+        projectDetails: {
+            projectName: '',
+            projectDescription: ''
+        },
+        projectType: {
+            projectTypes: []
+        },
+        domain: {
+            projectDomain: []
+        },
+        phase: {
+            projectStage: []
+        },
+        clientDetails: {
+            clientName: '',
+            clientEmail: ''
+        }
+    });
     const [currentStep, setCurrentStep] = useState<number>(1);
 
     const goToNextStep = () => setCurrentStep((prev) => prev + 1);

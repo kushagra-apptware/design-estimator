@@ -7,51 +7,50 @@ import { useForm } from '../../context/FormContext';
 import {
   ButtonTypes,
   ErrorMessages,
-  PROJECT_DOMAINS,
+  PROJECT_TYPES,
   TOTAL_STEPS
 } from '../../utils/constants';
 import ErrorText from '../../components/ErrorText';
 
-const Step3 = () => {
+const ProjectType = () => {
   const [validationError, setValidationError] = useState(false);
 
   const {
     goToNextStep,
     currentStep,
     goToPrevStep,
-    formData: { step3Data },
+    formData: { projectType },
     updateFormData
   } = useForm();
 
   const handleAddProject = (selectedCategory: string) => {
     setValidationError(false);
-    const isExistingValue =
-      step3Data?.projectDomain?.includes(selectedCategory);
+    const isExistingValue = projectType?.projectTypes?.includes(selectedCategory);
 
     if (isExistingValue) {
-      const updatedArray = step3Data?.projectDomain?.filter(
+      const updatedArray = projectType?.projectTypes?.filter(
         (item) => item !== selectedCategory
       );
       updateFormData({
-        step3Data: {
-          projectDomain: updatedArray
+        projectType: {
+          projectTypes: updatedArray
         }
       });
     } else {
       const updatedArray = [
-        ...(step3Data?.projectDomain || []),
+        ...(projectType?.projectTypes || []),
         selectedCategory
       ];
       updateFormData({
-        step3Data: {
-          projectDomain: updatedArray
+        projectType: {
+          projectTypes: updatedArray
         }
       });
     }
   };
 
   const handleNextStepChange = () => {
-    if (!step3Data || step3Data?.projectDomain?.length === 0) {
+    if (!projectType || projectType?.projectTypes?.length === 0) {
       setValidationError(true);
       return;
     }
@@ -59,19 +58,21 @@ const Step3 = () => {
   };
 
   return (
+    <>
     <div>
-      <Stepper
+    <Stepper
         currentStep={currentStep}
         totalSteps={TOTAL_STEPS}
       />
       <FormDescription
-        title="What’s the project’s domain?"
+        title="What type of project is it?"
         description="This information is collected to better understand needs and preferences. It will help us tailor the timeline that will suit specific requirements."
       />
+    </div>
       <div className="card-container">
         <Card
-          values={PROJECT_DOMAINS}
-          currentValues={step3Data?.projectDomain || []}
+          values={PROJECT_TYPES}
+          currentValues={projectType?.projectTypes || []}
           handleUpdateValues={handleAddProject}
         />
       </div>
@@ -85,8 +86,8 @@ const Step3 = () => {
         </Button>
         <Button onClick={handleNextStepChange}>Next</Button>
       </div>
-    </div>
+    </>
   );
 };
 
-export default Step3;
+export default ProjectType;

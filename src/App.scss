@@ -191,10 +191,10 @@
         max-width: 616px;
 
             .card-container {
-                display: flex;
-                flex-direction: row;
-                flex-wrap: wrap;
-                gap: 15px;
+                display: grid;
+                grid-template-columns: repeat(4,1fr);
+                grid-template-rows: repeat(3,1fr);
+                row-gap: 20px;
                 height: 50vh;
                 overflow: auto;
 
@@ -203,16 +203,16 @@
                     flex-direction: column;
                     align-items: center;
                     justify-content: center;
-                    width: 160px;
-                    height: 183px;
+                    width: 127px;
+                    height: 146px;
                     border: 2px solid base.$color-card-border;
                     border-radius: 12px;
                     transition: border 0.3s linear;
                     position: relative;
 
                     img {
-                        height: 90px;
-                        width: 90px;
+                        height: 71px;
+                        width: 71px;
                         opacity: 30%;
                         transition: opacity 0.3s linear;
                     }
@@ -227,9 +227,9 @@
                     span {
                         text-align: center;
                         font-family: base.$font-mulish;
-                        font-size: 18px;
+                        font-size: 14px;
                         font-weight: 400;
-                        line-height: 22.59px;
+                        line-height: 18px;
                         opacity: 40%;
                         transition: opacity 0.3s linear;
                     }

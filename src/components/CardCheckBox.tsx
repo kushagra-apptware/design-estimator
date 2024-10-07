@@ -24,7 +24,7 @@ const CardCheckBox = ({
   const styleForSelectedCard = (projectName: string) =>
     isProjectSelected(projectName)
       ? {
-          border: '2px solid #5350C3',
+          border: '2px solid #6B76D0',
           opacity: '100%'
         }
       : {};

@@ -12,7 +12,7 @@ export interface CardDetails {
 
 export const PROJECT_TYPES: CardDetails[] = [
   {
-    name: 'Branding',
+    name: 'SAAS Design',
     imageUrl: 'branding'
   },
   {
@@ -20,38 +20,66 @@ export const PROJECT_TYPES: CardDetails[] = [
     imageUrl: 'mobile-app'
   },
   {
-    name: 'Ux Audit',
+    name: 'Design System',
     imageUrl: 'ux-audit'
   },
   {
-    name: 'Web App',
+    name: 'UI/UX Design',
     imageUrl: 'web-app'
   },
   {
-    name: 'Website',
+    name: 'MVP Development',
     imageUrl: 'website'
-  }
+  },
+  {
+    name: 'Webflow',
+    imageUrl: 'mobile-app'
+  },
+  {
+    name: 'Branding',
+    imageUrl: 'branding'
+  },
+  {
+    name: 'Website Design',
+    imageUrl: 'web-app'
+  },
+  {
+    name: 'B2B Saas Enterpise',
+    imageUrl: 'website'
+  },
 ];
 
 export const PROJECT_DOMAINS: CardDetails[] = [
   {
-    name: 'AI',
+    name: 'Ecommerce',
     imageUrl: 'ai'
-  },
-  {
-    name: 'Data Analytics',
-    imageUrl: 'data-analytics'
-  },
-  {
-    name: 'Finance',
-    imageUrl: 'finance'
   },
   {
     name: 'Healthcare',
     imageUrl: 'healthcare'
   },
   {
-    name: 'Other',
+    name: 'Fintech',
+    imageUrl: 'finance'
+  },
+  {
+    name: 'Lifestyle',
+    imageUrl: 'data-analytics'
+  },
+  {
+    name: 'Entertainment',
+    imageUrl: 'other'
+  },
+  {
+    name: 'Gaming',
+    imageUrl: 'finance'
+  },
+  {
+    name: 'Elearning',
+    imageUrl: 'data-analytics'
+  },
+  {
+    name: 'Data Science',
     imageUrl: 'other'
   }
 ];
@@ -66,17 +94,13 @@ export const PROJECT_STAGES: CardDetails[] = [
     imageUrl: 'planning'
   },
   {
-    name: 'Imminent',
+    name: 'Enhancement',
     imageUrl: 'imminent'
   },
   {
-    name: 'Execution',
+    name: 'Revamp',
     imageUrl: 'execution'
-  },
-  {
-    name: 'Review',
-    imageUrl: 'review'
-  } 
+  }
 ];
 
 export const ErrorMessages = {

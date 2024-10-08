@@ -7,50 +7,37 @@ import { useForm } from '../../context/FormContext';
 import {
   ButtonTypes,
   ErrorMessages,
-  PROJECT_TYPES,
+  PROJECT_STAGES,
   TOTAL_STEPS
 } from '../../utils/constants';
 import ErrorText from '../../components/ErrorText';
 
-const Step2 = () => {
+const ProjectStage = () => {
   const [validationError, setValidationError] = useState(false);
 
   const {
     goToNextStep,
     currentStep,
     goToPrevStep,
-    formData: { step2Data },
+    formData: { phase },
     updateFormData
   } = useForm();
 
   const handleAddProject = (selectedCategory: string) => {
     setValidationError(false);
-    const isExistingValue = step2Data?.projectType?.includes(selectedCategory);
+    const isExistingValue = phase?.projectStage?.includes(selectedCategory);
 
-    if (isExistingValue) {
-      const updatedArray = step2Data?.projectType?.filter(
-        (item) => item !== selectedCategory
-      );
+    if (!isExistingValue) {
       updateFormData({
-        step2Data: {
-          projectType: updatedArray
-        }
-      });
-    } else {
-      const updatedArray = [
-        ...(step2Data?.projectType || []),
-        selectedCategory
-      ];
-      updateFormData({
-        step2Data: {
-          projectType: updatedArray
+        phase: {
+          projectStage: [selectedCategory]
         }
       });
     }
   };
 
   const handleNextStepChange = () => {
-    if (!step2Data || step2Data?.projectType?.length === 0) {
+    if (!phase || phase?.projectStage?.length === 0) {
       setValidationError(true);
       return;
     }
@@ -58,19 +45,21 @@ const Step2 = () => {
   };
 
   return (
+    <>
     <div>
-      <Stepper
+    <Stepper
         currentStep={currentStep}
         totalSteps={TOTAL_STEPS}
       />
       <FormDescription
-        title="What type of project is it?"
+        title="What stage is the project at?"
         description="This information is collected to better understand needs and preferences. It will help us tailor the timeline that will suit specific requirements."
       />
+    </div>
       <div className="card-container">
         <Card
-          values={PROJECT_TYPES}
-          currentValues={step2Data?.projectType || []}
+          values={PROJECT_STAGES}
+          currentValues={phase?.projectStage || []}
           handleUpdateValues={handleAddProject}
         />
       </div>
@@ -84,8 +73,8 @@ const Step2 = () => {
         </Button>
         <Button onClick={handleNextStepChange}>Next</Button>
       </div>
-    </div>
+    </>
   );
 };
 
-export default Step2;
+export default ProjectStage;

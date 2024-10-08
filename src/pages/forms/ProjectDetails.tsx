@@ -7,7 +7,7 @@ import { useForm } from '../../context/FormContext';
 import { ErrorMessages, TOTAL_STEPS } from '../../utils/constants';
 import ErrorText from '../../components/ErrorText';
 
-const Step1 = () => {
+const ProjectDetails = () => {
   const { updateFormData, goToNextStep, currentStep, formData } = useForm();
 
   const [validationError, setValidationError] = useState(false);
@@ -15,8 +15,8 @@ const Step1 = () => {
   const handleUpdateName = (e: any) => {
     setValidationError(false);
     updateFormData({
-      step1Data: {
-        ...formData.step1Data,
+      projectDetails: {
+        ...formData.projectDetails,
         projectName: e.target.value
       }
     });
@@ -25,8 +25,8 @@ const Step1 = () => {
   const handleUpdateDescription = (e: any) => {
     setValidationError(false);
     updateFormData({
-      step1Data: {
-        ...formData.step1Data,
+      projectDetails: {
+        ...formData.projectDetails,
         projectDescription: e.target.value
       }
     });
@@ -34,18 +34,22 @@ const Step1 = () => {
 
   const handleNextStepChange = () => {
     if (
-      !formData.step1Data?.projectDescription ||
-      !formData.step1Data.projectName
+      !formData.projectDetails?.projectDescription ||
+      !formData.projectDetails.projectName || 
+      formData.projectDetails.projectName.trim() === '' ||
+      formData.projectDetails.projectDescription.trim() === '' 
     ) {
       setValidationError(true);
       return;
     }
+
     goToNextStep();
   };
 
   return (
+    <>
     <div>
-      <Stepper
+    <Stepper
         currentStep={currentStep}
         totalSteps={TOTAL_STEPS}
       />
@@ -53,11 +57,12 @@ const Step1 = () => {
         title="Share some project details"
         description="This information is collected to better understand needs and preferences. It will help us tailor the timeline that will suit specific requirements."
       />
+    </div>
       <Input
         type="text"
         label="Project Name"
         placeholder="MoneyMingle"
-        value={formData.step1Data?.projectName}
+        value={formData.projectDetails?.projectName}
         onChange={handleUpdateName}
         required
       />
@@ -65,7 +70,7 @@ const Step1 = () => {
         type="textarea"
         label="Project Description"
         placeholder="Two lines about your project"
-        value={formData.step1Data?.projectDescription}
+        value={formData.projectDetails?.projectDescription}
         onChange={handleUpdateDescription}
         required
       />
@@ -73,8 +78,8 @@ const Step1 = () => {
       <div>
         <Button onClick={handleNextStepChange}>Next</Button>
       </div>
-    </div>
+    </>
   );
 };
 
-export default Step1;
+export default ProjectDetails;

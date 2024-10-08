@@ -1,23 +1,23 @@
 import { useForm } from '../context/FormContext';
-import Step1 from './forms/Form1';
-import Step2 from './forms/Form2';
-import Step3 from './forms/Form3';
-import Step4 from './forms/Form4';
-import Step5 from './forms/Form5';
+import ProjectDetails from './forms/ProjectDetails';
+import ProjectType from './forms/ProjectType';
+import ProjectDomain from './forms/ProjectDomain';
+import ProjectStage from './forms/ProjectStage';
+import ClientDetails from './forms/ClientDetails';
 
 const FormStepper = () => {
   const { currentStep } = useForm();
   switch (currentStep) {
     case 1:
-      return <Step1 />;
+      return <ProjectDetails />;
     case 2:
-      return <Step2 />;
+      return <ProjectType />;
     case 3:
-      return <Step3 />;
+      return <ProjectDomain />;
     case 4:
-      return <Step4 />;
+      return <ProjectStage />;
     case 5:
-      return <Step5 />;
+      return <ClientDetails />;
   }
 };
 

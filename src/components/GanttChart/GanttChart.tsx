@@ -7,6 +7,7 @@ interface Task {
   endDate: number;
   icons: Array<{ type: 'user' | 'logo'; content: string }>;
   backgroundColor?: string;
+  color?: string;
 }
 
 interface GanttChartProps {
@@ -98,6 +99,7 @@ const GanttChart: React.FC<GanttChartProps> = ({ tasks, height = '70%' }) => {
   });
 
   const taskItemStyle = (
+    color: string | undefined,
     backgroundColor: string | undefined,
     startIndex: number,
     endIndex: number
@@ -112,6 +114,7 @@ const GanttChart: React.FC<GanttChartProps> = ({ tasks, height = '70%' }) => {
     }px`,
     height: '70px',
     backgroundColor: backgroundColor || '#4caf50',
+    color: color || '#ffffff',
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'flex-start',
@@ -119,7 +122,8 @@ const GanttChart: React.FC<GanttChartProps> = ({ tasks, height = '70%' }) => {
     borderRadius: '50px',
     overflow: 'hidden',
     whiteSpace: 'nowrap',
-    textOverflow: 'ellipsis'
+    textOverflow: 'ellipsis',
+    border: '1px solid lightgrey'
   });
 
   const iconContainerStyle: React.CSSProperties = {
@@ -155,11 +159,15 @@ const GanttChart: React.FC<GanttChartProps> = ({ tasks, height = '70%' }) => {
   };
 
   const buttonStyle = (disabled: boolean): React.CSSProperties => ({
-    padding: '5px 10px',
+    padding: '5px 15px',
     border: '1px solid #ccc',
-    borderRadius: '5px',
+    borderRadius: '15px',
     backgroundColor: disabled ? '#f0f0f0' : 'white',
     cursor: disabled ? 'not-allowed' : 'pointer'
+  });
+
+  const lightTextStyle = (): React.CSSProperties => ({
+    color: 'lightgray'
   });
 
   return (
@@ -175,7 +183,8 @@ const GanttChart: React.FC<GanttChartProps> = ({ tasks, height = '70%' }) => {
               )}
               onClick={() => handleDateClick(day)}
             >
-              {`${weekDays[(day - 1) % 7]} ${day.toString().padStart(2, '0')}`}
+              <span style={lightTextStyle()}>{weekDays[(day - 1) % 7]}</span>{' '}
+              <span>{`${day.toString().padStart(2, '0')}`}</span>
               <div style={arrowStyle(day === selectedDate)} />
             </div>
           ))}
@@ -196,6 +205,7 @@ const GanttChart: React.FC<GanttChartProps> = ({ tasks, height = '70%' }) => {
             ))}
             <div
               style={taskItemStyle(
+                task.color,
                 task.backgroundColor,
                 task.startDate - startDay,
                 task.endDate - startDay
@@ -222,14 +232,14 @@ const GanttChart: React.FC<GanttChartProps> = ({ tasks, height = '70%' }) => {
           style={buttonStyle(startDay === 1)}
           disabled={startDay === 1}
         >
-          ←
+          &lt;
         </button>
         <button
           onClick={handleNextClick}
           style={buttonStyle(startDay === 18)}
           disabled={startDay === 18}
         >
-          →
+          &gt;
         </button>
       </div>
     </div>
@@ -239,18 +249,19 @@ const GanttChart: React.FC<GanttChartProps> = ({ tasks, height = '70%' }) => {
 const tasks: Task[] = [
   {
     id: '1',
-    content: 'Task 1',
+    content: 'Meeting',
     startDate: 2,
     endDate: 4,
     icons: [
       { type: 'user', content: 'A' },
       { type: 'user', content: 'B' }
     ],
-    backgroundColor: '#4caf50'
+    backgroundColor: '#38CF30',
+    color: '#ffffff'
   },
   {
     id: '2',
-    content: 'Task 2',
+    content: 'Research',
     startDate: 4,
     endDate: 8,
     icons: [
@@ -258,31 +269,17 @@ const tasks: Task[] = [
       { type: 'user', content: 'B' },
       { type: 'user', content: 'C' }
     ],
-    backgroundColor: '#2196f3'
+    backgroundColor: '#E35200',
+    color: '#ffffff'
   },
   {
     id: '3',
-    content: 'Task 3',
+    content: 'Kickoff Meeting',
     startDate: 2,
     endDate: 4,
     icons: [{ type: 'logo', content: 'D' }],
-    backgroundColor: '#ff9800'
-  },
-  {
-    id: '4',
-    content: 'Task 3',
-    startDate: 10,
-    endDate: 16,
-    icons: [{ type: 'logo', content: 'D' }],
-    backgroundColor: '#ff9800'
-  },
-  {
-    id: '5',
-    content: 'Task 3',
-    startDate: 15,
-    endDate: 19,
-    icons: [{ type: 'logo', content: 'D' }],
-    backgroundColor: '#ff9800'
+    backgroundColor: '#ffffff',
+    color: '#000000'
   }
 ];
 

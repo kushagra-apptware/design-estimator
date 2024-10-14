@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 
 interface Task {
   id: string;
@@ -18,6 +18,27 @@ interface GanttChartProps {
 const GanttChart: React.FC<GanttChartProps> = ({ tasks, height = '70%' }) => {
   const [selectedDate, setSelectedDate] = useState<number | null>(null);
   const [startDay, setStartDay] = useState(1);
+  const [emptyRows, setEmptyRows] = useState<number>(0);
+
+  const divRef = useRef<HTMLDivElement>(null);
+  const [divHeight, setDivHeight] = useState<number>(0);
+
+  const rowHeight = 80;
+  const totalChartHeight =
+    parseFloat(height) * (Math.ceil(divHeight / rowHeight) + 1);
+
+  useEffect(() => {
+    const totalTasksHeight = tasks.length * rowHeight;
+    const remainingSpace = totalChartHeight - totalTasksHeight;
+    const emptyRowCount = Math.max(0, Math.floor(remainingSpace / rowHeight));
+    setEmptyRows(emptyRowCount);
+  }, [tasks, totalChartHeight]);
+
+  useEffect(() => {
+    if (divRef.current) {
+      setDivHeight(divRef.current.offsetHeight);
+    }
+  }, []);
 
   const days = Array.from({ length: 14 }, (_, i) => i + startDay);
   const weekDays = ['S', 'M', 'T', 'W', 'T', 'F', 'S'];
@@ -81,7 +102,7 @@ const GanttChart: React.FC<GanttChartProps> = ({ tasks, height = '70%' }) => {
   const taskRowStyle: React.CSSProperties = {
     display: 'flex',
     position: 'relative',
-    height: '80px'
+    height: `${rowHeight}px`
   };
 
   const taskCellStyle = (
@@ -112,7 +133,7 @@ const GanttChart: React.FC<GanttChartProps> = ({ tasks, height = '70%' }) => {
     width: `calc(${(endIndex - startIndex + 1) * 7.14}% + ${
       (endIndex - startIndex) * 10
     }px`,
-    height: '70px',
+    height: '65px',
     backgroundColor: backgroundColor || '#4caf50',
     color: color || '#ffffff',
     display: 'flex',
@@ -172,7 +193,10 @@ const GanttChart: React.FC<GanttChartProps> = ({ tasks, height = '70%' }) => {
 
   return (
     <div>
-      <div style={containerStyle}>
+      <div
+        style={containerStyle}
+        ref={divRef}
+      >
         <div style={timelineStyle}>
           {days.map((day, index) => (
             <div
@@ -223,6 +247,23 @@ const GanttChart: React.FC<GanttChartProps> = ({ tasks, height = '70%' }) => {
               </div>
               <span>{task.content}</span>
             </div>
+          </div>
+        ))}
+        {/* Add empty rows to fill the remaining space */}
+        {Array.from({ length: emptyRows }).map((_, rowIndex) => (
+          <div
+            key={`empty-${rowIndex}`}
+            style={taskRowStyle}
+          >
+            {days.map((day, index) => (
+              <div
+                key={`empty-${rowIndex}-${day}`}
+                style={taskCellStyle(
+                  index % 7 === 0 || index % 7 === 6,
+                  day === selectedDate
+                )}
+              />
+            ))}
           </div>
         ))}
       </div>

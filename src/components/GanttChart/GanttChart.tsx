@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
+import { TaskDrawer } from '../TaskDrawer/TaskDrawer';
 
 interface Task {
   id: string;
@@ -13,9 +14,14 @@ interface Task {
 interface GanttChartProps {
   tasks: Task[];
   height?: string;
+  onTaskItemClick: () => void;
 }
 
-const GanttChart: React.FC<GanttChartProps> = ({ tasks, height = '70%' }) => {
+const GanttChart: React.FC<GanttChartProps> = ({
+  tasks,
+  height = '70%',
+  onTaskItemClick
+}) => {
   const [selectedDate, setSelectedDate] = useState<number | null>(null);
   const [startDay, setStartDay] = useState(1);
   const [emptyRows, setEmptyRows] = useState<number>(0);
@@ -144,7 +150,8 @@ const GanttChart: React.FC<GanttChartProps> = ({ tasks, height = '70%' }) => {
     overflow: 'hidden',
     whiteSpace: 'nowrap',
     textOverflow: 'ellipsis',
-    border: '1px solid lightgrey'
+    border: '1px solid lightgrey',
+    cursor: 'pointer'
   });
 
   const iconContainerStyle: React.CSSProperties = {
@@ -188,8 +195,12 @@ const GanttChart: React.FC<GanttChartProps> = ({ tasks, height = '70%' }) => {
   });
 
   const lightTextStyle = (): React.CSSProperties => ({
-    color: 'lightgray'
+    color: 'grey'
   });
+
+  const handleItemClick = () => {
+    onTaskItemClick();
+  };
 
   return (
     <div>
@@ -228,12 +239,14 @@ const GanttChart: React.FC<GanttChartProps> = ({ tasks, height = '70%' }) => {
               />
             ))}
             <div
+              role="button"
               style={taskItemStyle(
                 task.color,
                 task.backgroundColor,
                 task.startDate - startDay,
                 task.endDate - startDay
               )}
+              onClick={handleItemClick}
             >
               <div style={iconContainerStyle}>
                 {task.icons.map((icon, index) => (
@@ -324,9 +337,24 @@ const tasks: Task[] = [
   }
 ];
 
-export const GanttChartComponent = () => (
-  <GanttChart
-    tasks={tasks}
-    height="70vh"
-  />
-);
+export const GanttChartComponent = () => {
+  const [isDrawerOpen, setIsDrawerOpen] = useState(false);
+  const handleTaskItemClick = () => {
+    setIsDrawerOpen(!isDrawerOpen);
+  };
+  return (
+    <>
+      {isDrawerOpen && (
+        <TaskDrawer
+          isDrawerOpen
+          setIsDrawerOpen={setIsDrawerOpen}
+        />
+      )}
+      <GanttChart
+        tasks={tasks}
+        height="70vh"
+        onTaskItemClick={handleTaskItemClick}
+      />
+    </>
+  );
+};

@@ -109,7 +109,7 @@ const GanttChart: React.FC<GanttChartProps> = ({ tasks, height = '70%' }) => {
     }px + ${startIndex}px)`,
     width: `calc(${(endIndex - startIndex + 1) * 7.14}% + ${
       (endIndex - startIndex) * 10
-    }px+${endIndex - startIndex}px)`,
+    }px`,
     height: '70px',
     backgroundColor: backgroundColor || '#4caf50',
     display: 'flex',

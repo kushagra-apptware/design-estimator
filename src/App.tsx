@@ -5,6 +5,7 @@ import Root from './pages/Root.tsx';
 import LandingPage from './pages/LandingPage.tsx';
 import Form from './pages/Form.tsx';
 import ProjectEstimation from './pages/ProjectEstimation.tsx';
+import { GanttChartComponent } from './components/GanttChart/GanttChart.tsx';
 
 const router = createBrowserRouter([
   {
@@ -23,6 +24,10 @@ const router = createBrowserRouter([
       {
         path: '/project-estimation',
         element: <ProjectEstimation />
+      },
+      {
+        path: '/gantt-chart',
+        element: <GanttChartComponent />
       }
     ]
   }

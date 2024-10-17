@@ -1,4 +1,7 @@
 import React, { Dispatch, SetStateAction } from 'react';
+import { TaskCard } from '../TaskCard/TaskCard';
+import { tasks } from '../GanttChart/GanttChart';
+import './TaskDrawer.scss';
 
 export const TaskDrawer = ({
   isDrawerOpen,
@@ -13,17 +16,18 @@ export const TaskDrawer = ({
 
   const drawerStyles: React.CSSProperties = {
     position: 'fixed',
-    top: 0,
-    right: isDrawerOpen ? 0 : '-30%', // Slide from the right, hidden by default
-    width: '30vw',
-    height: '100vh',
+    top: '20px',
+    right: isDrawerOpen ? '20px' : '-30%',
+    bottom: '20px',
+    width: '563px',
     backgroundColor: 'lightgrey',
-    padding: '30px',
     zIndex: 100,
-    transition: 'right 0.3s ease', // Smooth transition effect
+    transition: 'right 0.3s ease',
     boxShadow: '0 0 10px rgba(0, 0, 0, 0.2)',
     display: 'flex',
-    flexDirection: 'column'
+    flexDirection: 'column',
+    borderRadius: '20px',
+    overflowY: 'auto'
   };
 
   const closeIconStyles: React.CSSProperties = {
@@ -32,7 +36,8 @@ export const TaskDrawer = ({
     right: '20px',
     cursor: 'pointer',
     fontSize: '24px',
-    color: 'black'
+    color: 'white',
+    zIndex: 2
   };
 
   const overlayStyles: React.CSSProperties = {
@@ -48,7 +53,7 @@ export const TaskDrawer = ({
   };
 
   return (
-    <>
+    <div className="task-drawer">
       {/* Overlay */}
       <div
         style={overlayStyles}
@@ -57,23 +62,22 @@ export const TaskDrawer = ({
 
       {/* Sliding drawer */}
       <div style={drawerStyles}>
+        <div className="purple-bg"></div>
+        <div className="title">The Roadmap</div>
+        <div className="subtitles">
+          <div className="left-subtitle">Website Design</div>
+          <div className="right-subtitle">Success Story</div>
+        </div>
         <span
           style={closeIconStyles}
           onClick={handleClose}
         >
           &times;
         </span>
-        <h2>Task Details</h2>
-        <p>
-          Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus nec
-          iaculis mauris. Curabitur et erat a velit congue tincidunt. Morbi
-          vitae dolor ac velit fermentum euismod at a justo.
-        </p>
-        <p>
-          Donec tincidunt vulputate urna, a fermentum metus euismod eget. Nulla
-          auctor purus quis ligula hendrerit, vel accumsan odio faucibus.
-        </p>
+        {tasks.map((task) => (
+          <TaskCard task={task} />
+        ))}
       </div>
-    </>
+    </div>
   );
 };

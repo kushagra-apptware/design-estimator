@@ -1,7 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { TaskDrawer } from '../TaskDrawer/TaskDrawer';
 
-interface Task {
+export interface Task {
   id: string;
   content: string;
   startDate: number;
@@ -18,7 +17,46 @@ interface GanttChartProps {
   startDay: number;
 }
 
-const GanttChart: React.FC<GanttChartProps> = ({
+export const tasks: Task[] = [
+  {
+    id: '1',
+    content: 'Meeting',
+    startDate: 2,
+    endDate: 4,
+    icons: [
+      { type: 'user', content: 'A' },
+      { type: 'user', content: 'B' }
+    ],
+    backgroundColor: '#BAE813',
+    color: '#ffffff'
+  },
+  {
+    id: '2',
+    content: 'Research',
+    startDate: 5,
+    endDate: 9,
+    icons: [
+      { type: 'user', content: 'A' },
+      { type: 'user', content: 'B' },
+      { type: 'user', content: 'C' }
+    ],
+    backgroundColor: '#E47912',
+    color: '#ffffff'
+  },
+  {
+    id: '3',
+    content: 'Kickoff Meeting',
+    startDate: 11,
+    endDate: 20,
+    icons: [{ type: 'logo', content: 'D' }],
+    backgroundColor: '#ffffff',
+    color: '#000000'
+  }
+];
+
+
+
+export const GanttChart: React.FC<GanttChartProps> = ({
   tasks,
   height = '70vh',
   onTaskItemClick,
@@ -48,7 +86,7 @@ const GanttChart: React.FC<GanttChartProps> = ({
     }
   }, []);
 
-  const days = Array.from({ length: 14 }, (_, i) => i + startDay);
+  const days = Array.from({ length: 30 }, (_, i) => i + startDay);
   const weekDays = ['S', 'M', 'T', 'W', 'T', 'F', 'S'];
 
   const handleDateClick = (date: number) => {
@@ -73,7 +111,7 @@ const GanttChart: React.FC<GanttChartProps> = ({
     isWeekend: boolean,
     isSelected: boolean
   ): React.CSSProperties => ({
-    flex: '1 0 7.14%',
+    flex: '1 0 5.53%',
     textAlign: 'center',
     padding: '10px 0',
     borderRight: '1px solid #ccc',
@@ -109,7 +147,7 @@ const GanttChart: React.FC<GanttChartProps> = ({
     isWeekend: boolean,
     isSelected: boolean
   ): React.CSSProperties => ({
-    flex: '1 0 7.14%',
+    flex: '1 0 5.53%',
     borderRight: '1px solid #ccc',
     backgroundColor: isSelected ? '#e6e6fa' : 'white',
     backgroundImage: isWeekend
@@ -126,8 +164,8 @@ const GanttChart: React.FC<GanttChartProps> = ({
   ): React.CSSProperties => ({
     position: 'absolute',
     top: '5px',
-    left: `calc(${startIndex * 7.14}% + ${startIndex}px)`,
-    width: `calc(${(endIndex - startIndex + 1) * 7.14}% + ${
+    left: `calc(${startIndex * 5.53}% + ${startIndex}px)`,
+    width: `calc(${(endIndex - startIndex + 1) * 5.53}% + ${
       endIndex - startIndex - 12
     }px)`,
     height: '65px',
@@ -177,6 +215,8 @@ const GanttChart: React.FC<GanttChartProps> = ({
     onTaskItemClick();
   };
 
+  console.info(days, '...days');
+
   return (
     <div>
       <div
@@ -184,11 +224,11 @@ const GanttChart: React.FC<GanttChartProps> = ({
         ref={divRef}
       >
         <div style={timelineStyle}>
-          {days.map((day, index) => (
+          {days.map((day) => (
             <div
               key={day}
               style={timelineCellStyle(
-                index % 7 === 0 || index % 7 === 6,
+                (day - 1) % 7 === 0 || (day - 1) % 7 === 6,
                 day === selectedDate
               )}
               onClick={() => handleDateClick(day)}
@@ -204,11 +244,11 @@ const GanttChart: React.FC<GanttChartProps> = ({
             key={task.id}
             style={taskRowStyle}
           >
-            {days.map((day, index) => (
+            {days.map((day) => (
               <div
                 key={`${task.id}-${day}`}
                 style={taskCellStyle(
-                  index % 7 === 0 || index % 7 === 6,
+                  (day - 1) % 7 === 0 || (day - 1) % 7 === 6,
                   day === selectedDate
                 )}
               />
@@ -256,65 +296,5 @@ const GanttChart: React.FC<GanttChartProps> = ({
         ))}
       </div>
     </div>
-  );
-};
-
-const tasks: Task[] = [
-  {
-    id: '1',
-    content: 'Meeting',
-    startDate: 2,
-    endDate: 4,
-    icons: [
-      { type: 'user', content: 'A' },
-      { type: 'user', content: 'B' }
-    ],
-    backgroundColor: '#BAE813',
-    color: '#ffffff'
-  },
-  {
-    id: '2',
-    content: 'Research',
-    startDate: 5,
-    endDate: 9,
-    icons: [
-      { type: 'user', content: 'A' },
-      { type: 'user', content: 'B' },
-      { type: 'user', content: 'C' }
-    ],
-    backgroundColor: '#E47912',
-    color: '#ffffff'
-  },
-  {
-    id: '3',
-    content: 'Kickoff Meeting',
-    startDate: 11,
-    endDate: 20,
-    icons: [{ type: 'logo', content: 'D' }],
-    backgroundColor: '#ffffff',
-    color: '#000000'
-  }
-];
-
-export const GanttChartComponent = ({ startDay }: { startDay: number }) => {
-  const [isDrawerOpen, setIsDrawerOpen] = useState(false);
-  const handleTaskItemClick = () => {
-    setIsDrawerOpen(!isDrawerOpen);
-  };
-  return (
-    <>
-      {isDrawerOpen && (
-        <TaskDrawer
-          isDrawerOpen
-          setIsDrawerOpen={setIsDrawerOpen}
-        />
-      )}
-      <GanttChart
-        tasks={tasks}
-        height="618px"
-        onTaskItemClick={handleTaskItemClick}
-        startDay={startDay}
-      />
-    </>
   );
 };

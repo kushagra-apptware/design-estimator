@@ -1,22 +1,38 @@
 import { useState } from 'react';
 import Button from '../../components/Button';
-import { GanttChartComponent } from '../../components/GanttChart/GanttChart';
+import {
+    GanttChart,
+    tasks
+} from '../../components/GanttChart/GanttChart';
+import { TaskDrawer } from '../../components/TaskDrawer/TaskDrawer';
 import { ButtonTypes } from '../../utils/constants';
+
 import './EstimationPage.scss';
 
 export const EstimationPage = () => {
+  const [isDrawerOpen, setIsDrawerOpen] = useState(false);
   const [startDay, setStartDay] = useState(1);
+
+  const handleTaskItemClick = () => {
+    setIsDrawerOpen(!isDrawerOpen);
+  };
 
   const handlePrevClick = () => {
     setStartDay(Math.max(1, startDay - 10));
   };
 
   const handleNextClick = () => {
-    setStartDay(Math.min(18, startDay + 10));
+    setStartDay(Math.min(14, startDay + 10));
   };
 
   return (
-    <div className="estimation-page">
+    <div className={`estimation-page ${isDrawerOpen ? 'hide-scroll' : null}`}>
+      {isDrawerOpen && (
+        <TaskDrawer
+          isDrawerOpen
+          setIsDrawerOpen={setIsDrawerOpen}
+        />
+      )}
       <div className="navbar"></div>
       <div className="purple-bg"></div>
       <div className="headers">
@@ -32,7 +48,12 @@ export const EstimationPage = () => {
       <div className="chart">
         <div className="tabs">Branding</div>
         <div className="chart">
-          <GanttChartComponent startDay={startDay} />
+          <GanttChart
+            tasks={tasks}
+            height="618px"
+            onTaskItemClick={handleTaskItemClick}
+            startDay={startDay}
+          />
         </div>
         <div className="chart-actions">
           <div className="left-actions flex-center">

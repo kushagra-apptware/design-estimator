@@ -8,6 +8,7 @@ export interface Task {
   icons: Array<{ type: 'user' | 'logo'; content: string }>;
   backgroundColor?: string;
   color?: string;
+  isSub?: boolean;
 }
 
 interface GanttChartProps {
@@ -158,7 +159,8 @@ export const GanttChart: React.FC<GanttChartProps> = ({
     color: string | undefined,
     backgroundColor: string | undefined,
     startIndex: number,
-    endIndex: number
+    endIndex: number,
+    isSquare: 'start' | 'end' | boolean
   ): React.CSSProperties => ({
     position: 'absolute',
     top: '5px',
@@ -173,7 +175,10 @@ export const GanttChart: React.FC<GanttChartProps> = ({
     alignItems: 'center',
     justifyContent: 'flex-start',
     padding: '0 5px',
-    borderRadius: '50px',
+    borderTopLeftRadius: !isSquare || isSquare === 'end' ? '50px' : '0px',
+    borderBottomLeftRadius: !isSquare || isSquare === 'end' ? '50px' : '0px',
+    borderTopRightRadius: !isSquare || isSquare === 'start' ? '50px' : '0px',
+    borderBottomRightRadius: !isSquare || isSquare === 'start' ? '50px' : '0px',
     overflow: 'hidden',
     whiteSpace: 'nowrap',
     textOverflow: 'ellipsis',
@@ -213,6 +218,42 @@ export const GanttChart: React.FC<GanttChartProps> = ({
     onTaskItemClick(id);
   };
 
+  const [finalTasks, setFinalTasks] = useState<Task[][]>([tasks]);
+
+  useEffect(() => {
+    setFinalTasks(
+      tasks.map((eachTask) => {
+        let isSub = false;
+        let subCount = 0;
+        let { startDate, endDate } = eachTask;
+        const newarr = [];
+        for (let i = startDate; i < endDate; i++) {
+          if (weekDays[i % 7] === 'S') {
+            isSub = true;
+            newarr.push({
+              ...eachTask,
+              startDate,
+              endDate: i,
+              isSub,
+              id: eachTask.id + '-' + subCount++
+            });
+            i = i + 2;
+            startDate = i + 1;
+            endDate = endDate;
+          }
+        }
+        newarr.push({
+          ...eachTask,
+          startDate,
+          endDate,
+          isSub,
+          id: eachTask.id + '-' + subCount++
+        });
+        return newarr;
+      })
+    );
+  }, [tasks]);
+
   return (
     <div>
       <div
@@ -235,44 +276,67 @@ export const GanttChart: React.FC<GanttChartProps> = ({
             </div>
           ))}
         </div>
-        {tasks.map((task) => (
-          <div
-            key={task.id}
-            style={taskRowStyle}
-          >
-            {days.map((day) => (
-              <div
-                key={`${task.id}-${day}`}
-                style={taskCellStyle(
-                  (day - 1) % 7 === 0 || (day - 1) % 7 === 6,
-                  day === selectedDate
-                )}
-              />
-            ))}
+        {finalTasks.map((finalTasksItem) => {
+          const [task] = finalTasksItem;
+          return (
             <div
-              role="button"
-              style={taskItemStyle(
-                task.color,
-                task.backgroundColor,
-                task.startDate - startDay,
-                task.endDate - startDay
-              )}
-              onClick={() => handleItemClick(task.id)}
+              key={task.id}
+              style={taskRowStyle}
             >
-              <div style={iconContainerStyle}>
-                {task.icons.map((icon, index) => (
+              {days.map((day) => (
+                <div
+                  key={`${task.id}-${day}`}
+                  style={taskCellStyle(
+                    (day - 1) % 7 === 0 || (day - 1) % 7 === 6,
+                    day === selectedDate
+                  )}
+                />
+              ))}
+
+              {finalTasksItem.map((eachTaskItem, taskItemIndex) => {
+                let isSquare: 'start' | 'end' | boolean = false; // both sides are round
+                if (finalTasksItem.length >= 2) {
+                  if (taskItemIndex === 0) {
+                    isSquare = 'end'; // end side is square
+                  } else if (taskItemIndex === finalTasksItem.length - 1) {
+                    isSquare = 'start'; // start side is square
+                  } else {
+                    isSquare = true; // both sides are square
+                  }
+                }
+
+                return (
                   <div
-                    key={index}
-                    style={iconStyle(icon.type, index)}
+                    role="button"
+                    style={taskItemStyle(
+                      eachTaskItem.color,
+                      eachTaskItem.backgroundColor,
+                      eachTaskItem.startDate - startDay,
+                      eachTaskItem.endDate - startDay,
+                      isSquare
+                    )}
+                    onClick={() => handleItemClick(eachTaskItem.id)}
+                    key={eachTaskItem.id}
                   >
-                    {icon.content.charAt(0).toUpperCase()}
+                    {taskItemIndex === 0 && (
+                      <div style={iconContainerStyle}>
+                        {eachTaskItem.icons.map((icon, index) => (
+                          <div
+                            key={index}
+                            style={iconStyle(icon.type, index)}
+                          >
+                            {icon.content.charAt(0).toUpperCase()}
+                          </div>
+                        ))}
+                      </div>
+                    )}
+                    <span>{eachTaskItem.content}</span>
                   </div>
-                ))}
-              </div>
-              <span>{task.content}</span>
+                );
+              })}
             </div>
-          </div>
-        ))}
+          );
+        })}
         {/* Add empty rows to fill the remaining space */}
         {Array.from({ length: emptyRows }).map((_, rowIndex) => (
           <div

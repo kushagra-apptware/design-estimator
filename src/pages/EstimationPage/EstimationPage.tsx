@@ -12,7 +12,7 @@ export const EstimationPage = () => {
   const [selectedTaskId, setSelectedTaskId] = useState<string | null>(null);
 
   const handleTaskItemClick = (id: string) => {
-    setSelectedTaskId(id);
+    setSelectedTaskId(id.split('-')[0]);
     setIsDrawerOpen(!isDrawerOpen);
   };
 
@@ -21,7 +21,7 @@ export const EstimationPage = () => {
   };
 
   const handleNextClick = () => {
-    setStartDay(Math.min(14, startDay + 10));
+    setStartDay(Math.min(13, startDay + 10));
   };
 
   return (
@@ -72,7 +72,7 @@ export const EstimationPage = () => {
             <button
               onClick={handleNextClick}
               className="buttons"
-              disabled={startDay === 18}
+              disabled={startDay === 13}
             >
               &gt;
             </button>

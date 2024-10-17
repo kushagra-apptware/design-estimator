@@ -1,0 +1,86 @@
+.estimation-page {
+    padding: 0 40px;
+    font-family: Mulish;
+    .purple-bg {
+        height: 201px;
+        width: 100%;
+        position: absolute;
+        top: 10;
+        left: 0;
+        background-color: #5350C3;
+        z-index: 1;
+    }
+    .headers {
+        margin-top: 20px;
+        display: flex;
+        justify-content: space-between;
+        background-color: #5350C3;
+        color: #ffffff;
+        position: relative;
+        z-index: 2;
+        .left-part, .right-part{
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            .title {
+                font-size: 28px;
+                line-height: 35.14px;
+            }
+            .subtitle {
+                font-size: 17px;
+                line-height: 21.34px;
+                opacity: 0.4;
+            }
+        }
+        .right-part {
+            text-align: end;
+        }
+    }
+    .chart {
+        position: relative;
+        z-index: 2;
+        margin-top: 20px;
+        .tabs {
+            height: 51px;
+            width: 151px;
+            background-color: #F9F9FB;
+            border: 0.6px solid #D5D5D5;
+            border-top-left-radius: 6px;
+            border-top-right-radius: 6px;
+
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        .chart{
+            margin-top: 0;
+            border: 0.6px solid #D5D5D5;
+            border-radius: 6px;
+            border-top-left-radius: 0px;
+            height: 618px;
+            width: 100%;
+            background-color: #ffffff;
+        }
+        .chart-actions{
+            margin: 20px 0;
+            width: 100%;
+            display: flex;
+            justify-content: space-between;
+            .right-actions {
+                display: flex;
+                justify-content: flex-end;
+                align-items: center;
+                gap: 10px;
+
+                .buttons {
+                    height: 30px;
+                    padding: 5px 20px;
+                    border: 1px solid #ccc;
+                    border-radius: 10px;
+                    background-color: white;
+                    cursor: pointer;
+                }
+            }
+        }
+   }
+}

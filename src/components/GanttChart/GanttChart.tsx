@@ -15,21 +15,23 @@ interface GanttChartProps {
   tasks: Task[];
   height?: string;
   onTaskItemClick: () => void;
+  startDay: number;
 }
 
 const GanttChart: React.FC<GanttChartProps> = ({
   tasks,
-  height = '70%',
-  onTaskItemClick
+  height = '70vh',
+  onTaskItemClick,
+  startDay
 }) => {
   const [selectedDate, setSelectedDate] = useState<number | null>(null);
-  const [startDay, setStartDay] = useState(1);
+
   const [emptyRows, setEmptyRows] = useState<number>(0);
 
   const divRef = useRef<HTMLDivElement>(null);
   const [divHeight, setDivHeight] = useState<number>(0);
 
-  const rowHeight = 80;
+  const rowHeight = 300;
   const totalChartHeight =
     parseFloat(height) * (Math.ceil(divHeight / rowHeight) + 1);
 
@@ -53,14 +55,6 @@ const GanttChart: React.FC<GanttChartProps> = ({
     setSelectedDate(date === selectedDate ? null : date);
   };
 
-  const handlePrevClick = () => {
-    setStartDay(Math.max(1, startDay - 10));
-  };
-
-  const handleNextClick = () => {
-    setStartDay(Math.min(18, startDay + 10));
-  };
-
   const containerStyle: React.CSSProperties = {
     display: 'flex',
     flexDirection: 'column',
@@ -81,7 +75,7 @@ const GanttChart: React.FC<GanttChartProps> = ({
   ): React.CSSProperties => ({
     flex: '1 0 7.14%',
     textAlign: 'center',
-    padding: '5px',
+    padding: '10px 0',
     borderRight: '1px solid #ccc',
     backgroundColor: isSelected ? '#e6e6fa' : 'white',
     position: 'relative',
@@ -116,7 +110,6 @@ const GanttChart: React.FC<GanttChartProps> = ({
     isSelected: boolean
   ): React.CSSProperties => ({
     flex: '1 0 7.14%',
-    padding: '5px',
     borderRight: '1px solid #ccc',
     backgroundColor: isSelected ? '#e6e6fa' : 'white',
     backgroundImage: isWeekend
@@ -133,12 +126,10 @@ const GanttChart: React.FC<GanttChartProps> = ({
   ): React.CSSProperties => ({
     position: 'absolute',
     top: '5px',
-    left: `calc(${startIndex * 7.14}% + ${
-      startIndex * 10
-    }px + ${startIndex}px)`,
+    left: `calc(${startIndex * 7.14}% + ${startIndex}px)`,
     width: `calc(${(endIndex - startIndex + 1) * 7.14}% + ${
-      (endIndex - startIndex) * 10
-    }px`,
+      endIndex - startIndex - 12
+    }px)`,
     height: '65px',
     backgroundColor: backgroundColor || '#4caf50',
     color: color || '#ffffff',
@@ -176,22 +167,6 @@ const GanttChart: React.FC<GanttChartProps> = ({
     border: type === 'user' ? '2px solid white' : '2px solid transparent',
     boxSizing: 'border-box',
     zIndex: index
-  });
-
-  const navigationStyle: React.CSSProperties = {
-    display: 'flex',
-    justifyContent: 'flex-end',
-    marginTop: '10px',
-    gap: '10px',
-    margin: '10px auto 0'
-  };
-
-  const buttonStyle = (disabled: boolean): React.CSSProperties => ({
-    padding: '5px 15px',
-    border: '1px solid #ccc',
-    borderRadius: '15px',
-    backgroundColor: disabled ? '#f0f0f0' : 'white',
-    cursor: disabled ? 'not-allowed' : 'pointer'
   });
 
   const lightTextStyle = (): React.CSSProperties => ({
@@ -280,22 +255,6 @@ const GanttChart: React.FC<GanttChartProps> = ({
           </div>
         ))}
       </div>
-      <div style={navigationStyle}>
-        <button
-          onClick={handlePrevClick}
-          style={buttonStyle(startDay === 1)}
-          disabled={startDay === 1}
-        >
-          &lt;
-        </button>
-        <button
-          onClick={handleNextClick}
-          style={buttonStyle(startDay === 18)}
-          disabled={startDay === 18}
-        >
-          &gt;
-        </button>
-      </div>
     </div>
   );
 };
@@ -310,34 +269,34 @@ const tasks: Task[] = [
       { type: 'user', content: 'A' },
       { type: 'user', content: 'B' }
     ],
-    backgroundColor: '#38CF30',
+    backgroundColor: '#BAE813',
     color: '#ffffff'
   },
   {
     id: '2',
     content: 'Research',
-    startDate: 4,
-    endDate: 8,
+    startDate: 5,
+    endDate: 9,
     icons: [
       { type: 'user', content: 'A' },
       { type: 'user', content: 'B' },
       { type: 'user', content: 'C' }
     ],
-    backgroundColor: '#E35200',
+    backgroundColor: '#E47912',
     color: '#ffffff'
   },
   {
     id: '3',
     content: 'Kickoff Meeting',
-    startDate: 2,
-    endDate: 4,
+    startDate: 11,
+    endDate: 20,
     icons: [{ type: 'logo', content: 'D' }],
     backgroundColor: '#ffffff',
     color: '#000000'
   }
 ];
 
-export const GanttChartComponent = () => {
+export const GanttChartComponent = ({ startDay }: { startDay: number }) => {
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
   const handleTaskItemClick = () => {
     setIsDrawerOpen(!isDrawerOpen);
@@ -352,8 +311,9 @@ export const GanttChartComponent = () => {
       )}
       <GanttChart
         tasks={tasks}
-        height="70vh"
+        height="618px"
         onTaskItemClick={handleTaskItemClick}
+        startDay={startDay}
       />
     </>
   );

@@ -1,15 +1,32 @@
-import React, { Dispatch, SetStateAction } from 'react';
+import React, { Dispatch, SetStateAction, useEffect, useRef } from 'react';
 import { TaskCard } from '../TaskCard/TaskCard';
 import { tasks } from '../GanttChart/GanttChart';
 import './TaskDrawer.scss';
 
 export const TaskDrawer = ({
   isDrawerOpen,
-  setIsDrawerOpen
+  setIsDrawerOpen,
+  selectedTaskId
 }: {
   isDrawerOpen: boolean;
   setIsDrawerOpen: Dispatch<SetStateAction<boolean>>;
+  selectedTaskId: string | null;
 }) => {
+  const itemRefs = useRef<{ [key: number]: HTMLDivElement | null }>({});
+
+  useEffect(() => {
+    if (
+      isDrawerOpen &&
+      selectedTaskId !== null &&
+      itemRefs.current[selectedTaskId as any]
+    ) {
+      itemRefs.current[selectedTaskId as any]?.scrollIntoView({
+        behavior: 'smooth',
+        block: 'start'
+      });
+    }
+  }, [isDrawerOpen, selectedTaskId]);
+
   const handleClose = () => {
     setIsDrawerOpen(false);
   };
@@ -75,7 +92,12 @@ export const TaskDrawer = ({
           &times;
         </span>
         {tasks.map((task) => (
-          <TaskCard task={task} />
+          <div
+            className="task-card"
+            ref={(el) => (itemRefs.current[task.id as any] = el)}
+          >
+            <TaskCard task={task} />
+          </div>
         ))}
       </div>
     </div>

@@ -1,9 +1,6 @@
 import { useState } from 'react';
 import Button from '../../components/Button';
-import {
-    GanttChart,
-    tasks
-} from '../../components/GanttChart/GanttChart';
+import { GanttChart, tasks } from '../../components/GanttChart/GanttChart';
 import { TaskDrawer } from '../../components/TaskDrawer/TaskDrawer';
 import { ButtonTypes } from '../../utils/constants';
 
@@ -12,8 +9,10 @@ import './EstimationPage.scss';
 export const EstimationPage = () => {
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
   const [startDay, setStartDay] = useState(1);
+  const [selectedTaskId, setSelectedTaskId] = useState<string | null>(null);
 
-  const handleTaskItemClick = () => {
+  const handleTaskItemClick = (id: string) => {
+    setSelectedTaskId(id);
     setIsDrawerOpen(!isDrawerOpen);
   };
 
@@ -31,6 +30,7 @@ export const EstimationPage = () => {
         <TaskDrawer
           isDrawerOpen
           setIsDrawerOpen={setIsDrawerOpen}
+          selectedTaskId={selectedTaskId}
         />
       )}
       <div className="navbar"></div>

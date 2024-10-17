@@ -13,7 +13,7 @@ export interface Task {
 interface GanttChartProps {
   tasks: Task[];
   height?: string;
-  onTaskItemClick: () => void;
+  onTaskItemClick: (id: string) => void;
   startDay: number;
 }
 
@@ -53,8 +53,6 @@ export const tasks: Task[] = [
     color: '#000000'
   }
 ];
-
-
 
 export const GanttChart: React.FC<GanttChartProps> = ({
   tasks,
@@ -192,8 +190,8 @@ export const GanttChart: React.FC<GanttChartProps> = ({
     type: 'user' | 'logo',
     index: number
   ): React.CSSProperties => ({
-    width: '60px',
-    height: '60px',
+    width: '55px',
+    height: '55px',
     borderRadius: '50%',
     display: 'flex',
     alignItems: 'center',
@@ -211,11 +209,9 @@ export const GanttChart: React.FC<GanttChartProps> = ({
     color: 'grey'
   });
 
-  const handleItemClick = () => {
-    onTaskItemClick();
+  const handleItemClick = (id: string) => {
+    onTaskItemClick(id);
   };
-
-  console.info(days, '...days');
 
   return (
     <div>
@@ -261,7 +257,7 @@ export const GanttChart: React.FC<GanttChartProps> = ({
                 task.startDate - startDay,
                 task.endDate - startDay
               )}
-              onClick={handleItemClick}
+              onClick={() => handleItemClick(task.id)}
             >
               <div style={iconContainerStyle}>
                 {task.icons.map((icon, index) => (
@@ -283,11 +279,11 @@ export const GanttChart: React.FC<GanttChartProps> = ({
             key={`empty-${rowIndex}`}
             style={taskRowStyle}
           >
-            {days.map((day, index) => (
+            {days.map((day) => (
               <div
                 key={`empty-${rowIndex}-${day}`}
                 style={taskCellStyle(
-                  index % 7 === 0 || index % 7 === 6,
+                  (day - 1) % 7 === 0 || (day - 1) % 7 === 6,
                   day === selectedDate
                 )}
               />

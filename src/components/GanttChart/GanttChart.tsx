@@ -9,6 +9,7 @@ export interface Task {
   backgroundColor?: string;
   color?: string;
   isSub?: boolean;
+  duration?: number;
 }
 
 interface GanttChartProps {
@@ -17,43 +18,6 @@ interface GanttChartProps {
   onTaskItemClick: (id: string) => void;
   startDay: number;
 }
-
-export const tasks: Task[] = [
-  {
-    id: '1',
-    content: 'Meeting',
-    startDate: 2,
-    endDate: 4,
-    icons: [
-      { type: 'user', content: 'A' },
-      { type: 'user', content: 'B' }
-    ],
-    backgroundColor: '#BAE813',
-    color: '#ffffff'
-  },
-  {
-    id: '2',
-    content: 'Research',
-    startDate: 5,
-    endDate: 9,
-    icons: [
-      { type: 'user', content: 'A' },
-      { type: 'user', content: 'B' },
-      { type: 'user', content: 'C' }
-    ],
-    backgroundColor: '#E47912',
-    color: '#ffffff'
-  },
-  {
-    id: '3',
-    content: 'Kickoff Meeting',
-    startDate: 11,
-    endDate: 20,
-    icons: [{ type: 'logo', content: 'D' }],
-    backgroundColor: '#ffffff',
-    color: '#000000'
-  }
-];
 
 export const GanttChart: React.FC<GanttChartProps> = ({
   tasks,
@@ -77,7 +41,7 @@ export const GanttChart: React.FC<GanttChartProps> = ({
     const remainingSpace = totalChartHeight - totalTasksHeight;
     const emptyRowCount = Math.max(0, Math.floor(remainingSpace / rowHeight));
     setEmptyRows(emptyRowCount);
-  }, [tasks, totalChartHeight]);
+  }, [tasks, totalChartHeight, rowHeight]);
 
   useEffect(() => {
     if (divRef.current) {
@@ -85,7 +49,7 @@ export const GanttChart: React.FC<GanttChartProps> = ({
     }
   }, []);
 
-  const days = Array.from({ length: 30 }, (_, i) => i + startDay);
+  const days = Array.from({ length: 31 }, (_, i) => i + startDay);
   const weekDays = ['S', 'M', 'T', 'W', 'T', 'F', 'S'];
 
   const handleDateClick = (date: number) => {
@@ -235,6 +199,7 @@ export const GanttChart: React.FC<GanttChartProps> = ({
               startDate,
               endDate: i,
               isSub,
+              content: subCount === 0 ? eachTask.content : '',
               id: eachTask.id + '-' + subCount++
             });
             i = i + 2;
@@ -247,6 +212,7 @@ export const GanttChart: React.FC<GanttChartProps> = ({
           startDate,
           endDate,
           isSub,
+          content: subCount === 0 ? eachTask.content : '',
           id: eachTask.id + '-' + subCount++
         });
         return newarr;
@@ -330,7 +296,16 @@ export const GanttChart: React.FC<GanttChartProps> = ({
                         ))}
                       </div>
                     )}
-                    <span>{eachTaskItem.content}</span>
+                    <span
+                      style={{
+                        maxWidth: '100%',
+                        overflow: 'hidden',
+                        textOverflow: 'ellipsis'
+                      }}
+                      title={eachTaskItem.content}
+                    >
+                      {eachTaskItem.content}
+                    </span>
                   </div>
                 );
               })}

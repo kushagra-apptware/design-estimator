@@ -12,6 +12,7 @@ const ProjectEstimation = () => {
     setInitialStep();
     navigate('/form');
   };
+  
   return (
     <div className="estimation-wrapper">
       <span className="project-domain">{formData.domain?.projectDomain}</span>

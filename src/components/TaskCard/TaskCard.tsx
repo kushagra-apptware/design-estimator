@@ -4,8 +4,7 @@ import './TaskCard.scss';
 export const TaskCard = (props: { task: Task }) => {
   const { task } = props;
 
-  const { startDate, endDate } = task;
-  const hours = (endDate - startDate) * 8;
+  const { duration } = task;
   return (
     <div className="task-card">
       <div className="banner-image">
@@ -22,7 +21,8 @@ export const TaskCard = (props: { task: Task }) => {
               className="title-icon"
               style={{
                 backgroundColor:
-                  task.backgroundColor === '#ffffff'
+                  task.backgroundColor === '#ffffff' ||
+                  task.backgroundColor === 'white'
                     ? '#000000'
                     : task.backgroundColor
               }}
@@ -34,7 +34,7 @@ export const TaskCard = (props: { task: Task }) => {
             </div>
             <div className="title-content">
               <div className="title-header">{task.content}</div>
-              <div className="title-subheader">{hours * 60} mins</div>
+              <div className="title-subheader">{duration} Days</div>
             </div>
           </div>
         </div>

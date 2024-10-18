@@ -1,16 +1,18 @@
 import React, { Dispatch, SetStateAction, useEffect, useRef } from 'react';
 import { TaskCard } from '../TaskCard/TaskCard';
-import { tasks } from '../GanttChart/GanttChart';
+import { Task } from '../GanttChart/GanttChart';
 import './TaskDrawer.scss';
 
 export const TaskDrawer = ({
   isDrawerOpen,
   setIsDrawerOpen,
-  selectedTaskId
+  selectedTaskId,
+  tasks
 }: {
   isDrawerOpen: boolean;
   setIsDrawerOpen: Dispatch<SetStateAction<boolean>>;
   selectedTaskId: string | null;
+  tasks: Task[];
 }) => {
   const itemRefs = useRef<{ [key: number]: HTMLDivElement | null }>({});
 
@@ -95,6 +97,7 @@ export const TaskDrawer = ({
           <div
             className="task-card"
             ref={(el) => (itemRefs.current[task.id as any] = el)}
+            key={task.content}
           >
             <TaskCard task={task} />
           </div>

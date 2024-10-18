@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from 'react';
+import { useEffect, useMemo, useState, useRef } from 'react';
 import Button from '../../components/Button';
 import { GanttChart } from '../../components/GanttChart/GanttChart';
 import { TaskDrawer } from '../../components/TaskDrawer/TaskDrawer';
@@ -7,6 +7,8 @@ import { ButtonTypes } from '../../utils/constants';
 import { useNavigate } from 'react-router-dom';
 
 import './EstimationPage.scss';
+import html2canvas from 'html2canvas';
+import jsPDF from 'jspdf';
 
 const standardDataInHours = {
   DiscoveryPlanning: 40,
@@ -130,6 +132,7 @@ const modifyStandardData = (
 export const EstimationPage = () => {
   const navigate = useNavigate();
   const { setInitialStep, formData } = useForm();
+  const divRef = useRef<HTMLDivElement>(null);
 
   const { domain, phase, projectDetails } = formData;
 
@@ -173,6 +176,34 @@ export const EstimationPage = () => {
     }
   }, []);
 
+  const downloadAsPDF = async () => {
+    if (!divRef.current) return;
+
+    // Capture the complete div containing the Gantt chart
+    const canvas = await html2canvas(divRef.current, {
+      scrollX: -window.scrollX,
+      scrollY: -window.scrollY,
+      windowWidth: document.documentElement.offsetWidth,
+      windowHeight: document.documentElement.offsetHeight
+    });
+
+    // Convert canvas to an image
+    const imgData = canvas.toDataURL('image/png');
+
+    // Create a PDF document
+    const pdf = new jsPDF({
+      orientation: 'landscape',
+      unit: 'px',
+      format: [canvas.width, canvas.height]
+    });
+
+    // Add image to PDF
+    pdf.addImage(imgData, 'PNG', 0, 0, canvas.width, canvas.height);
+
+    // Save the PDF
+    pdf.save('gantt-chart.pdf');
+  };
+
   return (
     <div className={`estimation-page ${isDrawerOpen ? 'hide-scroll' : null}`}>
       {isDrawerOpen && (
@@ -204,6 +235,7 @@ export const EstimationPage = () => {
               height="618px"
               onTaskItemClick={handleTaskItemClick}
               startDay={startDay}
+              divRef={divRef}
             />
           )}
           {!Boolean(standardData.length) && (
@@ -220,7 +252,7 @@ export const EstimationPage = () => {
             >
               Edit Details
             </Button>
-            <Button>Download as PDF</Button>
+            <Button onClick={downloadAsPDF}>Download as PDF</Button>
           </div>
 
           <div className="right-actions">

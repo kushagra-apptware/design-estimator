@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useEffect, useState } from 'react';
 
 export interface Task {
   id: string;
@@ -17,19 +17,20 @@ interface GanttChartProps {
   height?: string;
   onTaskItemClick: (id: string) => void;
   startDay: number;
+  divRef: React.RefObject<HTMLDivElement>;
 }
 
 export const GanttChart: React.FC<GanttChartProps> = ({
   tasks,
   height = '70vh',
   onTaskItemClick,
-  startDay
+  startDay,
+  divRef
 }) => {
   const [selectedDate, setSelectedDate] = useState<number | null>(null);
 
   const [emptyRows, setEmptyRows] = useState<number>(0);
 
-  const divRef = useRef<HTMLDivElement>(null);
   const [divHeight, setDivHeight] = useState<number>(0);
 
   const rowHeight = 300;

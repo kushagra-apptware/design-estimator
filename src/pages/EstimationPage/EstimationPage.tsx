@@ -206,9 +206,11 @@ export const EstimationPage = () => {
               startDay={startDay}
             />
           )}
-          <div className="warning">
-            Please update your selections to view a timeline
-          </div>
+          {!Boolean(standardData.length) && (
+            <div className="warning">
+              Please update your selections to view a timeline
+            </div>
+          )}
         </div>
         <div className="chart-actions">
           <div className="left-actions flex-center">

@@ -5,10 +5,10 @@ import { TaskDrawer } from '../../components/TaskDrawer/TaskDrawer';
 import { useForm } from '../../context/FormContext';
 import { ButtonTypes } from '../../utils/constants';
 import { useNavigate } from 'react-router-dom';
-
-import './EstimationPage.scss';
 import html2canvas from 'html2canvas';
 import jsPDF from 'jspdf';
+
+import './EstimationPage.scss';
 
 const standardDataInHours = {
   DiscoveryPlanning: 40,
@@ -179,29 +179,36 @@ export const EstimationPage = () => {
   const downloadAsPDF = async () => {
     if (!divRef.current) return;
 
-    // Capture the complete div containing the Gantt chart
-    const canvas = await html2canvas(divRef.current, {
-      scrollX: -window.scrollX,
-      scrollY: -window.scrollY,
-      windowWidth: document.documentElement.offsetWidth,
-      windowHeight: document.documentElement.offsetHeight
-    });
+    const element: HTMLElement | null = document.querySelector(
+      '#gantt-chart-container'
+    );
+    if (element !== null) {
+      const originalOverflow = element.style.overflow;
+      element.style.overflow = 'visible';
+      await html2canvas(element, {
+        scale: 2, // Increase scale for better quality
+        width: element.scrollWidth, // Ensure you're capturing the full width
+        height: element.scrollHeight // Capture full height of the content
+      }).then((canvas) => {
+        const imgData = canvas.toDataURL('image/png');
+        const pdf = new jsPDF({
+          orientation: 'landscape',
+          unit: 'px',
+          format: [element.scrollWidth, element.scrollHeight] // Adjust height as needed
+        });
 
-    // Convert canvas to an image
-    const imgData = canvas.toDataURL('image/png');
-
-    // Create a PDF document
-    const pdf = new jsPDF({
-      orientation: 'landscape',
-      unit: 'px',
-      format: [canvas.width, canvas.height]
-    });
-
-    // Add image to PDF
-    pdf.addImage(imgData, 'PNG', 0, 0, canvas.width, canvas.height);
-
-    // Save the PDF
-    pdf.save('gantt-chart.pdf');
+        pdf.addImage(
+          imgData,
+          'PNG',
+          0,
+          0,
+          element.scrollWidth,
+          element.scrollHeight
+        ); // Match the width and height
+        pdf.save('download.pdf');
+        element.style.overflow = originalOverflow;
+      });
+    }
   };
 
   return (

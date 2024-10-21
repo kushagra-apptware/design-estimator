@@ -226,6 +226,7 @@ export const GanttChart: React.FC<GanttChartProps> = ({
       <div
         style={containerStyle}
         ref={divRef}
+        id='gantt-chart-container'
       >
         <div style={timelineStyle}>
           {days.map((day) => (

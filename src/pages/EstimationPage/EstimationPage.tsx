@@ -205,7 +205,17 @@ export const EstimationPage = () => {
           element.scrollWidth,
           element.scrollHeight
         ); // Match the width and height
-        pdf.save('download.pdf');
+        const fileName =
+          projectDetails?.projectName &&
+          domain?.projectDomain &&
+          phase?.projectStage
+            ? projectDetails?.projectName +
+              '-' +
+              domain?.projectDomain +
+              '-' +
+              phase?.projectStage
+            : 'gantt-chart';
+        pdf.save(`${fileName}.pdf`);
         element.style.overflow = originalOverflow;
       });
     }

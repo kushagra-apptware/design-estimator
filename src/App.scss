@@ -376,3 +376,33 @@
         justify-content: center;
     }
 }
+.tooltip {
+    box-shadow: 7px 10px 40px 0px #0000001A;
+    background-color: white;
+    color: 'red';
+    height: 250px;
+    width: 200px;
+    border-radius: 12px;
+    padding: 16px;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+.tooltip-title {
+    font-size: 16px;
+    font-weight: 700;
+}
+
+.tooltip-description {
+    font-size: 14px;
+    font-weight: 400;
+    color: #969696;
+
+}
+
+.tooltip-image {
+    height: 150px;
+    background-color: rgb(219, 219, 214);
+    border-radius: 12px;
+}

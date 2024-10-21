@@ -1,24 +1,26 @@
 import { useNavigate } from 'react-router-dom';
 import Button from '../components/Button';
-import { ButtonTypes } from '../utils/constants';
+import GanttChart from '../components/GanttChart';
 import { useForm } from '../context/FormContext';
+import { ButtonTypes } from '../utils/constants';
 
 const ProjectEstimation = () => {
-  const { setInitialStep } = useForm();
+  const { setInitialStep, formData } = useForm();
   const navigate = useNavigate();
 
   const handleEditDetails = () => {
     setInitialStep();
     navigate('/form');
   };
+  
   return (
     <div className="estimation-wrapper">
-      <span className="project-domain">Project Domain</span>
+      <span className="project-domain">{formData.domain?.projectDomain}</span>
       <div className="project-header">
-        <span>Project Name</span>
+        <span>{formData.projectDetails?.projectName}</span>
         <span>30 Days</span>
       </div>
-      <div>Gantt Chart</div>
+      <GanttChart />
       <div>
         <div className="flex-center">
           <Button

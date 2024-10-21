@@ -1,0 +1,73 @@
+.task-card {
+    position: relative;
+    padding: 14px;
+    .banner-image {
+        .image {
+            position: relative;
+            width: 100%;
+            height: 193px;
+            overflow: hidden;
+            border-radius: 11px;
+            z-index: 1;
+            .sprint-count {
+                position: absolute;
+                top: 20px;
+                right: 20px;
+                color: #ffffff;
+                z-index: 2;
+                font-family: Mulish;
+                font-size: 18px;
+                font-weight: 700;
+                line-height: 18px;
+                text-align: right;
+            }
+            .title-card {
+                position: absolute;
+                bottom: 20px;
+                left: 20px;
+                color: #fff;
+                z-index: 2;
+                display: flex;
+                gap: 10px;
+                .title-icon {
+                    padding: 5px;
+                    border-radius: 100%;
+                    width: 62px;
+                    height: 62px;
+                    display: flex;
+                }
+                .title-content {
+                    display: flex;
+                    flex-direction: column;
+                    justify-content: space-evenly;
+                    gap: 5px;
+                    .title-header {
+                        font-family: Mulish;
+                        font-size: 28px;
+                        font-weight: 500;
+                        line-height: 35.14px;
+                        text-align: left;
+                    }
+                    .title-subheader{
+                        font-family: Mulish;
+                        font-size: 18px;
+                        font-weight: 700;
+                        line-height: 18px;
+                        text-align: left;
+                    }
+                }
+            }
+        }
+    }
+    .content {
+        margin-top: 20px;
+        padding: 0 20px;
+        opacity: 50%;
+        ul {
+            margin-top: 30px;
+            li {
+                margin: 20px 40px;
+            }
+        }
+    }
+}

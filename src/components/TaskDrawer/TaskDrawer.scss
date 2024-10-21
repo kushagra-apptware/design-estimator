@@ -1,0 +1,42 @@
+.task-drawer {
+    position: relative;
+    padding: 0 14px;
+    .purple-bg{
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        height: 219px;
+        width: 563px;
+        background-color: #5350C3;
+        z-index: 1;
+    }
+    .title {
+        padding: 30px 20px 0;
+        position: relative;
+        font-family: Mulish;
+        font-size: 28px;
+        font-weight: 500;
+        line-height: 35.14px;
+        text-align: left;
+        z-index: 2;
+        color: #fff;
+    }
+    .subtitles {        
+        position: relative;
+        display: flex;
+        justify-content: space-between;
+        height: 30px;
+        margin-top: 20px;
+        z-index: 2;
+        color: #fff;
+        opacity: 50%;
+        padding: 0 20px;
+        .left-subtitle {
+            align-self: self-start;
+        }
+        .right-subtitle {
+            align-self: self-end;
+        }        
+    }
+}

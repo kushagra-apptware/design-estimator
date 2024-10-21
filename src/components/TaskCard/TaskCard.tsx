@@ -1,4 +1,6 @@
 import { Task } from '../GanttChart/GanttChart';
+import VideoConference from '../../assets/VideoConference.svg';
+import banner1 from '../../assets/banner1.png';
 import './TaskCard.scss';
 
 export const TaskCard = (props: { task: Task }) => {
@@ -10,7 +12,7 @@ export const TaskCard = (props: { task: Task }) => {
       <div className="banner-image">
         <div className="image">
           <img
-            src="/banner1.png"
+            src={banner1}
             alt="banner-image-1"
             width="100%"
             height="100%"
@@ -28,7 +30,7 @@ export const TaskCard = (props: { task: Task }) => {
               }}
             >
               <img
-                src="/VideoConference.svg"
+                src={VideoConference}
                 alt="video-conference"
               />
             </div>

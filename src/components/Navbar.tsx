@@ -1,3 +1,4 @@
+import Logo from '../assets/Logo.png'
 
 const Navbar = () => {
   return (
@@ -5,7 +6,7 @@ const Navbar = () => {
       <nav>
         <a href="/">
         <img
-          src="/Logo.png"
+          src={Logo}
          />
         </a>
       </nav>

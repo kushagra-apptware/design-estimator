@@ -7,7 +7,7 @@ const Root = () => {
 
   /** Styles  for setting background image*/
   const style = {
-    backgroundImage: pathname === '/' ? 'url("/Background.png")' : 'none',
+    backgroundImage: pathname === '/' ? 'url("../assets/Background.png")' : 'none',
     backgroundSize: 'cover',
     backgroundPosition: 'center',
     height: '100vh'

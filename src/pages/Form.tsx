@@ -4,6 +4,7 @@ import ProjectType from './forms/ProjectType';
 import ProjectDomain from './forms/ProjectDomain';
 import ProjectStage from './forms/ProjectStage';
 import ClientDetails from './forms/ClientDetails';
+import FormBanner from '../assets/Form-banner.png'
 
 const FormStepper = () => {
   const { currentStep } = useForm();
@@ -29,7 +30,7 @@ const Form = () => {
       </div>
       <div>
         <img
-          src="/Form-banner.png"
+          src={FormBanner}
           alt="Form Banner"
           height={646}
         />

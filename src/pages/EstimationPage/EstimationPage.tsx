@@ -215,7 +215,7 @@ export const EstimationPage = () => {
               '-' +
               phase?.projectStage
             : 'gantt-chart';
-        pdf.save(`${fileName}.pdf`);
+        pdf.save(`${fileName.toLowerCase()}.pdf`);
         element.style.overflow = originalOverflow;
       });
     }

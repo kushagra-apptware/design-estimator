@@ -1,3 +1,5 @@
+@use '../../styles/base';
+
 .task-drawer {
     position: relative;
     padding: 0 14px;
@@ -8,7 +10,7 @@
         right: 0;
         height: 219px;
         width: 563px;
-        background-color: #5350C3;
+        background-color: base.$color-purple;
         z-index: 1;
     }
     .title {

@@ -9,14 +9,14 @@
         position: absolute;
         top: 10;
         left: 0;
-        background-color: #5350C3;
+        background-color: base.$color-purple;
         z-index: 1;
     }
     .headers {
         margin-top: 20px;
         display: flex;
         justify-content: space-between;
-        background-color: #5350C3;
+        background-color: base.$color-purple;
         color: #ffffff;
         position: relative;
         z-index: 2;

@@ -1,4 +1,11 @@
-* {
+@font-face {
+    font-family: 'SF Pro';
+    src: url('src/assets/fonts/sf-pro-display/SFPRODISPLAYBOLD.OTF') format('opentype');
+    font-weight: 1000;
+    font-style: normal;
+  }
+  
+  * {
     margin: 0;
     padding: 0;
 }

@@ -72,8 +72,6 @@ const CardCheckBox = ({
       />
     );
 
-  console.log(values, '...values');
-
   const AllCards = values.map(({ name, imageUrl }: CardDetails, index) => (
     <div
       className="card"

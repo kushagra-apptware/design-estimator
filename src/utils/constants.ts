@@ -12,7 +12,7 @@ export interface CardDetails {
 
 export const PROJECT_TYPES: CardDetails[] = [
   {
-    name: 'SAAS Design',
+    name: 'SAAS Enterprise',
     imageUrl: 'branding'
   },
   {
@@ -32,21 +32,13 @@ export const PROJECT_TYPES: CardDetails[] = [
     imageUrl: 'website'
   },
   {
-    name: 'Webflow',
-    imageUrl: 'mobile-app'
-  },
-  {
     name: 'Branding',
     imageUrl: 'branding'
   },
   {
     name: 'Website Design',
     imageUrl: 'web-app'
-  },
-  {
-    name: 'B2B Saas Enterpise',
-    imageUrl: 'website'
-  },
+  }
 ];
 
 export const PROJECT_DOMAINS: CardDetails[] = [

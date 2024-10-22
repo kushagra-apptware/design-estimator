@@ -13,6 +13,14 @@
     display: flex;
     padding: 20px;
 
+    &.purple-bg{
+        background-color: #5350C3;
+    }
+
+    &.purple-bg nav {
+        background-color: rgba(0,0,0,0.3);
+      }
+
     nav {
         background-color: base.$color-grey;
         height: 46px;
@@ -32,6 +40,7 @@
             border-radius: 35px;
             width: fit-content;
             box-sizing: border-box;
+            opacity: 1;
         }
     }
 }

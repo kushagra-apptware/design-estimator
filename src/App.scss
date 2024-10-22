@@ -3,7 +3,7 @@
 .app {
     display: flex;
     flex-direction: column;
-    height: 100vh;
+    height: 100%;
     margin: 0;
     padding: 0;
     background-color: base.$color-background;
@@ -13,6 +13,14 @@
     display: flex;
     padding: 20px;
 
+    &.purple-bg{
+        background-color: base.$color-purple;
+    }
+
+    &.purple-bg nav {
+        background-color: rgba(0,0,0,0.3);
+      }
+
     nav {
         background-color: base.$color-grey;
         height: 46px;
@@ -21,6 +29,7 @@
         display: flex;
         align-items: center;
         width: 100%;
+        box-sizing: border-box;
 
         a {
             height: 34px;
@@ -30,6 +39,8 @@
             place-items: center;
             border-radius: 35px;
             width: fit-content;
+            box-sizing: border-box;
+            opacity: 1;
         }
     }
 }
@@ -40,15 +51,17 @@
     justify-content: center;
     flex-direction: column;
     flex: 1;
-    gap: 90px;
     position: relative;
+    max-height: 800px;
+    overflow: hidden;
 
     .landing-header {
-
+        margin-top: 110px;
         position: relative;
 
         img {
             position: absolute;
+            display: none;
             z-index: 0;
             left: -70px;
             @media screen and (max-width: 768px) {
@@ -58,10 +71,11 @@
 
         h1 {
             position: relative;
-            font-family: base.$font-mulish;
-            font-size: 96px;
+            font-family: 'SF Pro';
+            max-width: 598px;
+            font-size: 66px;
             font-weight: 1000;
-            line-height: 120.48px;
+            line-height: 78.76px;
             text-align: center;    
             z-index: 9; 
             @media screen and (max-width: 768px) {
@@ -72,9 +86,10 @@
     }
 
     .landing-description {
+        margin-top: 30px;
         display: flex;
         flex-direction: column;
-        gap: 20px;
+        gap: 30px;
         p {
             max-width: 595px;
             font-family: base.$font-mulish;
@@ -98,32 +113,20 @@
 
     .vector-1 {
         position: absolute;
-        top: 50px;
-        left: 200px;
-        @media screen and (max-width: 768px) {
-            display: none;
-        }
-    }
-    .vector-2 {
-        position: absolute;
-        top: 200px;
-        right: 200px;
-        @media screen and (max-width: 768px) {
-            display: none;
-        }
-    }
-    .vector-3 {
-        position: absolute;
-        bottom: 100px;
-        left: 150px;
+        top: 40px;
+        left: 380px;
+        width: 54px;
+        height: 54px;
         @media screen and (max-width: 768px) {
             display: none;
         }
     }
     .vector-4 {
         position: absolute;
-        bottom: 20px;
-        right: 350px;
+        bottom: 166px;
+        right: 297px;
+        width: 36px;
+        height: 36px;
         @media screen and (max-width: 768px) {
             display: none;
         }
@@ -170,7 +173,7 @@
 
 .stepper {
     font-family: base.$font-mulish;
-    font-size: 21px;
+    font-size: 20px;
     font-weight: 400;
     line-height: 26.36px;
     opacity: 0.4;
@@ -181,13 +184,13 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    gap: 20px;
+    gap: 100px;
     padding: 2%;
 
     .form-parent {
         display: flex;
         flex-direction: column;
-        gap: 40px;
+        gap: 70px;
         max-width: 616px;
 
             .card-container {
@@ -319,20 +322,24 @@
 
     label {
         font-family: base.$font-mulish;
-        font-size: 25px;
+        font-size: 20px;
         font-weight: 400;
         line-height: 31.38px;
     }
 
     input {
         font-family: base.$font-mulish;
-        font-size: 42px;
+        font-size: 40px;
         font-weight: 400;
         line-height: 52.71px;
         background-color: transparent;
         border: 0;
         outline: 0;
         color: base.$color-input-text;
+    }
+
+    input::placeholder {
+        color: base.$color-grey;
     }
 
     textarea {
@@ -344,8 +351,12 @@
         border: 0;
         outline: 0;
         resize: none;
-        color: base.$color-input-text;
+        color: base.$color-grey;
     }
+
+    textarea::placeholder {
+        color: base.$color-grey;
+      }
 }
 
 .error-text {

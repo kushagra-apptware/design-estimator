@@ -44,16 +44,6 @@ const LandingPage = () => {
         alt="Vector 1"
       />
       <img
-        className="vector-2"
-        src={Vector2}
-        alt="Vector 2"
-      />
-      <img
-        className="vector-3"
-        src={Vector3}
-        alt="Vector 3"
-      />
-      <img
         className="vector-4"
         src={Vector4}
         alt="Vector 4"

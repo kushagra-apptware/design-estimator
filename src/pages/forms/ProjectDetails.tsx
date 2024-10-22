@@ -20,7 +20,7 @@ const ProjectDetails = () => {
 
   const [validationError, setValidationError] = useState(false);
 
-  const handleEditDetails = () => {
+  const handleBackButtonClick = () => {
     setInitialStep();
     navigate('/');
   };
@@ -91,7 +91,7 @@ const ProjectDetails = () => {
       <div className="button-container">
         <Button
           variant={ButtonTypes.SECONDARY}
-          onClick={handleEditDetails}
+          onClick={handleBackButtonClick}
         >
           Back
         </Button>

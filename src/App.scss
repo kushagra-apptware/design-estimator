@@ -112,27 +112,8 @@
             display: none;
         }
     }
-    .vector-2 {
-        position: absolute;
-        display: none;
-        top: 200px;
-        right: 200px;
-        @media screen and (max-width: 768px) {
-            display: none;
-        }
-    }
-    .vector-3 {
-        position: absolute;
-        display: none;
-        bottom: 100px;
-        left: 150px;
-        @media screen and (max-width: 768px) {
-            display: none;
-        }
-    }
     .vector-4 {
         position: absolute;
-        // display: none;
         bottom: 166px;
         right: 297px;
         width: 36px;

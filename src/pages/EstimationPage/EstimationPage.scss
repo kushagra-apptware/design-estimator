@@ -44,7 +44,7 @@
             height: 51px;
             width: 151px;
             background-color: #F9F9FB;
-            border: 0.6px solid #D5D5D5;
+            border: 0.6px solid base.$color-grey;
             border-top-left-radius: 6px;
             border-top-right-radius: 6px;
 
@@ -54,7 +54,7 @@
         }
         .chart{
             margin-top: 0;
-            border: 0.6px solid #D5D5D5;
+            border: 0.6px solid base.$color-grey;;
             border-radius: 6px;
             border-top-left-radius: 0px;
             height: 618px;

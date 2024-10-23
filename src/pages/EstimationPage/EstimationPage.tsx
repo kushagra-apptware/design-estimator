@@ -124,13 +124,12 @@ const modifyStandardData = (
       let endDate = calculateEndDate(startDate, 16, 8);
 
       for (let i = startDate; i <= endDate; i++) {
-        if (weekDays[i % 7] === 'S' || weekDays[(i + 1) % 7] === 'S') {
-          if (i === startDate) {
-            startDate += 1;
-          }
-          if (i + 1 === endDate) {
-            endDate += 1;
-          }
+        if (weekDays[i % 7] === 'S' && i == startDate) {
+          startDate += 1;
+          endDate += 1;
+        }
+        if (weekDays[i % 7] === 'S' && i == endDate) {
+          endDate += 1;
         }
       }
 

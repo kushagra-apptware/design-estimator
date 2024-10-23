@@ -159,13 +159,14 @@ export const GanttChart: React.FC<GanttChartProps> = ({
     backgroundColor: string | undefined,
     startIndex: number,
     endIndex: number,
-    opacity?: number
+    opacity?: number,
+    hasBorder?: boolean
   ): React.CSSProperties => ({
     position: 'absolute',
     top: '5px',
     left: `calc(${startIndex * 5.53}% + ${startIndex}px)`,
     width: `calc(${(endIndex - startIndex + 1) * 5.53}% + ${
-      endIndex - startIndex - 16
+      endIndex - startIndex - 12 - (hasBorder ? 4 : -1)
     }px)`,
     height: '65px',
     backgroundColor: backgroundColor || '#4caf50',
@@ -177,8 +178,8 @@ export const GanttChart: React.FC<GanttChartProps> = ({
     padding: '0 5px',
     whiteSpace: 'nowrap',
     border: `1px solid ${backgroundColor}`,
-    borderLeftWidth: '5px',
-    borderLeftColor: 'rgba(0,0,0,0.6)',
+    borderLeftWidth: hasBorder ? 5 : 0,
+    borderLeftColor: hasBorder ? 'rgba(0,0,0,0.6)' : 'inherit',
     cursor: 'pointer',
     opacity: opacity ? opacity - 0.2 : 0.7
   });
@@ -314,6 +315,9 @@ export const GanttChart: React.FC<GanttChartProps> = ({
                   }
                 }
 
+                let hasBorder = false;
+                if (taskItemIndex === 0) hasBorder = true;
+
                 const getItemStyles = (
                   color: string | undefined,
                   backgroundColor: string | undefined,
@@ -335,9 +339,9 @@ export const GanttChart: React.FC<GanttChartProps> = ({
                         backgroundColor,
                         startDay,
                         endDay,
-                        opacity
+                        opacity,
+                        hasBorder
                       );
-
                 return (
                   <div
                     role="button"
@@ -352,18 +356,19 @@ export const GanttChart: React.FC<GanttChartProps> = ({
                     onClick={() => handleItemClick(eachTaskItem.id)}
                     key={eachTaskItem.id}
                   >
-                    {taskItemIndex === 0 && (
-                      <div style={iconContainerStyle}>
-                        {eachTaskItem.icons.map((icon, index) => (
-                          <div
-                            key={index}
-                            style={iconStyle(icon.type, index)}
-                          >
-                            {icon.content.charAt(0).toUpperCase()}
-                          </div>
-                        ))}
-                      </div>
-                    )}
+                    {taskItemIndex === 0 &&
+                      eachTaskItem.type === taskItemTypes.TASK && (
+                        <div style={iconContainerStyle}>
+                          {eachTaskItem.icons.map((icon, index) => (
+                            <div
+                              key={index}
+                              style={iconStyle(icon.type, index)}
+                            >
+                              {icon.content.charAt(0).toUpperCase()}
+                            </div>
+                          ))}
+                        </div>
+                      )}
                     <span
                       style={{
                         position: 'relative',
@@ -375,7 +380,15 @@ export const GanttChart: React.FC<GanttChartProps> = ({
                       }}
                       title={eachTaskItem.content}
                     >
-                      {eachTaskItem.content}
+                      {eachTaskItem.type === taskItemTypes.TASK
+                        ? eachTaskItem.content
+                        : eachTaskItem.content
+                            .split(' ')
+                            .map(
+                              (each, itemIndex) =>
+                                (itemIndex === 0 && each + ' ') || each[0]
+                            )
+                            .join('')}
                     </span>
                   </div>
                 );

@@ -20,24 +20,24 @@ const standardDataInHours = {
 
 const colors = {
   DiscoveryPlanning: {
-    backgroundColor: 'red',
+    backgroundColor: '#BAE813',
     color: 'white'
   },
   InformationArchitectureWireframing: {
-    backgroundColor: 'blue',
+    backgroundColor: '#E47912',
     color: 'white'
   },
   VisualDesignPrototyping: {
-    backgroundColor: 'green',
+    backgroundColor: '#729DE7',
     color: 'white'
   },
   TestingHandoff: {
-    backgroundColor: 'orange',
+    backgroundColor: '#1EB7AA',
     color: 'white'
   },
   PostHandoffSupportOptimization: {
-    backgroundColor: 'white',
-    color: 'black'
+    backgroundColor: '#FC3A74',
+    color: 'white'
   }
 };
 

@@ -116,7 +116,8 @@ export const GanttChart: React.FC<GanttChartProps> = ({
     backgroundImage: isWeekend
       ? 'linear-gradient(135deg, transparent 49.5%, #ccc 49.5%, #ccc 50.5%, transparent 50.5%)'
       : 'none',
-    backgroundSize: '10px 10px'
+    backgroundSize: '10px 10px',
+    height: '80px'
   });
 
   const taskItemStyle = (

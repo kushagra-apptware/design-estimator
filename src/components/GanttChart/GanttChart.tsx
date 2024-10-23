@@ -75,19 +75,13 @@ export const GanttChart: React.FC<GanttChartProps> = ({
     borderBottom: '1px solid #ccc'
   };
 
-  const timelineCellStyle = (
-    isWeekend: boolean,
-    isSelected: boolean
-  ): React.CSSProperties => ({
+  const timelineCellStyle = (isSelected: boolean): React.CSSProperties => ({
     flex: '1 0 5.53%',
     textAlign: 'center',
     padding: '10px 0',
     borderRight: '1px solid #ccc',
     backgroundColor: isSelected ? '#e6e6fa' : 'white',
     position: 'relative',
-    backgroundImage: isWeekend
-      ? 'linear-gradient(135deg, transparent 49.5%, #ccc 49.5%, #ccc 50.5%, transparent 50.5%)'
-      : 'none',
     backgroundSize: '20px 20px',
     backgroundPosition: '0 0'
   });
@@ -277,10 +271,7 @@ export const GanttChart: React.FC<GanttChartProps> = ({
           {days.map((day) => (
             <div
               key={day}
-              style={timelineCellStyle(
-                (day - 1) % 7 === 0 || (day - 1) % 7 === 6,
-                day === selectedDate
-              )}
+              style={timelineCellStyle(day === selectedDate)}
               onClick={() => handleDateClick(day)}
             >
               <span style={lightTextStyle()}>{weekDays[(day - 1) % 7]}</span>{' '}

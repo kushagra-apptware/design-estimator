@@ -135,10 +135,12 @@ const modifyStandardData = (
 
       const newItem = {
         ...item,
+        id: (Number(item.id) + 1).toString(),
         type: taskItemTypes.REVIEW,
         content: `Review ${item.content}`,
         startDate,
-        endDate
+        endDate,
+        duration: 2
       };
       finalArray.push(newItem);
     }

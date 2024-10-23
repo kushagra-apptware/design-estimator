@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useMemo, useState } from 'react';
 import Button from '../../components/Button';
 import FormDescription from '../../components/FormDescription';
 import Input from '../../components/Input';
@@ -19,6 +19,19 @@ const ProjectDetails = () => {
   const navigate = useNavigate();
 
   const [validationError, setValidationError] = useState(false);
+
+  /**
+   * dyanmically reducing the font-size of the text area if the number of characters is greater than 24
+   * remaining styles applied on the textarea are coming from scss file
+   */
+  const textAreaFontSize = useMemo(() => {
+    if (
+      formData.projectDetails?.projectDescription &&
+      formData.projectDetails?.projectDescription?.length > 24
+    )
+      return '30px';
+    return '42px';
+  }, [formData.projectDetails?.projectDescription]);
 
   const handleBackButtonClick = () => {
     setInitialStep();
@@ -86,6 +99,7 @@ const ProjectDetails = () => {
         value={formData.projectDetails?.projectDescription}
         onChange={handleUpdateDescription}
         required
+        style={{ fontSize: textAreaFontSize }}
       />
       {validationError && <ErrorText message={ErrorMessages.inputFieldError} />}
       <div className="button-container">

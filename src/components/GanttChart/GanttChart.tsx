@@ -10,6 +10,7 @@ export interface Task {
   color?: string;
   isSub?: boolean;
   duration?: number;
+  opacity?: number;
 }
 
 interface GanttChartProps {
@@ -125,7 +126,8 @@ export const GanttChart: React.FC<GanttChartProps> = ({
     backgroundColor: string | undefined,
     startIndex: number,
     endIndex: number,
-    isSquare: 'start' | 'end' | boolean
+    isSquare: 'start' | 'end' | boolean,
+    opacity?: number
   ): React.CSSProperties => ({
     position: 'absolute',
     top: '5px',
@@ -147,8 +149,9 @@ export const GanttChart: React.FC<GanttChartProps> = ({
     overflow: 'hidden',
     whiteSpace: 'nowrap',
     textOverflow: 'ellipsis',
-    border: '1px solid lightgrey',
-    cursor: 'pointer'
+    border: `1px solid ${backgroundColor}`,
+    cursor: 'pointer',
+    opacity: opacity || 1
   });
 
   const iconContainerStyle: React.CSSProperties = {
@@ -186,6 +189,10 @@ export const GanttChart: React.FC<GanttChartProps> = ({
   const [finalTasks, setFinalTasks] = useState<Task[][]>([tasks]);
 
   useEffect(() => {
+    console.info(finalTasks, '...finalTasks');
+  }, [finalTasks]);
+
+  useEffect(() => {
     setFinalTasks(
       tasks.map((eachTask) => {
         let isSub = false;
@@ -202,6 +209,15 @@ export const GanttChart: React.FC<GanttChartProps> = ({
               isSub,
               content: subCount === 0 ? eachTask.content : '',
               id: eachTask.id + '-' + subCount++
+            });
+            newarr.push({
+              ...eachTask,
+              startDate: i + 1,
+              endDate: i + 2,
+              isSub,
+              content: subCount === 0 ? eachTask.content : '',
+              id: eachTask.id + '-' + subCount++,
+              opacity: 0.65
             });
             i = i + 2;
             startDate = i + 1;
@@ -226,7 +242,7 @@ export const GanttChart: React.FC<GanttChartProps> = ({
       <div
         style={containerStyle}
         ref={divRef}
-        id='gantt-chart-container'
+        id="gantt-chart-container"
       >
         <div style={timelineStyle}>
           {days.map((day) => (
@@ -281,7 +297,8 @@ export const GanttChart: React.FC<GanttChartProps> = ({
                       eachTaskItem.backgroundColor,
                       eachTaskItem.startDate - startDay,
                       eachTaskItem.endDate - startDay,
-                      isSquare
+                      isSquare,
+                      eachTaskItem.opacity
                     )}
                     onClick={() => handleItemClick(eachTaskItem.id)}
                     key={eachTaskItem.id}

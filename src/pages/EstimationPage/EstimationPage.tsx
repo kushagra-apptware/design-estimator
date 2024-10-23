@@ -126,6 +126,7 @@ const modifyStandardData = (
     color: (colors as any)[each.key].color
   }));
 
+
   return finalArray;
 };
 

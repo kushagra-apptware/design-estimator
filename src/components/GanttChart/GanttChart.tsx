@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { taskItemTypes } from '../../utils/constants';
+import Avatar from '../../assets/avatar.png';
 
 export interface Task {
   id: string;
@@ -203,7 +204,9 @@ export const GanttChart: React.FC<GanttChartProps> = ({
     color: 'white',
     fontSize: '20px',
     marginLeft: index === 0 ? 0 : '-20px',
-    border: type === 'user' ? '2px solid white' : '2px solid transparent',
+    borderWidth: 7,
+    borderStyle: 'solid',
+    borderColor: type === 'user' ? '#fff' : 'transparent',
     boxSizing: 'border-box',
     zIndex: index
   });
@@ -364,7 +367,10 @@ export const GanttChart: React.FC<GanttChartProps> = ({
                               key={index}
                               style={iconStyle(icon.type, index)}
                             >
-                              {icon.content.charAt(0).toUpperCase()}
+                              <img
+                                src={Avatar}
+                                style={{ backgroundColor: '#fff' }}
+                              />
                             </div>
                           ))}
                         </div>
@@ -376,7 +382,8 @@ export const GanttChart: React.FC<GanttChartProps> = ({
                         overflow:
                           finalTasksItem.length > 1 ? 'visible' : 'hidden',
                         textOverflow:
-                          finalTasksItem.length > 1 ? 'unset' : 'ellipsis'
+                          finalTasksItem.length > 1 ? 'unset' : 'ellipsis',
+                        margin: '0 10px'
                       }}
                       title={eachTaskItem.content}
                     >

@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import { taskItemTypes } from '../../utils/constants';
 
 export interface Task {
   id: string;
@@ -6,10 +7,11 @@ export interface Task {
   startDate: number;
   endDate: number;
   icons: Array<{ type: 'user' | 'logo'; content: string }>;
+  duration: number;
+  type: string;
   backgroundColor?: string;
   color?: string;
   isSub?: boolean;
-  duration?: number;
   opacity?: number;
 }
 
@@ -153,6 +155,34 @@ export const GanttChart: React.FC<GanttChartProps> = ({
     opacity: opacity || 1
   });
 
+  const researchTaskItemStyle = (
+    backgroundColor: string | undefined,
+    startIndex: number,
+    endIndex: number,
+    opacity?: number
+  ): React.CSSProperties => ({
+    position: 'absolute',
+    top: '5px',
+    left: `calc(${startIndex * 5.53}% + ${startIndex}px)`,
+    width: `calc(${(endIndex - startIndex + 1) * 5.53}% + ${
+      endIndex - startIndex - 16
+    }px)`,
+    height: '65px',
+    backgroundColor: backgroundColor || '#4caf50',
+    color: 'rgba(0,0,0,0.8)',
+    fontWeight: '500',
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'flex-start',
+    padding: '0 5px',
+    whiteSpace: 'nowrap',
+    border: `1px solid ${backgroundColor}`,
+    borderLeftWidth: '5px',
+    borderLeftColor: 'rgba(0,0,0,0.6)',
+    cursor: 'pointer',
+    opacity: opacity ? opacity - 0.2 : 0.7
+  });
+
   const iconContainerStyle: React.CSSProperties = {
     display: 'flex',
     marginRight: '5px'
@@ -186,10 +216,6 @@ export const GanttChart: React.FC<GanttChartProps> = ({
   };
 
   const [finalTasks, setFinalTasks] = useState<Task[][]>([tasks]);
-
-  useEffect(() => {
-    console.info(finalTasks, '...finalTasks');
-  }, [finalTasks]);
 
   useEffect(() => {
     setFinalTasks(
@@ -288,10 +314,34 @@ export const GanttChart: React.FC<GanttChartProps> = ({
                   }
                 }
 
+                const getItemStyles = (
+                  color: string | undefined,
+                  backgroundColor: string | undefined,
+                  startDay: number,
+                  endDay: number,
+                  isSquare: boolean | 'start' | 'end',
+                  opacity: number | undefined
+                ) =>
+                  eachTaskItem.type === taskItemTypes.TASK
+                    ? taskItemStyle(
+                        color,
+                        backgroundColor,
+                        startDay,
+                        endDay,
+                        isSquare,
+                        opacity
+                      )
+                    : researchTaskItemStyle(
+                        backgroundColor,
+                        startDay,
+                        endDay,
+                        opacity
+                      );
+
                 return (
                   <div
                     role="button"
-                    style={taskItemStyle(
+                    style={getItemStyles(
                       eachTaskItem.color,
                       eachTaskItem.backgroundColor,
                       eachTaskItem.startDate - startDay,
@@ -318,8 +368,10 @@ export const GanttChart: React.FC<GanttChartProps> = ({
                       style={{
                         position: 'relative',
                         zIndex: 100,
-                        overflow: finalTasksItem.length > 1 ? "visible": "hidden",
-                        textOverflow: finalTasksItem.length > 1 ? 'unset'  : 'ellipsis'
+                        overflow:
+                          finalTasksItem.length > 1 ? 'visible' : 'hidden',
+                        textOverflow:
+                          finalTasksItem.length > 1 ? 'unset' : 'ellipsis'
                       }}
                       title={eachTaskItem.content}
                     >

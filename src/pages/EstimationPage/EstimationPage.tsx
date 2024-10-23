@@ -1,9 +1,9 @@
 import { useEffect, useMemo, useState, useRef } from 'react';
 import Button from '../../components/Button';
-import { GanttChart } from '../../components/GanttChart/GanttChart';
+import { GanttChart, Task } from '../../components/GanttChart/GanttChart';
 import { TaskDrawer } from '../../components/TaskDrawer/TaskDrawer';
 import { useForm } from '../../context/FormContext';
-import { ButtonTypes } from '../../utils/constants';
+import { ButtonTypes, taskItemTypes } from '../../utils/constants';
 import { useNavigate } from 'react-router-dom';
 import html2canvas from 'html2canvas';
 import jsPDF from 'jspdf';
@@ -114,9 +114,35 @@ const modifyStandardData = (
       key,
       startDate,
       endDate,
-      duration: Math.ceil(finalSum / 8)
+      duration: Math.ceil(finalSum / 8),
+      type: taskItemTypes.TASK
     };
-    if (finalSum > 0) finalArray.push(item);
+    if (finalSum > 0) {
+      finalArray.push(item);
+
+      let startDate = item.endDate + 1;
+      let endDate = calculateEndDate(startDate, 16, 8);
+
+      for (let i = startDate; i <= endDate; i++) {
+        if (weekDays[i % 7] === 'S' || weekDays[(i + 1) % 7] === 'S') {
+          if (i === startDate) {
+            startDate += 1;
+          }
+          if (i + 1 === endDate) {
+            endDate += 1;
+          }
+        }
+      }
+
+      const newItem = {
+        ...item,
+        type: taskItemTypes.REVIEW,
+        content: `Review ${item.content}`,
+        startDate,
+        endDate
+      };
+      finalArray.push(newItem);
+    }
   });
 
   finalArray = finalArray.map((each: any) => ({
@@ -125,7 +151,6 @@ const modifyStandardData = (
     backgroundColor: (colors as any)[each.key].backgroundColor,
     color: (colors as any)[each.key].color
   }));
-
 
   return finalArray;
 };

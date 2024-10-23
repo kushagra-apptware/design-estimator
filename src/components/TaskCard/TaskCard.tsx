@@ -11,6 +11,7 @@ export const TaskCard = (props: { task: Task }) => {
     <div className="task-card">
       <div className="banner-image">
         <div className="image">
+          <div className="text-overlay"></div>
           <img
             src={banner1}
             alt="banner-image-1"
@@ -35,7 +36,12 @@ export const TaskCard = (props: { task: Task }) => {
               />
             </div>
             <div className="title-content">
-              <div className="title-header">{task.content}</div>
+              <div
+                className="title-header"
+                title={task.content}
+              >
+                {task.content}
+              </div>
               <div className="title-subheader">{duration} Days</div>
             </div>
           </div>

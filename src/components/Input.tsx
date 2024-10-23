@@ -4,10 +4,11 @@ interface InputProps {
   placeholder: string;
   required: boolean;
   value: string | undefined;
-  onChange: (e: any) => void
+  onChange: (e: any) => void;
+  style?: Record<string, string>;
 }
 
-const Input = ({ label, type, placeholder, required = false, value, onChange}: InputProps) => {
+const Input = ({ label, type, placeholder, required = false, value, onChange, style}: InputProps) => {
   if (type === 'textarea')
     return (
       <div className="input-container">
@@ -19,6 +20,7 @@ const Input = ({ label, type, placeholder, required = false, value, onChange}: I
           placeholder={placeholder}
           value={value}
           onChange={onChange}
+          style={style}
         />
       </div>
     );

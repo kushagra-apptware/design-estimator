@@ -1,6 +1,7 @@
 .task-card {
     position: relative;
     padding: 14px;
+
     .banner-image {
         .image {
             position: relative;
@@ -9,6 +10,16 @@
             overflow: hidden;
             border-radius: 11px;
             z-index: 1;
+
+            .text-overlay {
+                position: absolute;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100%;
+                background-color: rgba(0, 0, 0, 0.4);
+            }
+
             .sprint-count {
                 position: absolute;
                 top: 20px;
@@ -21,6 +32,7 @@
                 line-height: 18px;
                 text-align: right;
             }
+
             .title-card {
                 position: absolute;
                 bottom: 20px;
@@ -29,26 +41,35 @@
                 z-index: 2;
                 display: flex;
                 gap: 10px;
+
                 .title-icon {
-                    padding: 5px;
+                    padding: 10px;
                     border-radius: 100%;
                     width: 62px;
                     height: 62px;
                     display: flex;
+                    box-sizing: border-box;
                 }
+
                 .title-content {
                     display: flex;
                     flex-direction: column;
                     justify-content: space-evenly;
                     gap: 5px;
+
                     .title-header {
                         font-family: Mulish;
                         font-size: 28px;
                         font-weight: 500;
                         line-height: 35.14px;
                         text-align: left;
+                        width: 376px;
+                        overflow: hidden;
+                        white-space: nowrap;
+                        text-overflow: ellipsis;
                     }
-                    .title-subheader{
+
+                    .title-subheader {
                         font-family: Mulish;
                         font-size: 18px;
                         font-weight: 700;
@@ -59,12 +80,16 @@
             }
         }
     }
+
     .content {
         margin-top: 20px;
         padding: 0 20px;
         opacity: 50%;
+        line-height: 28px;
+
         ul {
             margin-top: 30px;
+
             li {
                 margin: 20px 40px;
             }

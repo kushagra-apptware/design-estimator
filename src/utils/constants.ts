@@ -98,4 +98,9 @@ export const PROJECT_STAGES: CardDetails[] = [
 export const ErrorMessages = {
   inputFieldError: 'Please fill out the fields',
   cardError: 'Please select at least one option'
-}
+};
+
+export const taskItemTypes = {
+  TASK: 'task',
+  REVIEW: 'review'
+};

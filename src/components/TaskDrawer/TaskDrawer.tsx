@@ -38,8 +38,8 @@ export const TaskDrawer = ({
     top: '20px',
     right: isDrawerOpen ? '20px' : '-30%',
     bottom: '20px',
-    width: '563px',
-    backgroundColor: 'lightgrey',
+    width: '540px',
+    backgroundColor: '#fff',
     zIndex: 100,
     transition: 'right 0.3s ease',
     boxShadow: '0 0 10px rgba(0, 0, 0, 0.2)',
@@ -56,7 +56,7 @@ export const TaskDrawer = ({
     cursor: 'pointer',
     fontSize: '24px',
     color: 'white',
-    zIndex: 2
+    zIndex: 3
   };
 
   const overlayStyles: React.CSSProperties = {
@@ -78,21 +78,20 @@ export const TaskDrawer = ({
         style={overlayStyles}
         onClick={handleClose}
       ></div>
-
       {/* Sliding drawer */}
       <div style={drawerStyles}>
+         <span
+          style={closeIconStyles}
+          onClick={handleClose}
+        >
+          &times;
+        </span>
         <div className="purple-bg"></div>
         <div className="title">The Roadmap</div>
         <div className="subtitles">
           <div className="left-subtitle">Website Design</div>
           <div className="right-subtitle">Success Story</div>
         </div>
-        <span
-          style={closeIconStyles}
-          onClick={handleClose}
-        >
-          &times;
-        </span>
         {tasks.map((task) => (
           <div
             className="task-card"

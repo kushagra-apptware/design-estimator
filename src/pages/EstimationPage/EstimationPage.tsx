@@ -1,9 +1,9 @@
 import { useEffect, useMemo, useState, useRef } from 'react';
 import Button from '../../components/Button';
-import { GanttChart } from '../../components/GanttChart/GanttChart';
+import { GanttChart, Task } from '../../components/GanttChart/GanttChart';
 import { TaskDrawer } from '../../components/TaskDrawer/TaskDrawer';
 import { useForm } from '../../context/FormContext';
-import { ButtonTypes } from '../../utils/constants';
+import { ButtonTypes, taskItemTypes } from '../../utils/constants';
 import { useNavigate } from 'react-router-dom';
 import html2canvas from 'html2canvas';
 import jsPDF from 'jspdf';
@@ -20,24 +20,24 @@ const standardDataInHours = {
 
 const colors = {
   DiscoveryPlanning: {
-    backgroundColor: 'red',
+    backgroundColor: '#BAE813',
     color: 'white'
   },
   InformationArchitectureWireframing: {
-    backgroundColor: 'blue',
+    backgroundColor: '#E47912',
     color: 'white'
   },
   VisualDesignPrototyping: {
-    backgroundColor: 'green',
+    backgroundColor: '#729DE7',
     color: 'white'
   },
   TestingHandoff: {
-    backgroundColor: 'orange',
+    backgroundColor: '#1EB7AA',
     color: 'white'
   },
   PostHandoffSupportOptimization: {
-    backgroundColor: 'white',
-    color: 'black'
+    backgroundColor: '#FC3A74',
+    color: 'white'
   }
 };
 
@@ -114,9 +114,36 @@ const modifyStandardData = (
       key,
       startDate,
       endDate,
-      duration: Math.ceil(finalSum / 8)
+      duration: Math.ceil(finalSum / 8),
+      type: taskItemTypes.TASK
     };
-    if (finalSum > 0) finalArray.push(item);
+    if (finalSum > 0) {
+      finalArray.push(item);
+
+      let startDate = item.endDate + 1;
+      let endDate = calculateEndDate(startDate, 16, 8);
+
+      for (let i = startDate; i <= endDate; i++) {
+        if (weekDays[i % 7] === 'S' && i == startDate) {
+          startDate += 1;
+          endDate += 1;
+        }
+        if (weekDays[i % 7] === 'S' && i == endDate) {
+          endDate += 1;
+        }
+      }
+
+      const newItem = {
+        ...item,
+        id: (Number(item.id) + 1).toString(),
+        type: taskItemTypes.REVIEW,
+        content: `Review ${item.content}`,
+        startDate,
+        endDate,
+        duration: 2
+      };
+      finalArray.push(newItem);
+    }
   });
 
   finalArray = finalArray.map((each: any) => ({

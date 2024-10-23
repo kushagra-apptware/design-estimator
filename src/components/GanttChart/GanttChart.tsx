@@ -316,7 +316,9 @@ export const GanttChart: React.FC<GanttChartProps> = ({
                     <span
                       style={{
                         position: 'relative',
-                        zIndex: 100
+                        zIndex: 100,
+                        overflow: finalTasksItem.length > 1 ? "visible": "hidden",
+                        textOverflow: finalTasksItem.length > 1 ? 'unset'  : 'ellipsis'
                       }}
                       title={eachTaskItem.content}
                     >

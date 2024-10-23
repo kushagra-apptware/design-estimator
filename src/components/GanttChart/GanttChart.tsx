@@ -146,9 +146,7 @@ export const GanttChart: React.FC<GanttChartProps> = ({
     borderBottomLeftRadius: !isSquare || isSquare === 'end' ? '50px' : '0px',
     borderTopRightRadius: !isSquare || isSquare === 'start' ? '50px' : '0px',
     borderBottomRightRadius: !isSquare || isSquare === 'start' ? '50px' : '0px',
-    overflow: 'hidden',
     whiteSpace: 'nowrap',
-    textOverflow: 'ellipsis',
     border: `1px solid ${backgroundColor}`,
     cursor: 'pointer',
     opacity: opacity || 1
@@ -317,9 +315,8 @@ export const GanttChart: React.FC<GanttChartProps> = ({
                     )}
                     <span
                       style={{
-                        maxWidth: '100%',
-                        overflow: 'hidden',
-                        textOverflow: 'ellipsis'
+                        position: 'relative',
+                        zIndex: 100
                       }}
                       title={eachTaskItem.content}
                     >

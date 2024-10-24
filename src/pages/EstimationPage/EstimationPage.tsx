@@ -183,7 +183,7 @@ export const EstimationPage = () => {
 
   const chartDays = useMemo(() => {
     const weeks = Math.floor(totalDays / 5) + 1;
-    return Math.max(weeks * 7, 30);
+    return Math.max(weeks * 7, 16);
   }, [totalDays]);
 
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);

@@ -31,12 +31,12 @@ app.post('/send-email', (req, res) => {
     text: message
   };
 
-  transporter.sendMail(mailOptions, (error, info) => {
+  /* transporter.sendMail(mailOptions, (error, info) => {
     if (error) {
       return res.status(500).send(error.toString());
     }
     res.send('Email sent: ' + info.response);
-  });
+  }); */
 });
 
 app.listen(PORT, () => {

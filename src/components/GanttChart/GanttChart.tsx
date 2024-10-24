@@ -46,7 +46,7 @@ export const GanttChart: React.FC<GanttChartProps> = ({
 
   const chartDays = useMemo(() => {
     const weeks = Math.floor(totalDays / 5) + 1;
-    return Math.max(weeks * 7, 30);
+    return Math.max(weeks * 7, 18);
   }, [totalDays]);
 
   const rowHeight = 80;

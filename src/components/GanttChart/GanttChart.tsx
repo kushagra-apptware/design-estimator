@@ -90,6 +90,7 @@ export const GanttChart: React.FC<GanttChartProps> = ({
     textAlign: 'center',
     padding: '10px 0',
     borderRight: '1px solid #ccc',
+    borderBottom: '1px solid #ccc',
     backgroundColor: isSelected ? '#e6e6fa' : 'white',
     position: 'relative',
     backgroundSize: '20px 20px',

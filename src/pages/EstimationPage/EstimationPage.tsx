@@ -1,6 +1,6 @@
 import { useEffect, useMemo, useState, useRef, useCallback } from 'react';
 import Button from '../../components/Button';
-import { GanttChart, Task } from '../../components/GanttChart/GanttChart';
+import { GanttChart } from '../../components/GanttChart/GanttChart';
 import { TaskDrawer } from '../../components/TaskDrawer/TaskDrawer';
 import { useForm } from '../../context/FormContext';
 import { ButtonTypes, taskItemTypes } from '../../utils/constants';
@@ -311,10 +311,14 @@ export const EstimationPage = () => {
             >
               Edit Details
             </Button>
-            <Button onClick={async () => {
-              await setStartDay(1)
-              downloadAsPDF()
-            }}>Download as PDF</Button>
+            <Button
+              onClick={async () => {
+                await setStartDay(1);
+                downloadAsPDF();
+              }}
+            >
+              Download as PDF
+            </Button>
           </div>
 
           <div className="right-actions">

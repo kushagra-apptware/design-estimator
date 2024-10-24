@@ -12,10 +12,6 @@ app.use(bodyParser.json());
 
 const PORT = process.env.PORT || 3001;
 
-app.get('/api', (req, res) => {
-  res.json({ message: 'Hello from the backend!' });
-});
-
 // Configure Nodemailer
 const transporter = nodemailer.createTransport({
   service: 'gmail', // use your email provider's service (e.g., 'hotmail', 'yahoo')

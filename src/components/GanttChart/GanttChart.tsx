@@ -289,12 +289,18 @@ export const GanttChart: React.FC<GanttChartProps> = ({
               onClick={() => handleDateClick(day)}
             >
               <span style={lightTextStyle()}>{weekDays[(day - 1) % 7]}</span>{' '}
-              <span>{`${day.toString().padStart(2, '0')}`}</span>
+              <span>{`${(day === 1 ? day : (day > 31 ? day % 30 : day % 31) + 1) // 1st month 31 days and 2nd one 30 days
+                .toString()
+                .padStart(2, '0')}`}</span>
               <div style={arrowStyle(day === selectedDate)} />
             </div>
           ))}
         </div>
-        <span style={{ overflowY: 'auto', overflowX: 'hidden' }} ref={spanRef} id="gantt-chart-content-wrapper">
+        <span
+          style={{ overflowY: 'auto', overflowX: 'hidden' }}
+          ref={spanRef}
+          id="gantt-chart-content-wrapper"
+        >
           {finalTasks.map((finalTasksItem) => {
             const [task] = finalTasksItem;
             return (

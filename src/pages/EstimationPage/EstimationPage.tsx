@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState, useRef } from 'react';
+import { useEffect, useMemo, useState, useRef, useCallback } from 'react';
 import Button from '../../components/Button';
 import { GanttChart, Task } from '../../components/GanttChart/GanttChart';
 import { TaskDrawer } from '../../components/TaskDrawer/TaskDrawer';
@@ -180,6 +180,11 @@ export const EstimationPage = () => {
     0
   );
 
+  const chartDays = useMemo(() => {
+    const weeks = Math.floor(totalDays / 5) + 1;
+    return weeks * 7;
+  }, [totalDays]);
+
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
   const [startDay, setStartDay] = useState(1);
   const [selectedTaskId, setSelectedTaskId] = useState<string | null>(null);
@@ -189,13 +194,13 @@ export const EstimationPage = () => {
     setIsDrawerOpen(!isDrawerOpen);
   };
 
-  const handlePrevClick = () => {
-    setStartDay(Math.max(1, startDay - 10));
-  };
+  const handlePrevClick = useCallback(() => {
+    setStartDay(Math.max(1, startDay - 15));
+  }, [startDay]);
 
-  const handleNextClick = () => {
-    setStartDay(Math.min(14, startDay + 10));
-  };
+  const handleNextClick = useCallback(() => {
+    setStartDay(Math.min(chartDays - 15, startDay + 15));
+  }, [chartDays, startDay]);
 
   useEffect(() => {
     if (!domain?.projectDomain?.length || !phase?.projectStage?.length) {
@@ -310,7 +315,7 @@ export const EstimationPage = () => {
             <button
               onClick={handleNextClick}
               className="buttons"
-              disabled={startDay === 14}
+              disabled={startDay === chartDays - 15}
             >
               &gt;
             </button>

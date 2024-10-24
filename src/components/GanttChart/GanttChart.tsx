@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 import { taskItemTypes } from '../../utils/constants';
 import Avatar from '../../assets/avatar.png';
 
@@ -37,6 +37,16 @@ export const GanttChart: React.FC<GanttChartProps> = ({
 
   const [divHeight, setDivHeight] = useState<number>(0);
 
+  const totalDays = tasks.reduce(
+    (acc: any, next: { duration: any }) => acc + next.duration,
+    0
+  );
+
+  const chartDays = useMemo(() => {
+    const weeks = Math.floor(totalDays / 5) + 1;
+    return weeks * 7;
+  }, [totalDays]);
+
   const rowHeight = 300;
   const totalChartHeight =
     parseFloat(height) * (Math.ceil(divHeight / rowHeight) + 1);
@@ -54,7 +64,7 @@ export const GanttChart: React.FC<GanttChartProps> = ({
     }
   }, []);
 
-  const days = Array.from({ length: 31 }, (_, i) => i + startDay);
+  const days = Array.from({ length: chartDays }, (_, i) => i + startDay);
   const weekDays = ['S', 'M', 'T', 'W', 'T', 'F', 'S'];
 
   const handleDateClick = (date: number) => {

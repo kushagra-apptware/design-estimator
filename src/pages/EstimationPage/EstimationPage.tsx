@@ -160,6 +160,7 @@ export const EstimationPage = () => {
   const navigate = useNavigate();
   const { setInitialStep, formData } = useForm();
   const divRef = useRef<HTMLDivElement>(null);
+  const spanRef = useRef<HTMLDivElement>(null);
 
   const { domain, phase, projectDetails } = formData;
 
@@ -209,14 +210,21 @@ export const EstimationPage = () => {
   }, []);
 
   const downloadAsPDF = async () => {
-    if (!divRef.current) return;
+    if (!divRef.current || !spanRef.current) return;
 
     const element: HTMLElement | null = document.querySelector(
       '#gantt-chart-container'
     );
-    if (element !== null) {
+
+    const spanElement: HTMLElement | null = document.querySelector(
+      '#gantt-chart-content-wrapper'
+    );
+
+    if (element !== null && spanElement !== null) {
       const originalOverflow = element.style.overflow;
+      const originalOverflowSpan = spanElement.style.overflow;
       element.style.overflow = 'visible';
+      spanElement.style.overflow = 'visible';
       await html2canvas(element, {
         scale: 2, // Increase scale for better quality
         width: element.scrollWidth, // Ensure you're capturing the full width
@@ -249,6 +257,7 @@ export const EstimationPage = () => {
             : 'gantt-chart';
         pdf.save(`${fileName.toLowerCase()}.pdf`);
         element.style.overflow = originalOverflow;
+        spanElement.style.overflow = originalOverflowSpan;
       });
     }
   };
@@ -281,10 +290,11 @@ export const EstimationPage = () => {
           {Boolean(standardData.length) && (
             <GanttChart
               tasks={standardData}
-              height="618px"
+              height="603px"
               onTaskItemClick={handleTaskItemClick}
               startDay={startDay}
               divRef={divRef}
+              spanRef={spanRef}
             />
           )}
           {!Boolean(standardData.length) && (
@@ -301,7 +311,10 @@ export const EstimationPage = () => {
             >
               Edit Details
             </Button>
-            <Button onClick={downloadAsPDF}>Download as PDF</Button>
+            <Button onClick={async () => {
+              await setStartDay(1)
+              downloadAsPDF()
+            }}>Download as PDF</Button>
           </div>
 
           <div className="right-actions">

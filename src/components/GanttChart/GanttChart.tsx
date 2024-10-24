@@ -22,6 +22,7 @@ interface GanttChartProps {
   onTaskItemClick: (id: string) => void;
   startDay: number;
   divRef: React.RefObject<HTMLDivElement>;
+  spanRef: React.RefObject<HTMLDivElement>;
 }
 
 export const GanttChart: React.FC<GanttChartProps> = ({
@@ -29,7 +30,8 @@ export const GanttChart: React.FC<GanttChartProps> = ({
   height = '70vh',
   onTaskItemClick,
   startDay,
-  divRef
+  divRef,
+  spanRef
 }) => {
   const [selectedDate, setSelectedDate] = useState<number | null>(null);
 
@@ -47,9 +49,9 @@ export const GanttChart: React.FC<GanttChartProps> = ({
     return weeks * 7;
   }, [totalDays]);
 
-  const rowHeight = 300;
-  const totalChartHeight =
-    parseFloat(height) * (Math.ceil(divHeight / rowHeight) + 1);
+  const rowHeight = 80;
+  const totalTasksHeight = tasks.length * rowHeight;
+  const totalChartHeight = Math.max(totalTasksHeight, divHeight);
 
   useEffect(() => {
     const totalTasksHeight = tasks.length * rowHeight;
@@ -292,137 +294,139 @@ export const GanttChart: React.FC<GanttChartProps> = ({
             </div>
           ))}
         </div>
-        {finalTasks.map((finalTasksItem) => {
-          const [task] = finalTasksItem;
-          return (
+        <span style={{ overflowY: 'auto', overflowX: 'hidden' }} ref={spanRef} id="gantt-chart-content-wrapper">
+          {finalTasks.map((finalTasksItem) => {
+            const [task] = finalTasksItem;
+            return (
+              <div
+                key={task.id}
+                style={taskRowStyle}
+              >
+                {days.map((day) => (
+                  <div
+                    key={`${task.id}-${day}`}
+                    style={taskCellStyle(
+                      (day - 1) % 7 === 0 || (day - 1) % 7 === 6,
+                      day === selectedDate
+                    )}
+                  />
+                ))}
+
+                {finalTasksItem.map((eachTaskItem, taskItemIndex) => {
+                  let isSquare: 'start' | 'end' | boolean = false; // both sides are round
+                  if (finalTasksItem.length >= 2) {
+                    if (taskItemIndex === 0) {
+                      isSquare = 'end'; // end side is square
+                    } else if (taskItemIndex === finalTasksItem.length - 1) {
+                      isSquare = 'start'; // start side is square
+                    } else {
+                      isSquare = true; // both sides are square
+                    }
+                  }
+
+                  let hasBorder = false;
+                  if (taskItemIndex === 0) hasBorder = true;
+
+                  const getItemStyles = (
+                    color: string | undefined,
+                    backgroundColor: string | undefined,
+                    startDay: number,
+                    endDay: number,
+                    isSquare: boolean | 'start' | 'end',
+                    opacity: number | undefined
+                  ) =>
+                    eachTaskItem.type === taskItemTypes.TASK
+                      ? taskItemStyle(
+                          color,
+                          backgroundColor,
+                          startDay,
+                          endDay,
+                          isSquare,
+                          opacity
+                        )
+                      : researchTaskItemStyle(
+                          backgroundColor,
+                          startDay,
+                          endDay,
+                          opacity,
+                          hasBorder
+                        );
+                  return (
+                    <div
+                      role="button"
+                      style={getItemStyles(
+                        eachTaskItem.color,
+                        eachTaskItem.backgroundColor,
+                        eachTaskItem.startDate - startDay,
+                        eachTaskItem.endDate - startDay,
+                        isSquare,
+                        eachTaskItem.opacity
+                      )}
+                      onClick={() => handleItemClick(eachTaskItem.id)}
+                      key={eachTaskItem.id}
+                    >
+                      {taskItemIndex === 0 &&
+                        eachTaskItem.type === taskItemTypes.TASK && (
+                          <div style={iconContainerStyle}>
+                            {eachTaskItem.icons.map((icon, index) => (
+                              <div
+                                key={index}
+                                style={iconStyle(icon.type, index)}
+                              >
+                                <img
+                                  src={Avatar}
+                                  style={{ backgroundColor: '#fff' }}
+                                />
+                              </div>
+                            ))}
+                          </div>
+                        )}
+                      <span
+                        style={{
+                          position: 'relative',
+                          zIndex: 100,
+                          overflow:
+                            finalTasksItem.length > 1 ? 'visible' : 'hidden',
+                          textOverflow:
+                            finalTasksItem.length > 1 ? 'unset' : 'ellipsis',
+                          margin: '0 10px'
+                        }}
+                        title={eachTaskItem.content}
+                      >
+                        {eachTaskItem.type === taskItemTypes.TASK
+                          ? eachTaskItem.content
+                          : eachTaskItem.content
+                              .split(' ')
+                              .map(
+                                (each, itemIndex) =>
+                                  (itemIndex === 0 && each + ' ') || each[0]
+                              )
+                              .join('')}
+                      </span>
+                    </div>
+                  );
+                })}
+              </div>
+            );
+          })}
+          {/* Add empty rows to fill the remaining space */}
+          {Array.from({ length: emptyRows }).map((_, rowIndex) => (
             <div
-              key={task.id}
+              key={`empty-${rowIndex}`}
               style={taskRowStyle}
             >
               {days.map((day) => (
                 <div
-                  key={`${task.id}-${day}`}
+                  key={`empty-${rowIndex}-${day}`}
                   style={taskCellStyle(
                     (day - 1) % 7 === 0 || (day - 1) % 7 === 6,
                     day === selectedDate
                   )}
                 />
               ))}
-
-              {finalTasksItem.map((eachTaskItem, taskItemIndex) => {
-                let isSquare: 'start' | 'end' | boolean = false; // both sides are round
-                if (finalTasksItem.length >= 2) {
-                  if (taskItemIndex === 0) {
-                    isSquare = 'end'; // end side is square
-                  } else if (taskItemIndex === finalTasksItem.length - 1) {
-                    isSquare = 'start'; // start side is square
-                  } else {
-                    isSquare = true; // both sides are square
-                  }
-                }
-
-                let hasBorder = false;
-                if (taskItemIndex === 0) hasBorder = true;
-
-                const getItemStyles = (
-                  color: string | undefined,
-                  backgroundColor: string | undefined,
-                  startDay: number,
-                  endDay: number,
-                  isSquare: boolean | 'start' | 'end',
-                  opacity: number | undefined
-                ) =>
-                  eachTaskItem.type === taskItemTypes.TASK
-                    ? taskItemStyle(
-                        color,
-                        backgroundColor,
-                        startDay,
-                        endDay,
-                        isSquare,
-                        opacity
-                      )
-                    : researchTaskItemStyle(
-                        backgroundColor,
-                        startDay,
-                        endDay,
-                        opacity,
-                        hasBorder
-                      );
-                return (
-                  <div
-                    role="button"
-                    style={getItemStyles(
-                      eachTaskItem.color,
-                      eachTaskItem.backgroundColor,
-                      eachTaskItem.startDate - startDay,
-                      eachTaskItem.endDate - startDay,
-                      isSquare,
-                      eachTaskItem.opacity
-                    )}
-                    onClick={() => handleItemClick(eachTaskItem.id)}
-                    key={eachTaskItem.id}
-                  >
-                    {taskItemIndex === 0 &&
-                      eachTaskItem.type === taskItemTypes.TASK && (
-                        <div style={iconContainerStyle}>
-                          {eachTaskItem.icons.map((icon, index) => (
-                            <div
-                              key={index}
-                              style={iconStyle(icon.type, index)}
-                            >
-                              <img
-                                src={Avatar}
-                                style={{ backgroundColor: '#fff' }}
-                              />
-                            </div>
-                          ))}
-                        </div>
-                      )}
-                    <span
-                      style={{
-                        position: 'relative',
-                        zIndex: 100,
-                        overflow:
-                          finalTasksItem.length > 1 ? 'visible' : 'hidden',
-                        textOverflow:
-                          finalTasksItem.length > 1 ? 'unset' : 'ellipsis',
-                        margin: '0 10px'
-                      }}
-                      title={eachTaskItem.content}
-                    >
-                      {eachTaskItem.type === taskItemTypes.TASK
-                        ? eachTaskItem.content
-                        : eachTaskItem.content
-                            .split(' ')
-                            .map(
-                              (each, itemIndex) =>
-                                (itemIndex === 0 && each + ' ') || each[0]
-                            )
-                            .join('')}
-                    </span>
-                  </div>
-                );
-              })}
             </div>
-          );
-        })}
-        {/* Add empty rows to fill the remaining space */}
-        {Array.from({ length: emptyRows }).map((_, rowIndex) => (
-          <div
-            key={`empty-${rowIndex}`}
-            style={taskRowStyle}
-          >
-            {days.map((day) => (
-              <div
-                key={`empty-${rowIndex}-${day}`}
-                style={taskCellStyle(
-                  (day - 1) % 7 === 0 || (day - 1) % 7 === 6,
-                  day === selectedDate
-                )}
-              />
-            ))}
-          </div>
-        ))}
+          ))}
+        </span>
       </div>
     </div>
   );

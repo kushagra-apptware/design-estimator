@@ -98,9 +98,9 @@ const ClientDetails = () => {
     )
       .then((response) => {
         if (response.ok) {
-          alert('Data submitted successfully!');
+          console.info('Data submitted successfully!');
         } else {
-          alert('Error submitting data.');
+          console.info('Error submitting data.');
         }
       })
       .catch((error) => {

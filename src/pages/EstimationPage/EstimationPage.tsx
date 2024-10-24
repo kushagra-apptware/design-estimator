@@ -153,6 +153,61 @@ const modifyStandardData = (
     color: (colors as any)[each.key].color
   }));
 
+  const totalDurationInDays = finalArray
+    .filter((each: any) => each.type === taskItemTypes.TASK)
+    .reduce((acc: any, next: { duration: any }) => acc + next.duration, 0);
+
+  if (totalDurationInDays < 10) {
+    const daysToAdd = Math.max(totalDurationInDays, 10 - totalDurationInDays);
+    finalArray = finalArray.map((each: any, itemIndex: number) => {
+      let durationToAdd = 0;
+      if (itemIndex > 0) {
+        each.startDate = finalArray[itemIndex - 1].endDate + 1;
+        each.endDate = finalArray[itemIndex - 1].endDate + each.duration;
+      }
+      if (each.type === taskItemTypes.TASK) {
+        durationToAdd = Math.floor(
+          (each.duration / totalDurationInDays) * daysToAdd
+        );
+        each.duration += durationToAdd;
+        let startDate = each.startDate;
+        let endDate = startDate + durationToAdd;
+
+        for (let i = startDate; i <= endDate; i++) {
+          if (weekDays[i % 7] === 'S') {
+            if (i === startDate) {
+              startDate += 1;
+            }
+            endDate += 1;
+          }
+        }
+
+        each.startDate = startDate;
+        each.endDate = endDate;
+      }
+
+      if (each.type === taskItemTypes.REVIEW) {
+        let startDate = each.startDate;
+        let endDate = each.endDate;
+
+        for (let i = startDate; i <= endDate; i++) {
+          if (weekDays[i % 7] === 'S' && i == startDate) {
+            startDate += 1;
+            endDate += 1;
+          }
+          if (weekDays[i % 7] === 'S' && i == endDate) {
+            endDate += 1;
+          }
+        }
+
+        each.startDate = startDate;
+        each.endDate = endDate;
+      }
+
+      return each;
+    });
+  }
+
   return finalArray;
 };
 

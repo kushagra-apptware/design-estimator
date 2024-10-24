@@ -74,6 +74,43 @@ const ClientDetails = () => {
       return;
     }
 
+    /**
+     * submit data to google sheets --- START
+     */
+
+    const formFields: any = {
+      name: formData.clientDetails.clientName,
+      email: formData.clientDetails.clientEmail
+    };
+
+    const queryString = new URLSearchParams(formFields).toString();
+
+    fetch(
+      `https://script.google.com/macros/s/AKfycbyPHta43UbGBbApNTZHtAEitOqSXa8ONfJThbCL1-kPaPjeqMY5UxICI43xWmMD1vJA/exec`,
+      {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/x-www-form-urlencoded' // Important for URL encoding
+        },
+        body: queryString
+        // mode: 'no-cors' // Prevent CORS issue
+      }
+    )
+      .then((response) => {
+        if (response.ok) {
+          alert('Data submitted successfully!');
+        } else {
+          alert('Error submitting data.');
+        }
+      })
+      .catch((error) => {
+        console.error('Error:', error);
+      });
+
+    /**
+     * submit data to google sheets --- END
+     */
+
     sendEmail();
 
     navigate('/project-estimation');

@@ -9,6 +9,7 @@ import html2canvas from 'html2canvas';
 import jsPDF from 'jspdf';
 
 import './EstimationPage.scss';
+import Loader from '../../components/Loader/Loader';
 
 const standardDataInHours = {
   DiscoveryPlanning: 40,
@@ -244,6 +245,7 @@ export const EstimationPage = () => {
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
   const [startDay, setStartDay] = useState(1);
   const [selectedTaskId, setSelectedTaskId] = useState<string | null>(null);
+  const [loading, setLoading] = useState(false);
 
   const handleTaskItemClick = (id: string) => {
     setSelectedTaskId(id.split('-')[0]);
@@ -276,6 +278,7 @@ export const EstimationPage = () => {
     );
 
     if (element !== null && spanElement !== null) {
+      setLoading(true)
       const originalOverflow = element.style.overflow;
       const originalOverflowSpan = spanElement.style.overflow;
       element.style.overflow = 'visible';
@@ -313,12 +316,14 @@ export const EstimationPage = () => {
         pdf.save(`${fileName.toLowerCase()}.pdf`);
         element.style.overflow = originalOverflow;
         spanElement.style.overflow = originalOverflowSpan;
-      });
+        setLoading(false)
+    });
     }
   };
 
   return (
     <div className={`estimation-page ${isDrawerOpen ? 'hide-scroll' : null}`}>
+      {loading && <Loader />}
       {isDrawerOpen && (
         <TaskDrawer
           isDrawerOpen

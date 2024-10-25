@@ -312,7 +312,7 @@ export const GanttChart: React.FC<GanttChartProps> = ({
                   <div
                     key={`${task.id}-${day}`}
                     style={taskCellStyle(
-                      (day - 1) % 7 === 0 || (day - 1) % 7 === 6,
+                      weekDays[(day - 1) % 7] === 'S',
                       day === selectedDate
                     )}
                   />
@@ -425,7 +425,7 @@ export const GanttChart: React.FC<GanttChartProps> = ({
                 <div
                   key={`empty-${rowIndex}-${day}`}
                   style={taskCellStyle(
-                    (day - 1) % 7 === 0 || (day - 1) % 7 === 6,
+                    weekDays[(day - 1) % 7] === 'S',
                     day === selectedDate
                   )}
                 />

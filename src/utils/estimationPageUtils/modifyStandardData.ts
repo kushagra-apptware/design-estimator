@@ -2,7 +2,7 @@ import { ganttChartConstants } from '../../constants/ganttChartConstants';
 import { taskItemTypes } from '../constants';
 import { calculateEndDate } from './calculateEndDate';
 
-export const weekDays = ['S', 'S', 'M', 'T', 'W', 'T', 'F'];
+export const weekDays = ['M', 'T', 'W', 'T', 'F', 'S', 'S'];
 
 const {
   domainWiseComplexityInPercentage,
@@ -35,11 +35,11 @@ export const modifyStandardData = (
       currentIndex = currentIndex - 1;
     }
     const finalSum = (obj as any)[key];
-    let startDate = itemsLength ? finalArray[currentIndex].endDate + 1 : 2;
+    let startDate = itemsLength ? finalArray[currentIndex].endDate + 1 : 1;
     let endDate = calculateEndDate(startDate, finalSum, 8);
 
     for (let i = startDate; i <= endDate; i++) {
-      if (weekDays[i % 7] === 'S') {
+      if (weekDays[(i - 1) % 7] === 'S') {
         if (i === startDate) {
           startDate += 1;
         }
@@ -62,12 +62,13 @@ export const modifyStandardData = (
       let startDate = item.endDate + 1;
       let endDate = calculateEndDate(startDate, 16, 8);
 
+      console.info(item.content, item.type, startDate, endDate);
       for (let i = startDate; i <= endDate; i++) {
-        if (weekDays[i % 7] === 'S' && i == startDate) {
+        if (weekDays[(i - 1) % 7] === 'S' && i == startDate) {
           startDate += 1;
           endDate += 1;
         }
-        if (weekDays[i % 7] === 'S' && i == endDate) {
+        if (weekDays[(i - 1) % 7] === 'S' && i == endDate) {
           endDate += 1;
         }
       }

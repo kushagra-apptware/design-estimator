@@ -1,11 +1,11 @@
 import { useCallback, useMemo, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useForm } from '../../context/FormContext';
-import {
-  domainWiseComplexityInPercentage,
-  modifyStandardData,
-  stageWiseComplexityInHours
-} from '../../utils/estimationPageUtils/modifyStandardData';
+import { modifyStandardData } from '../../utils/estimationPageUtils/modifyStandardData';
+import { ganttChartConstants } from '../../constants/ganttChartConstants';
+
+const { domainWiseComplexityInPercentage, stageWiseComplexityInHours } =
+  ganttChartConstants;
 
 export const useEstimationPage = () => {
   const navigate = useNavigate();

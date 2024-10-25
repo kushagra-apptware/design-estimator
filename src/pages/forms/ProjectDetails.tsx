@@ -101,7 +101,10 @@ const ProjectDetails = () => {
         required
         style={{ fontSize: textAreaFontSize }}
       />
-      {validationError && <ErrorText message={ErrorMessages.inputFieldError} />}
+      <ErrorText
+        message={ErrorMessages.inputFieldError}
+        hasError={validationError}
+      />
       <div className="button-container">
         <Button
           variant={ButtonTypes.SECONDARY}

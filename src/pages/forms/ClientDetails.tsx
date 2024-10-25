@@ -111,7 +111,7 @@ const ClientDetails = () => {
      * submit data to google sheets --- END
      */
 
-    sendEmail();
+    // sendEmail();
 
     navigate('/project-estimation');
   };
@@ -143,9 +143,10 @@ const ClientDetails = () => {
         onChange={handleUpdateName}
         required
       />
-      {validationError && (
-        <ErrorText message={errorMessage || ErrorMessages.inputFieldError} />
-      )}
+      <ErrorText
+        message={errorMessage || ErrorMessages.inputFieldError}
+        hasError={validationError}
+      />
       <div className="button-container">
         <Button
           variant={ButtonTypes.SECONDARY}

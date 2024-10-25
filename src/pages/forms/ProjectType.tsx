@@ -25,7 +25,8 @@ const ProjectType = () => {
 
   const handleAddProject = (selectedCategory: string) => {
     setValidationError(false);
-    const isExistingValue = projectType?.projectTypes?.includes(selectedCategory);
+    const isExistingValue =
+      projectType?.projectTypes?.includes(selectedCategory);
 
     if (isExistingValue) {
       const updatedArray = projectType?.projectTypes?.filter(
@@ -59,16 +60,16 @@ const ProjectType = () => {
 
   return (
     <>
-    <div>
-    <Stepper
-        currentStep={currentStep}
-        totalSteps={TOTAL_STEPS}
-      />
-      <FormDescription
-        title="What type of project is it?"
-        description="This information is collected to better understand needs and preferences. It will help us tailor the timeline that will suit specific requirements."
-      />
-    </div>
+      <div>
+        <Stepper
+          currentStep={currentStep}
+          totalSteps={TOTAL_STEPS}
+        />
+        <FormDescription
+          title="What type of project is it?"
+          description="This information is collected to better understand needs and preferences. It will help us tailor the timeline that will suit specific requirements."
+        />
+      </div>
       <div className="card-container">
         <Card
           values={PROJECT_TYPES}
@@ -76,7 +77,10 @@ const ProjectType = () => {
           handleUpdateValues={handleAddProject}
         />
       </div>
-      {validationError && <ErrorText message={ErrorMessages.cardError} />}
+      <ErrorText
+        message={ErrorMessages.cardError}
+        hasError={validationError}
+      />
       <div className="button-container">
         <Button
           variant={ButtonTypes.SECONDARY}

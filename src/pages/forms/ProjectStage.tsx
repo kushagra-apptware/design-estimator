@@ -46,16 +46,16 @@ const ProjectStage = () => {
 
   return (
     <>
-    <div>
-    <Stepper
-        currentStep={currentStep}
-        totalSteps={TOTAL_STEPS}
-      />
-      <FormDescription
-        title="What stage is the project at?"
-        description="This information is collected to better understand needs and preferences. It will help us tailor the timeline that will suit specific requirements."
-      />
-    </div>
+      <div>
+        <Stepper
+          currentStep={currentStep}
+          totalSteps={TOTAL_STEPS}
+        />
+        <FormDescription
+          title="What stage is the project at?"
+          description="This information is collected to better understand needs and preferences. It will help us tailor the timeline that will suit specific requirements."
+        />
+      </div>
       <div className="card-container">
         <Card
           values={PROJECT_STAGES}
@@ -63,7 +63,10 @@ const ProjectStage = () => {
           handleUpdateValues={handleAddProject}
         />
       </div>
-      {validationError && <ErrorText message={ErrorMessages.cardError} />}
+      <ErrorText
+        message={ErrorMessages.cardError}
+        hasError={validationError}
+      />
       <div className="button-container">
         <Button
           variant={ButtonTypes.SECONDARY}

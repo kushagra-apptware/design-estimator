@@ -25,8 +25,7 @@ const ProjectDomain = () => {
 
   const handleAddProject = (selectedCategory: string) => {
     setValidationError(false);
-    const isExistingValue =
-      domain?.projectDomain?.includes(selectedCategory);
+    const isExistingValue = domain?.projectDomain?.includes(selectedCategory);
 
     if (!isExistingValue) {
       updateFormData({
@@ -47,16 +46,16 @@ const ProjectDomain = () => {
 
   return (
     <>
-    <div>
-    <Stepper
-        currentStep={currentStep}
-        totalSteps={TOTAL_STEPS}
-      />
-      <FormDescription
-        title="What’s the project’s domain?"
-        description="This information is collected to better understand needs and preferences. It will help us tailor the timeline that will suit specific requirements."
-      />
-    </div>
+      <div>
+        <Stepper
+          currentStep={currentStep}
+          totalSteps={TOTAL_STEPS}
+        />
+        <FormDescription
+          title="What’s the project’s domain?"
+          description="This information is collected to better understand needs and preferences. It will help us tailor the timeline that will suit specific requirements."
+        />
+      </div>
       <div className="card-container">
         <Card
           values={PROJECT_DOMAINS}
@@ -64,7 +63,10 @@ const ProjectDomain = () => {
           handleUpdateValues={handleAddProject}
         />
       </div>
-      {validationError && <ErrorText message={ErrorMessages.cardError} />}
+      <ErrorText
+        message={ErrorMessages.cardError}
+        hasError={validationError}
+      />
       <div className="button-container">
         <Button
           variant={ButtonTypes.SECONDARY}

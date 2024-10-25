@@ -1,130 +1,39 @@
-import { useEffect, useMemo, useState, useRef, useCallback } from 'react';
+import { useEffect } from 'react';
 import Button from '../../components/Button';
 import { GanttChart } from '../../components/GanttChart/GanttChart';
+import Loader from '../../components/Loader/Loader';
 import { TaskDrawer } from '../../components/TaskDrawer/TaskDrawer';
 import { useForm } from '../../context/FormContext';
+import { useDownloadAsPDF } from '../../hooks/useDownloadAsPDF/useDownloadAsPDF';
 import { ButtonTypes } from '../../utils/constants';
-import { useNavigate } from 'react-router-dom';
-import html2canvas from 'html2canvas';
-import jsPDF from 'jspdf';
-import Loader from '../../components/Loader/Loader';
-import {
-  domainWiseComplexityInPercentage,
-  modifyStandardData,
-  stageWiseComplexityInHours
-} from '../../utils/estimationPageUtils/modifyStandardData';
+import { useEstimationPage } from '../../hooks/useEstimationPage/useEstimationPage';
 
 import './EstimationPage.scss';
 
 export const EstimationPage = () => {
-  const navigate = useNavigate();
-  const { setInitialStep, formData } = useForm();
-
-  const divRef = useRef<HTMLDivElement>(null);
-  const spanRef = useRef<HTMLDivElement>(null);
-
-  const [isDrawerOpen, setIsDrawerOpen] = useState(false);
-  const [startDay, setStartDay] = useState(1);
-  const [selectedTaskId, setSelectedTaskId] = useState<string | null>(null);
-  const [loading, setLoading] = useState(false);
-
+  const { downloadAsPDF, loading, divRef, spanRef } = useDownloadAsPDF();
+  const { formData } = useForm();
   const { domain, phase, projectDetails } = formData;
-
-  const handleEditDetails = () => {
-    setInitialStep();
-    navigate('/form');
-  };
-
-  const standardData = useMemo(() => {
-    return modifyStandardData(
-      domain?.projectDomain as unknown as (keyof typeof domainWiseComplexityInPercentage)[],
-      phase?.projectStage as unknown as (keyof typeof stageWiseComplexityInHours)[]
-    );
-  }, [domain?.projectDomain, phase?.projectStage]);
-
-  const totalDays = standardData.reduce(
-    (acc: any, next: { duration: any }) => acc + next.duration,
-    0
-  );
-
-  const chartDays = useMemo(() => {
-    const weeks = Math.floor(totalDays / 5) + 1;
-    return Math.max(weeks * 7, 16);
-  }, [totalDays]);
-
-  const handleTaskItemClick = (id: string) => {
-    setSelectedTaskId(id.split('-')[0]);
-    setIsDrawerOpen(!isDrawerOpen);
-  };
-
-  const handlePrevClick = useCallback(() => {
-    setStartDay(Math.max(1, startDay - 15));
-  }, [startDay]);
-
-  const handleNextClick = useCallback(() => {
-    setStartDay(Math.min(chartDays - 15, startDay + 15));
-  }, [chartDays, startDay]);
+  const {
+    chartDays,
+    handleEditDetails,
+    handleNextClick,
+    handlePrevClick,
+    handleTaskItemClick,
+    standardData,
+    totalDays,
+    selectedTaskId,
+    isDrawerOpen,
+    setIsDrawerOpen,
+    startDay,
+    setStartDay
+  } = useEstimationPage();
 
   useEffect(() => {
     if (!domain?.projectDomain?.length || !phase?.projectStage?.length) {
       handleEditDetails();
     }
   }, []);
-
-  const downloadAsPDF = async () => {
-    if (!divRef.current || !spanRef.current) return;
-
-    const element: HTMLElement | null = document.querySelector(
-      '#gantt-chart-container'
-    );
-
-    const spanElement: HTMLElement | null = document.querySelector(
-      '#gantt-chart-content-wrapper'
-    );
-
-    if (element !== null && spanElement !== null) {
-      setLoading(true);
-      const originalOverflow = element.style.overflow;
-      const originalOverflowSpan = spanElement.style.overflow;
-      element.style.overflow = 'visible';
-      spanElement.style.overflow = 'visible';
-      await html2canvas(element, {
-        scale: 2, // Increase scale for better quality
-        width: element.scrollWidth, // Ensure you're capturing the full width
-        height: element.scrollHeight // Capture full height of the content
-      }).then((canvas) => {
-        const imgData = canvas.toDataURL('image/png');
-        const pdf = new jsPDF({
-          orientation: 'landscape',
-          unit: 'px',
-          format: [element.scrollWidth, element.scrollHeight] // Adjust height as needed
-        });
-
-        pdf.addImage(
-          imgData,
-          'PNG',
-          0,
-          0,
-          element.scrollWidth,
-          element.scrollHeight
-        ); // Match the width and height
-        const fileName =
-          projectDetails?.projectName &&
-          domain?.projectDomain &&
-          phase?.projectStage
-            ? projectDetails?.projectName +
-              '-' +
-              domain?.projectDomain +
-              '-' +
-              phase?.projectStage
-            : 'gantt-chart';
-        pdf.save(`${fileName.toLowerCase()}.pdf`);
-        element.style.overflow = originalOverflow;
-        spanElement.style.overflow = originalOverflowSpan;
-        setLoading(false);
-      });
-    }
-  };
 
   return (
     <div className={`estimation-page ${isDrawerOpen ? 'hide-scroll' : null}`}>

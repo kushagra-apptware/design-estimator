@@ -1,6 +1,7 @@
 import React, { useEffect, useMemo, useState } from 'react';
-import { taskItemTypes } from '../../utils/constants';
 import Avatar from '../../assets/avatar.png';
+import { taskItemTypes } from '../../utils/constants';
+import { weekDays } from '../../utils/estimationPageUtils/modifyStandardData';
 
 export interface Task {
   id: string;
@@ -67,7 +68,6 @@ export const GanttChart: React.FC<GanttChartProps> = ({
   }, []);
 
   const days = Array.from({ length: chartDays }, (_, i) => i + startDay);
-  const weekDays = ['S', 'M', 'T', 'W', 'T', 'F', 'S'];
 
   const handleDateClick = (date: number) => {
     setSelectedDate(date === selectedDate ? null : date);
@@ -288,8 +288,8 @@ export const GanttChart: React.FC<GanttChartProps> = ({
               style={timelineCellStyle(day === selectedDate)}
               onClick={() => handleDateClick(day)}
             >
-              <span style={lightTextStyle()}>{weekDays[(day - 1) % 7]}</span>{' '}
-              <span>{`${(day === 1 ? day : (day > 31 ? day % 30 : day % 31) + 1) // 1st month 31 days and 2nd one 30 days
+              <span style={lightTextStyle()}>{weekDays[(day - 1) % 7]}</span>
+              <span>{`${(day <= 31 ? day : day > 61 ? day % 30 - 1 : day % 31) // TODO: 1st month 31 days, 2nd month 30 days, 3rd month onwards it will break, need to add proper utils here
                 .toString()
                 .padStart(2, '0')}`}</span>
               <div style={arrowStyle(day === selectedDate)} />

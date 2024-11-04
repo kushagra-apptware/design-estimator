@@ -289,7 +289,7 @@ export const GanttChart: React.FC<GanttChartProps> = ({
               onClick={() => handleDateClick(day)}
             >
               <span style={lightTextStyle()}>{weekDays[(day - 1) % 7]}</span>
-              <span>{`${(day <= 31 ? day : day > 61 ? day % 30 - 1 : day % 31) // TODO: 1st month 31 days, 2nd month 30 days, 3rd month onwards it will break, need to add proper utils here
+              <span>{`${(day <= 31 ? day : day > 61 ? (day % 30) - 1 : day % 31) // TODO: 1st month 31 days, 2nd month 30 days, 3rd month onwards it will break, need to add proper utils here
                 .toString()
                 .padStart(2, '0')}`}</span>
               <div style={arrowStyle(day === selectedDate)} />

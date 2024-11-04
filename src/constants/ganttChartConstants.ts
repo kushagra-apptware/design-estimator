@@ -14,7 +14,7 @@ export const ganttChartConstants = Object.freeze({
   },
   colors: {
     DiscoveryPlanning: {
-      backgroundColor: '#BAE813',
+      backgroundColor: '#A1C90F',
       color: 'white'
     },
     InformationArchitectureWireframing: {

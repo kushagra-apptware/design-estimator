@@ -15,7 +15,7 @@ const LandingPage = () => {
           src={SunLogo}
           alt="Sun Logo"
         />
-        <h1>Turn Big Ideas Into Actionable Steps</h1>
+        <h1>Turn Big Ideas Into<br/>Actionable Steps</h1>
       </div>
       <div className="landing-description">
         <p>

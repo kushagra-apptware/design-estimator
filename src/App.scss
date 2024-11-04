@@ -13,13 +13,13 @@
     display: flex;
     padding: 20px;
 
-    &.purple-bg{
+    &.purple-bg {
         background-color: base.$color-purple;
     }
 
     &.purple-bg nav {
-        background-color: rgba(0,0,0,0.3);
-      }
+        background-color: rgba(0, 0, 0, 0.3);
+    }
 
     nav {
         background-color: base.$color-grey;
@@ -64,6 +64,7 @@
             display: none;
             z-index: 0;
             left: -70px;
+
             @media screen and (max-width: 768px) {
                 display: none;
             }
@@ -76,12 +77,13 @@
             font-size: 66px;
             font-weight: 1000;
             line-height: 78.76px;
-            text-align: center;    
-            z-index: 9; 
+            text-align: center;
+            z-index: 9;
+
             @media screen and (max-width: 768px) {
                 font-size: 50px;
                 padding: auto;
-            }   
+            }
         }
     }
 
@@ -90,6 +92,7 @@
         display: flex;
         flex-direction: column;
         gap: 30px;
+
         p {
             max-width: 595px;
             font-family: base.$font-mulish;
@@ -104,6 +107,7 @@
             }
 
         }
+
         div {
             display: flex;
             align-items: center;
@@ -117,16 +121,19 @@
         left: 380px;
         width: 54px;
         height: 54px;
+
         @media screen and (max-width: 768px) {
             display: none;
         }
     }
+
     .vector-4 {
         position: absolute;
         bottom: 166px;
         right: 297px;
         width: 36px;
         height: 36px;
+
         @media screen and (max-width: 768px) {
             display: none;
         }
@@ -158,7 +165,7 @@
 .btn-primary {
     color: base.$color-btn-primary;
     width: 142px;
-    height:50px;
+    height: 50px;
     padding: 4px 0px;
     border-radius: 8px;
     border: 0;
@@ -192,74 +199,77 @@
         flex-direction: column;
         max-width: 616px;
         height: 650px;
-        justify-content: space-between;
         margin: 0;
         padding: 0;
         box-sizing: border-box;
+        gap: 40px;
 
-            .card-container {
-                display: grid;
-                grid-template-columns: repeat(4,1fr);
-                grid-template-rows: repeat(3,1fr);
-                row-gap: 20px;
-                height: 50vh;
-                overflow: auto;
+        .card-container {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            grid-template-rows: repeat(3, 1fr);
+            row-gap: 20px;
+            height: 55vh;
+            overflow: auto;
 
-                .card {
-                    display: flex;
-                    flex-direction: column;
-                    align-items: center;
-                    justify-content: center;
-                    width: 127px;
-                    height: 146px;
-                    border: 2px solid base.$color-card-border;
-                    border-radius: 12px;
-                    transition: border 0.3s linear;
-                    position: relative;
-
-                    img {
-                        height: 71px;
-                        width: 71px;
-                        opacity: 30%;
-                        transition: opacity 0.3s linear;
-                    }
-
-                    .project-selected {
-                        position: absolute;
-                        top: 10px;
-                        right: 10px;
-                        height: 18px;
-                        width: 18px;
-                    }
-                    span {
-                        text-align: center;
-                        font-family: base.$font-mulish;
-                        font-size: 14px;
-                        font-weight: 400;
-                        line-height: 18px;
-                        opacity: 40%;
-                        transition: opacity 0.3s linear;
-                    }
-                }
-
-                .card:hover {
-                    cursor: pointer;
-                    border: 2px solid base.$color-selected;
-                    span {
-                        opacity: 100%;
-                    }
-                    img {
-                        opacity: 100%;
-                    }
-                }
-            }
-
-            .button-container {
+            .card {
                 display: flex;
-                flex-direction: row;
-                gap: 20px;
+                flex-direction: column;
                 align-items: center;
+                justify-content: center;
+                width: 127px;
+                height: 146px;
+                border: 2px solid base.$color-card-border;
+                border-radius: 12px;
+                transition: border 0.3s linear;
+                position: relative;
+
+                img {
+                    height: 71px;
+                    width: 71px;
+                    opacity: 30%;
+                    transition: opacity 0.3s linear;
+                }
+
+                .project-selected {
+                    position: absolute;
+                    top: 10px;
+                    right: 10px;
+                    height: 18px;
+                    width: 18px;
+                }
+
+                span {
+                    text-align: center;
+                    font-family: base.$font-mulish;
+                    font-size: 14px;
+                    font-weight: 400;
+                    line-height: 18px;
+                    opacity: 40%;
+                    transition: opacity 0.3s linear;
+                }
             }
+
+            .card:hover {
+                cursor: pointer;
+                border: 2px solid base.$color-selected;
+
+                span {
+                    opacity: 100%;
+                }
+
+                img {
+                    opacity: 100%;
+                }
+            }
+        }
+
+        .button-container {
+            display: flex;
+            flex-direction: row;
+            gap: 20px;
+            align-items: center;
+        }
     }
 
     img {
@@ -319,6 +329,13 @@
     }
 }
 
+.form-fields {
+    height: 55vh;
+    display: flex;
+    flex-direction: column;
+    gap: 40px;
+}
+
 .input-container {
     display: flex;
     flex-direction: column;
@@ -360,13 +377,13 @@
 
     textarea::placeholder {
         color: base.$color-grey;
-      }
+    }
 }
 
 .error-text {
     color: base.$color-red;
     font-family: base.$font-mulish;
-    font-size:large;
+    font-size: large;
     font-weight: 400;
     height: 23px;
 }
@@ -378,13 +395,16 @@
     flex-direction: column;
     gap: 10px;
     height: 100vh;
+
     h1 {
         font-family: base.$font-mulish;
         font-size: 40px;
     }
+
     p {
         font-family: base.$font-mulish;
     }
+
     div {
         display: flex;
         gap: 10px;
@@ -392,6 +412,7 @@
         justify-content: center;
     }
 }
+
 .tooltip {
     box-shadow: 7px 10px 40px 0px #0000001A;
     background-color: white;

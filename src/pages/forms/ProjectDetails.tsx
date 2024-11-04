@@ -84,23 +84,25 @@ const ProjectDetails = () => {
           description="This information is collected to better understand needs and preferences. It will help us tailor the timeline that will suit specific requirements."
         />
       </div>
-      <Input
-        type="text"
-        label="Project Name"
-        placeholder="MoneyMingle"
-        value={formData.projectDetails?.projectName}
-        onChange={handleUpdateName}
-        required
-      />
-      <Input
-        type="textarea"
-        label="Project Description"
-        placeholder="Two lines about your project"
-        value={formData.projectDetails?.projectDescription}
-        onChange={handleUpdateDescription}
-        required
-        style={{ fontSize: textAreaFontSize }}
-      />
+      <div className="form-fields">
+        <Input
+          type="text"
+          label="Project Name"
+          placeholder="MoneyMingle"
+          value={formData.projectDetails?.projectName}
+          onChange={handleUpdateName}
+          required
+        />
+        <Input
+          type="textarea"
+          label="Project Description"
+          placeholder="Two lines about your project"
+          value={formData.projectDetails?.projectDescription}
+          onChange={handleUpdateDescription}
+          required
+          style={{ fontSize: textAreaFontSize }}
+        />
+      </div>
       <ErrorText
         message={ErrorMessages.inputFieldError}
         hasError={validationError}

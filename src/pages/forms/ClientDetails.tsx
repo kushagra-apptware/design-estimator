@@ -128,22 +128,24 @@ const ClientDetails = () => {
           description="This information is collected to better understand needs and preferences. It will help us tailor the timeline that will suit specific requirements."
         />
       </div>
-      <Input
-        type="text"
-        label="Your email"
-        placeholder="johndoe121@gmail.com"
-        value={formData.clientDetails?.clientEmail}
-        onChange={handleUpdateEmail}
-        required
-      />
-      <Input
-        type="tex"
-        label="Your name"
-        placeholder="John Doe"
-        value={formData.clientDetails?.clientName}
-        onChange={handleUpdateName}
-        required
-      />
+      <div className="form-fields">
+        <Input
+          type="text"
+          label="Your email"
+          placeholder="johndoe121@gmail.com"
+          value={formData.clientDetails?.clientEmail}
+          onChange={handleUpdateEmail}
+          required
+        />
+        <Input
+          type="tex"
+          label="Your name"
+          placeholder="John Doe"
+          value={formData.clientDetails?.clientName}
+          onChange={handleUpdateName}
+          required
+        />
+      </div>
       <ErrorText
         message={errorMessage || ErrorMessages.inputFieldError}
         hasError={validationError}

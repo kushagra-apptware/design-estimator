@@ -61,7 +61,7 @@ export const EstimationPage = () => {
           {Boolean(standardData.length) && (
             <GanttChart
               tasks={standardData}
-              height="603px"
+              height="100%"
               onTaskItemClick={handleTaskItemClick}
               startDay={startDay}
               divRef={divRef}

@@ -10,7 +10,7 @@ const Root = () => {
     backgroundImage: pathname === '/' ? 'url("../assets/Background.png")' : 'none',
     backgroundSize: 'cover',
     backgroundPosition: 'center',
-    height: '100%'
+    height: '100vh'
   };
 
   return (

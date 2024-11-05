@@ -4,6 +4,7 @@
     padding: 0 40px;
     font-family: Mulish;
     position: relative;
+    height: 100%;
     .purple-bg {
         height: 201px;
         width: 100%;
@@ -60,7 +61,7 @@
             border: 0.6px solid base.$color-grey;;
             border-radius: 6px;
             border-top-left-radius: 0px;
-            height: 603px;
+            height: calc(100vh - 400px);
             width: 100%;
             background-color: #ffffff;
             position: relative;

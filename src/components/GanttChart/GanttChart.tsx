@@ -402,19 +402,39 @@ export const GanttChart: React.FC<GanttChartProps> = ({
                             finalTasksItem.length > 1 ? 'visible' : 'hidden',
                           textOverflow:
                             finalTasksItem.length > 1 ? 'unset' : 'ellipsis',
-                          margin: '0 10px'
+                          margin: '0 10px',
+                          display: 'flex',
+                          flexDirection: 'column'
                         }}
                         title={eachTaskItem.content}
                       >
-                        {eachTaskItem.type === taskItemTypes.TASK
-                          ? eachTaskItem.content
-                          : eachTaskItem.content
-                              .split(' ')
-                              .map(
-                                (each, itemIndex) =>
-                                  (itemIndex === 0 && each + ' ') || each[0]
-                              )
-                              .join('')}
+                        {eachTaskItem.type === taskItemTypes.TASK ? (
+                          <div
+                            style={{ display: 'flex', flexDirection: 'column' }}
+                          >
+                            <span>{eachTaskItem.content}</span>
+                            {eachTaskItem.content && (
+                              <span>{eachTaskItem.duration} days</span>
+                            )}
+                          </div>
+                        ) : (
+                          <div
+                            style={{ display: 'flex', flexDirection: 'column' }}
+                          >
+                            <span>
+                              {eachTaskItem.content
+                                .split(' ')
+                                .map(
+                                  (each, itemIndex) =>
+                                    (itemIndex === 0 && each + ' ') || each[0]
+                                )
+                                .join('')}
+                            </span>
+                            {eachTaskItem.content && (
+                              <span>{eachTaskItem.duration} days</span>
+                            )}
+                          </div>
+                        )}
                       </span>
                     </div>
                   );

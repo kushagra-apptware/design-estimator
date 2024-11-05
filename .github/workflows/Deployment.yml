@@ -21,9 +21,6 @@ jobs:
                 source: "dist/*"
                 target: sale-tool/
             
-            - name: Configure SSH
-              run: sudo echo "CASignatureAlgorithms +ssh-rsa" > /etc/ssh/sshd_config
-            
             - name: Run remote command via SSH
               uses: appleboy/ssh-action@v1.0.3
               with:

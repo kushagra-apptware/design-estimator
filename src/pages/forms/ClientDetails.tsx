@@ -6,8 +6,7 @@ import FormDescription from '../../components/FormDescription';
 import Input from '../../components/Input';
 import Stepper from '../../components/Stepper';
 import { useForm } from '../../context/FormContext';
-import { ButtonTypes, ErrorMessages, TOTAL_STEPS } from '../../utils/constants';
-import ErrorText from '../../components/ErrorText';
+import { ButtonTypes, TOTAL_STEPS } from '../../utils/constants';
 import { form5Schema } from '../../utils/schema';
 
 import axios from 'axios';
@@ -16,15 +15,23 @@ const ClientDetails = () => {
   const navigate = useNavigate();
   const { updateFormData, currentStep, goToPrevStep, formData } = useForm();
 
-  const [validationError, setValidationError] = useState(false);
-  const [errorMessage, setErrorMessage] = useState('');
+  const [validationError, setValidationError] = useState({
+    yourEmail: false,
+    yourName: false
+  });
 
   const handleUpdateEmail = (e: any) => {
-    setValidationError(false);
+    const { value: clientEmail } = e.target;
+    if (clientEmail.length) {
+      setValidationError((prev) => ({
+        ...prev,
+        yourEmail: false
+      }));
+    }
     updateFormData({
       clientDetails: {
         ...formData.clientDetails,
-        clientEmail: e.target.value
+        clientEmail
       }
     });
   };
@@ -46,32 +53,53 @@ const ClientDetails = () => {
   }, [formData]);
 
   const handleUpdateName = (e: any) => {
-    setValidationError(false);
+    const { value: clientName } = e.target;
+    if (clientName.length) {
+      setValidationError((prev) => ({
+        ...prev,
+        yourName: false
+      }));
+    }
     updateFormData({
       clientDetails: {
         ...formData.clientDetails,
-        clientName: e.target.value
+        clientName
       }
     });
   };
 
   const handleNextStepChange = () => {
+    let hasError = false;
     if (
       !formData.clientDetails?.clientEmail ||
-      !formData.clientDetails.clientName ||
-      formData.clientDetails.clientName.trim() === '' ||
       formData.clientDetails.clientEmail.trim() === ''
     ) {
-      setValidationError(true);
-      return;
+      setValidationError((prev) => ({
+        ...prev,
+        yourEmail: true
+      }));
+      hasError = true;
     }
+    if (
+      !formData.clientDetails?.clientName ||
+      formData.clientDetails.clientName.trim() === ''
+    ) {
+      setValidationError((prev) => ({
+        ...prev,
+        yourName: true
+      }));
+      hasError = true;
+    }
+
+    if (hasError) return;
 
     const validation = form5Schema.safeParse(formData.clientDetails);
 
     if (!validation.success) {
-      const message = validation.error.issues[0].message;
-      setErrorMessage(message);
-      setValidationError(true);
+      setValidationError({
+        yourName: false,
+        yourEmail: true
+      });
       return;
     }
 
@@ -80,8 +108,8 @@ const ClientDetails = () => {
      */
 
     const formFields: any = {
-      name: formData.clientDetails.clientName,
-      email: formData.clientDetails.clientEmail
+      name: formData.clientDetails?.clientName,
+      email: formData.clientDetails?.clientEmail
     };
 
     const queryString = new URLSearchParams(formFields).toString();
@@ -136,6 +164,7 @@ const ClientDetails = () => {
           value={formData.clientDetails?.clientEmail}
           onChange={handleUpdateEmail}
           required
+          hasError={validationError}
         />
         <Input
           type="tex"
@@ -144,12 +173,9 @@ const ClientDetails = () => {
           value={formData.clientDetails?.clientName}
           onChange={handleUpdateName}
           required
+          hasError={validationError}
         />
       </div>
-      <ErrorText
-        message={errorMessage || ErrorMessages.inputFieldError}
-        hasError={validationError}
-      />
       <div className="button-container">
         <Button
           variant={ButtonTypes.SECONDARY}

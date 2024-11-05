@@ -1,12 +1,11 @@
 import { useMemo, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import Button from '../../components/Button';
 import FormDescription from '../../components/FormDescription';
 import Input from '../../components/Input';
 import Stepper from '../../components/Stepper';
 import { useForm } from '../../context/FormContext';
-import ErrorText from '../../components/ErrorText';
-import { ButtonTypes, ErrorMessages, TOTAL_STEPS } from '../../utils/constants';
-import { useNavigate } from 'react-router-dom';
+import { ButtonTypes, TOTAL_STEPS } from '../../utils/constants';
 
 const ProjectDetails = () => {
   const {
@@ -18,7 +17,10 @@ const ProjectDetails = () => {
   } = useForm();
   const navigate = useNavigate();
 
-  const [validationError, setValidationError] = useState(false);
+  const [validationError, setValidationError] = useState({
+    projectDescription: false,
+    projectName: false
+  });
 
   /**
    * dyanmically reducing the font-size of the text area if the number of characters is greater than 24
@@ -39,37 +41,62 @@ const ProjectDetails = () => {
   };
 
   const handleUpdateName = (e: any) => {
-    setValidationError(false);
+    const { value: projectName } = e.target;
+    if (projectName.length) {
+      setValidationError((prev) => ({
+        ...prev,
+        projectName: false
+      }));
+    }
     updateFormData({
       projectDetails: {
         ...formData.projectDetails,
-        projectName: e.target.value
+        projectName
       }
     });
   };
 
-  const handleUpdateDescription = (e: any) => {
-    setValidationError(false);
+    const handleUpdateDescription = (e: any) => {
+    const { value: projectDescription } = e.target;
+    if (projectDescription.length) {
+      setValidationError((prev) => ({
+        ...prev,
+        projectDescription: false
+      }));
+    }
     updateFormData({
       projectDetails: {
         ...formData.projectDetails,
-        projectDescription: e.target.value
+        projectDescription
       }
     });
   };
 
   const handleNextStepChange = () => {
+    let hasError = false;
     if (
       !formData.projectDetails?.projectDescription ||
-      !formData.projectDetails.projectName ||
-      formData.projectDetails.projectName.trim() === '' ||
       formData.projectDetails.projectDescription.trim() === ''
     ) {
-      setValidationError(true);
-      return;
+      setValidationError((prev) => ({
+        ...prev,
+        projectDescription: true
+      }));
+      hasError = true;
     }
-
-    goToNextStep();
+    if (
+      !formData.projectDetails?.projectName ||
+      formData.projectDetails.projectName.trim() === ''
+    ) {
+      setValidationError((prev) => ({
+        ...prev,
+        projectName: true
+      }));
+      hasError = true;
+    }
+    if (!hasError) {
+      goToNextStep();
+    }
   };
 
   return (
@@ -92,6 +119,7 @@ const ProjectDetails = () => {
           value={formData.projectDetails?.projectName}
           onChange={handleUpdateName}
           required
+          hasError={validationError}
         />
         <Input
           type="textarea"
@@ -101,12 +129,9 @@ const ProjectDetails = () => {
           onChange={handleUpdateDescription}
           required
           style={{ fontSize: textAreaFontSize }}
+          hasError={validationError}
         />
       </div>
-      <ErrorText
-        message={ErrorMessages.inputFieldError}
-        hasError={validationError}
-      />
       <div className="button-container">
         <Button
           variant={ButtonTypes.SECONDARY}

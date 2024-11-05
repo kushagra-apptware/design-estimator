@@ -35,7 +35,7 @@ const ProjectDetails = () => {
 
   const handleBackButtonClick = () => {
     setInitialStep();
-    navigate('/');
+    navigate(-1);
   };
 
   const handleUpdateName = (e: any) => {

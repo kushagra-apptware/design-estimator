@@ -22,13 +22,13 @@ jobs:
                 target: sale-tool/
             
             - name: Run remote command via SSH
-              uses: D3rHase/ssh-command-action@latest
+              uses: appleboy/ssh-action@v1.1.0
               with:
                 host: ${{ secrets.HOST }}
-                user: ${{ secrets.USER }}
-                private_key: ${{ secrets.KEY }}
-                command: |
+                username: ${{ secrets.USER }}
+                key: ${{ secrets.KEY }}
+                script: |
                     sudo rm -rvf /usr/share/nginx/sales-tool/*
-                    sudo cp -rvf sale-tool/* /usr/share/nginx/sales-tool/
+                    sudo cp -rvf sale-tool/dist/* /usr/share/nginx/sales-tool/
                     sudo rm -rvf sale-tool/*
                     sudo systemctl restart nginx.service

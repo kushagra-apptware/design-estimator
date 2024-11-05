@@ -13,7 +13,7 @@ import './EstimationPage.scss';
 export const EstimationPage = () => {
   const { downloadAsPDF, loading, divRef, spanRef } = useDownloadAsPDF();
   const { formData } = useForm();
-  const { domain, phase, projectDetails } = formData;
+  const { domain, phase, projectDetails, projectType } = formData;
   const {
     chartDays,
     handleEditDetails,
@@ -59,7 +59,7 @@ export const EstimationPage = () => {
         </div>
       </div>
       <div className="chart">
-        <div className="tabs">{domain?.projectDomain?.[0]}</div>
+        <div className="tabs">{projectType?.projectTypes?.[0]}</div>
         <div className="chart">
           {Boolean(standardData.length) && (
             <GanttChart

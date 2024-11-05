@@ -100,16 +100,15 @@ export const GanttChart: React.FC<GanttChartProps> = ({
   });
 
   const arrowStyle = (isSelected: boolean): React.CSSProperties => ({
-    content: '""',
     position: 'absolute',
-    bottom: '-10px',
+    top: '-30px',
     left: '50%',
     transform: 'translateX(-50%)',
     width: 0,
     height: 0,
-    borderLeft: '5px solid transparent',
-    borderRight: '5px solid transparent',
-    borderTop: '5px solid #e6e6fa',
+    borderLeft: '6px solid transparent',
+    borderRight: '6px solid transparent',
+    borderTop: '6px solid #5350C3',
     display: isSelected ? 'block' : 'none'
   });
 
@@ -292,7 +291,9 @@ export const GanttChart: React.FC<GanttChartProps> = ({
               <span>{`${(day <= 31 ? day : day > 61 ? (day % 30) - 1 : day % 31) // TODO: 1st month 31 days, 2nd month 30 days, 3rd month onwards it will break, need to add proper utils here
                 .toString()
                 .padStart(2, '0')}`}</span>
-              <div style={arrowStyle(day === selectedDate)} />
+              <div style={{ position: 'relative' }}>
+                <div style={arrowStyle(day === selectedDate)} />
+              </div>
             </div>
           ))}
         </div>

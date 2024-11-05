@@ -39,7 +39,7 @@ const ProjectType = () => {
       });
     } else {
       const updatedArray = [
-        ...(projectType?.projectTypes || []),
+        /* ...(projectType?.projectTypes || []), */ /* TODO: shall be reused when multiple project types selection is implemented in gantt chart */
         selectedCategory
       ];
       updateFormData({

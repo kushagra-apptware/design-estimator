@@ -215,7 +215,7 @@
             grid-template-columns: repeat(4, 1fr);
             grid-template-rows: repeat(3, 1fr);
             row-gap: 20px;
-            height: 55vh;
+            height: 60vh;
             overflow: auto;
 
             .card {
@@ -336,7 +336,7 @@
 }
 
 .form-fields {
-    height: 55vh;
+    height: 60vh;
     display: flex;
     flex-direction: column;
     gap: 40px;
@@ -357,7 +357,7 @@
     input {
         font-family: base.$font-mulish;
         font-size: 40px;
-        font-weight: 400;
+        font-weight: 200;
         line-height: 52.71px;
         background-color: transparent;
         border: 0;
@@ -372,13 +372,14 @@
     textarea {
         font-family: base.$font-mulish;
         font-size: 42px;
-        font-weight: 400;
+        font-weight: 200;
         line-height: 52.71px;
         background-color: transparent;
         border: 0;
         outline: 0;
         resize: none;
         color: base.$color-input-text;
+        height: 185px;
     }
 
     textarea::placeholder {

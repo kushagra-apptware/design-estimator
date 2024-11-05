@@ -298,7 +298,7 @@ export const GanttChart: React.FC<GanttChartProps> = ({
           ))}
         </div>
         <span
-          style={{ overflowY: 'auto', overflowX: 'hidden' }}
+          style={{ overflowY: 'auto' }}
           ref={spanRef}
           id="gantt-chart-content-wrapper"
         >

@@ -15,10 +15,7 @@ export const EstimationPage = () => {
   const { formData } = useForm();
   const { domain, phase, projectDetails, projectType } = formData;
   const {
-    chartDays,
     handleEditDetails,
-    handleNextClick,
-    handlePrevClick,
     handleTaskItemClick,
     standardData,
     totalDays,
@@ -95,7 +92,7 @@ export const EstimationPage = () => {
             </Button>
           </div>
 
-          <div className="right-actions">
+       {/*    <div className="right-actions">
             <button
               onClick={handlePrevClick}
               className="buttons"
@@ -110,7 +107,7 @@ export const EstimationPage = () => {
             >
               &gt;
             </button>
-          </div>
+          </div> */}
         </div>
       </div>
     </div>

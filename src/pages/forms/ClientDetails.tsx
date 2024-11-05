@@ -156,7 +156,7 @@ const ClientDetails = () => {
           description="This information is collected to better understand needs and preferences. It will help us tailor the timeline that will suit specific requirements."
         />
       </div>
-      <div className="form-fields">
+      <div className="form-fields client-details">
         <Input
           type="text"
           label="Your email"

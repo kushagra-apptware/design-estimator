@@ -209,6 +209,7 @@
         padding: 0;
         box-sizing: border-box;
         gap: 40px;
+        justify-content: space-between;
 
         .card-container {
             display: grid;
@@ -336,10 +337,13 @@
 }
 
 .form-fields {
-    height: 60vh;
     display: flex;
     flex-direction: column;
     gap: 40px;
+    margin-bottom: 60px;
+    &.client-details {
+        margin-bottom: 90px;
+    }
 }
 
 .input-container {
@@ -379,7 +383,7 @@
         outline: 0;
         resize: none;
         color: base.$color-input-text;
-        height: 185px;
+        height: 150px;
     }
 
     textarea::placeholder {

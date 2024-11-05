@@ -1,0 +1,34 @@
+name: Deploy-Application
+run-name: Deployment initiated by ${{ github.actor }}
+on:
+  workflow_dispatch:
+jobs:
+    deploy-frontend-application:
+        name: Deploy Application
+        runs-on: ubuntu-latest
+        steps:
+            - name: Pulling code from required branch
+              uses: actions/checkout@v4
+              with:
+                ref: main
+
+            - name: copy file via ssh key
+              uses: appleboy/scp-action@v0.1.7
+              with:
+                host: ${{ secrets.HOST }}
+                username: ${{ secrets.USERNAME }}
+                key: ${{ secrets.KEY }}
+                source: "dist/*"
+                target: sale-tool/
+            
+            - name: Run remote command via SSH
+              uses: D3rHase/ssh-command-action@latest
+              with:
+                host: ${{ secrets.HOST }}
+                user: ${{ secrets.USER }}
+                private_key: ${{ secrets.KEY }}
+                command: |
+                    sudo rm -rvf /usr/share/nginx/sales-tool/*
+                    sudo cp -rvf sale-tool/* /usr/share/nginx/sales-tool/
+                    sudo rm -rvf sale-tool/*
+                    sudo systemctl restart nginx.service

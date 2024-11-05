@@ -22,11 +22,12 @@ jobs:
                 target: sale-tool/
             
             - name: Run remote command via SSH
-              uses: JimCronqvist/action-ssh@master
+              uses: appleboy/ssh-action@v1.1.0
               with:
-                hosts: ${{ secrets.USER }}@${{ secrets.HOST }}
-                privateKey: ${{ secrets.KEY }}
-                command: |
+                host: ${{ secrets.HOST }}
+                username: ${{ secrets.USERNAME }}
+                key: ${{ secrets.KEY }}
+                script: |
                     sudo rm -rvf /usr/share/nginx/sales-tool/*
                     sudo cp -rvf sale-tool/dist/* /usr/share/nginx/sales-tool/
                     sudo rm -rvf sale-tool/*

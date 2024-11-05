@@ -62,7 +62,6 @@ export const modifyStandardData = (
       let startDate = item.endDate + 1;
       let endDate = calculateEndDate(startDate, 16, 8);
 
-      console.info(item.content, item.type, startDate, endDate);
       for (let i = startDate; i <= endDate; i++) {
         if (weekDays[(i - 1) % 7] === 'S' && i == startDate) {
           startDate += 1;
@@ -111,17 +110,15 @@ export const modifyStandardData = (
         );
         each.duration += durationToAdd;
         let startDate = each.startDate;
-        let endDate = startDate + durationToAdd;
-
+        let endDate = startDate + durationToAdd + (itemIndex > 0 ? 1 : 0);
         for (let i = startDate; i <= endDate; i++) {
-          if (weekDays[i % 7] === 'S') {
+          if (weekDays[(i - 1) % 7] === 'S') {
             if (i === startDate) {
               startDate += 1;
             }
             endDate += 1;
           }
         }
-
         each.startDate = startDate;
         each.endDate = endDate;
       }
@@ -131,15 +128,14 @@ export const modifyStandardData = (
         let endDate = each.endDate;
 
         for (let i = startDate; i <= endDate; i++) {
-          if (weekDays[i % 7] === 'S' && i == startDate) {
+          if (weekDays[(i - 1) % 7] === 'S' && i === startDate) {
             startDate += 1;
             endDate += 1;
           }
-          if (weekDays[i % 7] === 'S' && i == endDate) {
+          if (weekDays[(i - 1) % 7] === 'S' && i === endDate) {
             endDate += 1;
           }
         }
-
         each.startDate = startDate;
         each.endDate = endDate;
       }

@@ -182,7 +182,7 @@ export const GanttChart: React.FC<GanttChartProps> = ({
     }px)`,
     height: '65px',
     backgroundColor: backgroundColor || '#4caf50',
-    color: 'rgba(0,0,0,0.8)',
+    color: 'rgba(0,0,0)',
     fontWeight: '500',
     display: 'flex',
     alignItems: 'center',

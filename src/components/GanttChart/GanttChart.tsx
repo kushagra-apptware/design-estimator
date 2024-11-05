@@ -50,7 +50,7 @@ export const GanttChart: React.FC<GanttChartProps> = ({
     return Math.max(weeks * 7, 18);
   }, [totalDays]);
 
-  const rowHeight = 80;
+  const rowHeight = 90;
   const totalTasksHeight = tasks.length * rowHeight;
   const totalChartHeight = Math.max(totalTasksHeight, divHeight);
 
@@ -77,14 +77,18 @@ export const GanttChart: React.FC<GanttChartProps> = ({
     display: 'flex',
     flexDirection: 'column',
     border: '1px solid #ccc',
-    overflow: 'hidden',
+    overflow: 'auto',
     height,
-    margin: '0 auto'
+    margin: '0 auto',
+    position: 'relative'
   };
 
   const timelineStyle: React.CSSProperties = {
     display: 'flex',
-    borderBottom: '1px solid #ccc'
+    borderBottom: '1px solid #ccc',
+    position: 'sticky',
+    top: 0,
+    zIndex: 10
   };
 
   const timelineCellStyle = (isSelected: boolean): React.CSSProperties => ({
@@ -129,7 +133,7 @@ export const GanttChart: React.FC<GanttChartProps> = ({
       ? 'linear-gradient(135deg, transparent 49.5%, #ccc 49.5%, #ccc 50.5%, transparent 50.5%)'
       : 'none',
     backgroundSize: '10px 10px',
-    height: '80px'
+    height: `${rowHeight}`
   });
 
   const taskItemStyle = (
@@ -141,7 +145,7 @@ export const GanttChart: React.FC<GanttChartProps> = ({
     opacity?: number
   ): React.CSSProperties => ({
     position: 'absolute',
-    top: '5px',
+    top: '12px',
     left: `calc(${startIndex * 5.53}% + ${startIndex}px)`,
     width: `calc(${(endIndex - startIndex + 1) * 5.53}% + ${
       endIndex - startIndex - 12
@@ -171,7 +175,7 @@ export const GanttChart: React.FC<GanttChartProps> = ({
     hasBorder?: boolean
   ): React.CSSProperties => ({
     position: 'absolute',
-    top: '5px',
+    top: '12px',
     left: `calc(${startIndex * 5.53}% + ${startIndex}px)`,
     width: `calc(${(endIndex - startIndex + 1) * 5.53}% + ${
       endIndex - startIndex - 12 - (hasBorder ? 4 : -1)
@@ -298,11 +302,10 @@ export const GanttChart: React.FC<GanttChartProps> = ({
           ))}
         </div>
         <span
-          style={{ overflowY: 'auto' }}
           ref={spanRef}
           id="gantt-chart-content-wrapper"
         >
-          {finalTasks.map((finalTasksItem) => {
+          {finalTasks.map((finalTasksItem, finalTaskItemIndex) => {
             const [task] = finalTasksItem;
             return (
               <div
@@ -361,14 +364,17 @@ export const GanttChart: React.FC<GanttChartProps> = ({
                   return (
                     <div
                       role="button"
-                      style={getItemStyles(
-                        eachTaskItem.color,
-                        eachTaskItem.backgroundColor,
-                        eachTaskItem.startDate - startDay,
-                        eachTaskItem.endDate - startDay,
-                        isSquare,
-                        eachTaskItem.opacity
-                      )}
+                      style={{
+                        ...getItemStyles(
+                          eachTaskItem.color,
+                          eachTaskItem.backgroundColor,
+                          eachTaskItem.startDate - startDay,
+                          eachTaskItem.endDate - startDay,
+                          isSquare,
+                          eachTaskItem.opacity
+                        ),
+                        marginTop: finalTaskItemIndex === 0 ? 12 : 0
+                      }}
                       onClick={() => handleItemClick(eachTaskItem.id)}
                       key={eachTaskItem.id}
                     >

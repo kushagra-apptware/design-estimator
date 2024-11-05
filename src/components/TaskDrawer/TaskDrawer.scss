@@ -3,7 +3,8 @@
 .task-drawer {
     position: relative;
     padding: 0 14px;
-    .purple-bg{
+
+    .purple-bg {
         position: absolute;
         top: 0;
         left: 0;
@@ -13,6 +14,7 @@
         background-color: base.$color-purple;
         z-index: 1;
     }
+
     .title {
         padding: 30px 20px 0;
         position: relative;
@@ -24,7 +26,8 @@
         z-index: 2;
         color: #fff;
     }
-    .subtitles {        
+
+    .subtitles {
         position: relative;
         display: flex;
         justify-content: space-between;
@@ -34,11 +37,15 @@
         color: #fff;
         opacity: 50%;
         padding: 0 20px;
+
         .left-subtitle {
             align-self: self-start;
         }
+
         .right-subtitle {
             align-self: self-end;
-        }        
+            color: #fff;
+            text-decoration: none;
+        }
     }
 }

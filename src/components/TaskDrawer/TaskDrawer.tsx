@@ -2,6 +2,7 @@ import React, { Dispatch, SetStateAction, useEffect, useRef } from 'react';
 import { TaskCard } from '../TaskCard/TaskCard';
 import { Task } from '../GanttChart/GanttChart';
 import './TaskDrawer.scss';
+import { Link } from 'react-router-dom';
 
 export const TaskDrawer = ({
   isDrawerOpen,
@@ -80,7 +81,7 @@ export const TaskDrawer = ({
       ></div>
       {/* Sliding drawer */}
       <div style={drawerStyles}>
-         <span
+        <span
           style={closeIconStyles}
           onClick={handleClose}
         >
@@ -90,7 +91,15 @@ export const TaskDrawer = ({
         <div className="title">The Roadmap</div>
         <div className="subtitles">
           <div className="left-subtitle">Website Design</div>
-          <div className="right-subtitle">Success Story</div>
+          <Link
+            className="right-subtitle"
+            to={
+              'https://www.figma.com/proto/oUtoEfUR8brTD1kKZY1cPg/Case-Studies?page-id=1%3A2&node-id=1-22567&node-type=frame&viewport=264%2C2154%2C0.21&t=maB96Mgxzfrwo7CA-1&scaling=min-zoom&content-scaling=fixed'
+            }
+            target='_blank'
+          >
+            Success Story
+          </Link>
         </div>
         {tasks.map((task) => (
           <div

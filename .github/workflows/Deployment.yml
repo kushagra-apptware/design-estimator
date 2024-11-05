@@ -25,7 +25,7 @@ jobs:
               run: sudo echo "CASignatureAlgorithms +ssh-rsa" > /etc/ssh/sshd_config
             
             - name: Run remote command via SSH
-              uses: appleboy/ssh-action@v1.1.0
+              uses: appleboy/ssh-action@v1.0.3
               with:
                 host: ${{ secrets.HOST }}
                 username: ${{ secrets.USER }}

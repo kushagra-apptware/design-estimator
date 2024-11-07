@@ -1,5 +1,6 @@
 import { useCallback, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import ReactDOMServer from 'react-dom/server';
 
 import Button from '../../components/Button';
 import FormDescription from '../../components/FormDescription';
@@ -9,8 +10,10 @@ import { useForm } from '../../context/FormContext';
 import { ButtonTypes, ErrorMessages, TOTAL_STEPS } from '../../utils/constants';
 import ErrorText from '../../components/ErrorText';
 import { form5Schema } from '../../utils/schema';
+import juice from 'juice';
 
 import axios from 'axios';
+import { EmailTemplate } from '../../components/EmailTemplate';
 
 const ClientDetails = () => {
   const navigate = useNavigate();
@@ -29,12 +32,15 @@ const ClientDetails = () => {
     });
   };
 
+  const emailHtml = ReactDOMServer.renderToStaticMarkup(<EmailTemplate />);
+  const inlinedEmailHtml = juice(emailHtml);
   const sendEmail = useCallback(() => {
     const { clientDetails } = formData;
     axios
       .post('http://localhost:3001/send-email', {
         name: clientDetails?.clientName,
         email: clientDetails?.clientEmail,
+        htmlTemplate: inlinedEmailHtml,
         message: 'Hello from Design Estimator'
       })
       .then((response) => {
@@ -138,7 +144,7 @@ const ClientDetails = () => {
           required
         />
         <Input
-          type="tex"
+          type="text"
           label="Your name"
           placeholder="John Doe"
           value={formData.clientDetails?.clientName}

@@ -17,18 +17,19 @@ const transporter = nodemailer.createTransport({
   service: 'gmail', // use your email provider's service (e.g., 'hotmail', 'yahoo')
   auth: {
     user: process.env.GMAIL_USER, // Use the environment variable
-    pass: process.env.GMAIL_PASS, // Use the environment variable
+    pass: process.env.GMAIL_PASS // Use the environment variable
   }
 });
 
 app.post('/send-email', (req, res) => {
-  const { name, email, message } = req.body;
+  const { name, email, message, htmlTemplate } = req.body;
 
   const mailOptions = {
     from: process.env.GMAIL_USER,
     to: email,
     subject: `Message from ${name}`,
-    text: message
+    text: message,
+    html: htmlTemplate
   };
 
   transporter.sendMail(mailOptions, (error, info) => {

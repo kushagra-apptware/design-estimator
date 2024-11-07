@@ -5,6 +5,7 @@ import Root from './pages/Root.tsx';
 import LandingPage from './pages/LandingPage/LandingPage.tsx';
 import Form from './pages/Form.tsx';
 import { EstimationPage } from './pages/EstimationPage/EstimationPage.tsx';
+import { EmailTemplate } from './components/EmailTemplate/EmailTemplate.tsx';
 
 const router = createBrowserRouter([
   {
@@ -23,6 +24,10 @@ const router = createBrowserRouter([
       {
         path: '/project-estimation',
         element: <EstimationPage />
+      },
+      {
+        path: '/email-template',
+        element: <EmailTemplate />
       }
     ]
   }

@@ -13,7 +13,8 @@ export const EmailTemplate = () => {
           padding: '45px 45px 30px',
           width: '600px',
           boxSizing: 'border-box',
-          height: '400px'
+          height: '400px',
+          overflow: 'hidden'
         }}
       >
         <div
@@ -73,8 +74,7 @@ export const EmailTemplate = () => {
         style={{
           position: 'relative',
           overflowX: 'hidden',
-          padding: '0 45px',
-          width: 510,
+          width: '100%',
           overflow: 'hidden'
         }}
       >
@@ -83,7 +83,7 @@ export const EmailTemplate = () => {
             position: 'absolute',
             top: '0',
             left: '0',
-            width: '100%',
+            width: '600px',
             height: '155.5px',
             backgroundColor: '#5350C3'
           }}
@@ -91,10 +91,12 @@ export const EmailTemplate = () => {
         <div
           style={{
             position: 'absolute',
-            border: '15px solid rgba(255, 255, 255, 0.33)',
-            borderTopRightRadius: '14px',
+            borderLeft: '15px solid rgba(255, 255, 255, 0.33)',
+            borderTop: '15px solid rgba(255, 255, 255, 0.33)',
             borderTopLeftRadius: '14px',
-            left: '35px'
+            left: '35px',
+            maxWidth: 550,
+            overflow: 'hidden'
           }}
         >
           <img
@@ -164,16 +166,13 @@ export const EmailTemplate = () => {
           color: '#fff',
           height: '231.56px',
           width: '100%',
-          display: 'flex',
-          flexDirection: 'column',
-          alignItems: 'center',
-          justifyContent: 'center',
           gap: '25px',
           paddingTop: '30px',
           boxSizing: 'border-box'
         }}
       >
-        <div style={{ display: 'flex', width: '193.5px' }}>
+        <div></div>
+        <div style={{ display: 'flex', width: '193.5px', margin: 'auto', marginTop: 60 }}>
           {socialLinks.map((socialLink, index) => (
             <div
               key={index}
@@ -183,6 +182,7 @@ export const EmailTemplate = () => {
                 boxSizing: 'border-box',
                 border: '0.94px solid #595959',
                 padding: '5px',
+                
                 borderRight:
                   index < socialLinks.length - 1
                     ? 'none'
@@ -197,7 +197,7 @@ export const EmailTemplate = () => {
             </div>
           ))}
         </div>
-        <div>&copy; Apptware 2024</div>
+        <div style={{textAlign: 'center', marginTop: 30}}>&copy; Apptware 2024</div>
       </footer>
     </div>
   );

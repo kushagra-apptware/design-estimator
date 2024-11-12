@@ -1,6 +1,6 @@
 import html2canvas from 'html2canvas';
 import jsPDF from 'jspdf';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useForm } from '../../context/FormContext';
 
 export const useDownloadAsPDF = () => {
@@ -8,8 +8,14 @@ export const useDownloadAsPDF = () => {
 
   const [loading, setLoading] = useState(false);
   const [isEmailSent, setIsEmailSent] = useState(false);
+  const [chartHeight, setChartHeight] = useState(0);
 
   const { domain, phase, projectDetails, clientDetails } = formData;
+
+  useEffect(() => {
+    if (spanRef?.current?.offsetHeight)
+      setChartHeight(spanRef?.current?.offsetHeight + 50);
+  }, [spanRef.current]);
 
   const downloadAsPDF = async () => {
     if (!divRef.current || !spanRef.current) return;
@@ -149,6 +155,7 @@ export const useDownloadAsPDF = () => {
     loading,
     divRef,
     spanRef,
-    sendEmailWithAttachment
+    sendEmailWithAttachment,
+    chartHeight
   };
 };

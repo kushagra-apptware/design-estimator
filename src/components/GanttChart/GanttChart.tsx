@@ -19,7 +19,7 @@ export interface Task {
 
 interface GanttChartProps {
   tasks: Task[];
-  height?: string;
+  height?: number;
   onTaskItemClick: (id: string) => void;
   startDay: number;
   divRef: React.RefObject<HTMLDivElement>;
@@ -27,6 +27,7 @@ interface GanttChartProps {
 }
 
 export const GanttChart: React.FC<GanttChartProps> = ({
+  height,
   tasks,
   onTaskItemClick,
   startDay,
@@ -34,9 +35,7 @@ export const GanttChart: React.FC<GanttChartProps> = ({
   spanRef
 }) => {
   const [selectedDate, setSelectedDate] = useState<number | null>(null);
-
   const [emptyRows, setEmptyRows] = useState<number>(0);
-
   const [divHeight, setDivHeight] = useState<number>(0);
 
   const totalDays = tasks.reduce(
@@ -72,12 +71,14 @@ export const GanttChart: React.FC<GanttChartProps> = ({
     setSelectedDate(date === selectedDate ? null : date);
   };
 
+  const containerHeight = Math.min(height || 0, window.innerHeight - 90); // Use window.innerHeight to dynamically calculate the height
+
   const containerStyle: React.CSSProperties = {
     display: 'flex',
     flexDirection: 'column',
     border: '1px solid #ccc',
     overflow: 'auto',
-    height: 'calc(100vh - 90px)',
+    height: `${containerHeight}px`,
     margin: '0 auto',
     position: 'relative'
   };

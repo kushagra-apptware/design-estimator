@@ -9,7 +9,7 @@ import { useEstimationPage } from '../../hooks/useEstimationPage/useEstimationPa
 import './EstimationPage.scss';
 
 export const EstimationPage = () => {
-  const { loading, divRef, spanRef, sendEmailWithAttachment } =
+  const { loading, divRef, spanRef, sendEmailWithAttachment, chartHeight } =
     useDownloadAsPDF();
   const { formData } = useForm();
   const { domain, phase, projectDetails, projectType } = formData;
@@ -37,6 +37,8 @@ export const EstimationPage = () => {
     return () => clearTimeout(timer); // Cleanup the timer if component unmounts
   }, []);
 
+  const containerHeight = Math.min(chartHeight || 0, window.innerHeight - 90);
+
   return (
     <div className={`estimation-page ${isDrawerOpen ? 'hide-scroll' : null}`}>
       {loading && <Loader />}
@@ -62,20 +64,27 @@ export const EstimationPage = () => {
           <div className="title">{Math.ceil(totalDays)} Days</div>
         </div>
       </div>
-      <div className="chart">
-        <div className="chart">
+      <div
+        className="chart"
+        style={{ height: containerHeight }}
+      >
+        <div
+          className="chart"
+          style={{ height: containerHeight }}
+        >
           <div
             className="linear-gradient"
             id="linear-gradient"
+            style={{ height: containerHeight }}
           ></div>
           {Boolean(standardData.length) && (
             <GanttChart
               tasks={standardData}
-              height="100%"
               onTaskItemClick={handleTaskItemClick}
               startDay={startDay}
               divRef={divRef}
               spanRef={spanRef}
+              height={containerHeight}
             />
           )}
           {!Boolean(standardData.length) && (

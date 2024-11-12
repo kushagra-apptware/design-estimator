@@ -52,7 +52,7 @@ export const GanttChart: React.FC<GanttChartProps> = ({
 
   const rowHeight = 100;
   const totalTasksHeight = tasks.length * rowHeight;
-  const totalChartHeight = Math.max(totalTasksHeight, divHeight);
+  const totalChartHeight = Math.min(totalTasksHeight, divHeight);
 
   useEffect(() => {
     const totalTasksHeight = tasks.length * rowHeight;
@@ -78,7 +78,7 @@ export const GanttChart: React.FC<GanttChartProps> = ({
     flexDirection: 'column',
     border: '1px solid #ccc',
     overflow: 'auto',
-    height,
+    height: 'calc(100vh - 90px)',
     margin: '0 auto',
     position: 'relative'
   };
@@ -282,6 +282,7 @@ export const GanttChart: React.FC<GanttChartProps> = ({
       style={containerStyle}
       ref={divRef}
       id="gantt-chart-container"
+      className='gantt-chart-container'
     >
       <div style={timelineStyle}>
         {days.map((day) => (
@@ -303,6 +304,7 @@ export const GanttChart: React.FC<GanttChartProps> = ({
       <span
         ref={spanRef}
         id="gantt-chart-content-wrapper"
+        className='gantt-chart-content-wrapper'
       >
         {finalTasks.map((finalTasksItem, finalTaskItemIndex) => {
           const [task] = finalTasksItem;

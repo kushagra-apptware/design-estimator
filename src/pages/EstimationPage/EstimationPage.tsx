@@ -1,17 +1,15 @@
 import { useEffect } from 'react';
-import Button from '../../components/Button';
 import { GanttChart } from '../../components/GanttChart/GanttChart';
 import Loader from '../../components/Loader/Loader';
 import { TaskDrawer } from '../../components/TaskDrawer/TaskDrawer';
 import { useForm } from '../../context/FormContext';
 import { useDownloadAsPDF } from '../../hooks/useDownloadAsPDF/useDownloadAsPDF';
-import { ButtonTypes } from '../../utils/constants';
 import { useEstimationPage } from '../../hooks/useEstimationPage/useEstimationPage';
 
 import './EstimationPage.scss';
 
 export const EstimationPage = () => {
-  const { downloadAsPDF, loading, divRef, spanRef, sendEmailWithAttachment } =
+  const { loading, divRef, spanRef, sendEmailWithAttachment } =
     useDownloadAsPDF();
   const { formData } = useForm();
   const { domain, phase, projectDetails, projectType } = formData;
@@ -23,8 +21,7 @@ export const EstimationPage = () => {
     selectedTaskId,
     isDrawerOpen,
     setIsDrawerOpen,
-    startDay,
-    setStartDay
+    startDay
   } = useEstimationPage();
 
   useEffect(() => {
@@ -56,15 +53,16 @@ export const EstimationPage = () => {
       <div className="headers">
         <div className="left-part">
           <div className="subtitle">{domain?.projectDomain?.[0]}</div>
-          <div className="title">{projectDetails?.projectName}</div>
+          <div className="title">
+            {projectDetails?.projectName} - {projectType?.projectTypes?.[0]}
+          </div>
         </div>
         <div className="right-part">
-          <div className="title">{Math.ceil(totalDays)} Days</div>
           <div className="subtitle">Project completion time</div>
+          <div className="title">{Math.ceil(totalDays)} Days</div>
         </div>
       </div>
       <div className="chart">
-        <div className="tabs">{projectType?.projectTypes?.[0]}</div>
         <div className="chart">
           {Boolean(standardData.length) && (
             <GanttChart
@@ -81,41 +79,6 @@ export const EstimationPage = () => {
               Please update your selections to view a timeline
             </div>
           )}
-        </div>
-        <div className="chart-actions">
-          <div className="left-actions flex-center">
-            <Button
-              variant={ButtonTypes.SECONDARY}
-              onClick={handleEditDetails}
-            >
-              Edit Details
-            </Button>
-            <Button
-              onClick={async () => {
-                await setStartDay(1);
-                downloadAsPDF();
-              }}
-            >
-              Download as PDF
-            </Button>
-          </div>
-
-          {/*    <div className="right-actions">
-            <button
-              onClick={handlePrevClick}
-              className="buttons"
-              disabled={startDay === 1}
-            >
-              &lt;
-            </button>
-            <button
-              onClick={handleNextClick}
-              className="buttons"
-              disabled={startDay === chartDays - 15}
-            >
-              &gt;
-            </button>
-          </div> */}
         </div>
       </div>
     </div>

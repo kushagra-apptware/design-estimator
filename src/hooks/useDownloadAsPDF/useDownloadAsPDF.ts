@@ -1,16 +1,13 @@
 import html2canvas from 'html2canvas';
 import jsPDF from 'jspdf';
-import { useRef, useState } from 'react';
+import { useState } from 'react';
 import { useForm } from '../../context/FormContext';
 
 export const useDownloadAsPDF = () => {
-  const { formData } = useForm();
+  const { formData, divRef, spanRef } = useForm();
 
   const [loading, setLoading] = useState(false);
   const [isEmailSent, setIsEmailSent] = useState(false);
-
-  const divRef = useRef<HTMLDivElement>(null);
-  const spanRef = useRef<HTMLDivElement>(null);
 
   const { domain, phase, projectDetails, clientDetails } = formData;
 
@@ -116,15 +113,15 @@ export const useDownloadAsPDF = () => {
       setLoading(false);
 
       const fileName =
-          projectDetails?.projectName &&
-          domain?.projectDomain &&
-          phase?.projectStage
-            ? projectDetails?.projectName +
-              '-' +
-              domain?.projectDomain +
-              '-' +
-              phase?.projectStage
-            : 'gantt-chart';
+        projectDetails?.projectName &&
+        domain?.projectDomain &&
+        phase?.projectStage
+          ? projectDetails?.projectName +
+            '-' +
+            domain?.projectDomain +
+            '-' +
+            phase?.projectStage
+          : 'gantt-chart';
 
       // Send the PDF to the server
       const formData = new FormData();

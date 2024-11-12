@@ -1,4 +1,4 @@
-import { useCallback, useMemo, useState } from 'react';
+import { useCallback, useContext, useMemo, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useForm } from '../../context/FormContext';
 import { modifyStandardData } from '../../utils/estimationPageUtils/modifyStandardData';
@@ -9,11 +9,17 @@ const { domainWiseComplexityInPercentage, stageWiseComplexityInHours } =
 
 export const useEstimationPage = () => {
   const navigate = useNavigate();
-  const { setInitialStep, formData } = useForm();
+  const {
+    setInitialStep,
+    formData,
+    setSelectedTaskId,
+    setIsDrawerOpen,
+    isDrawerOpen,
+    setStartDay,
+    startDay,
+    selectedTaskId
+  } = useForm();
   const { domain, phase } = formData;
-  const [selectedTaskId, setSelectedTaskId] = useState<string | null>(null);
-  const [isDrawerOpen, setIsDrawerOpen] = useState(false);
-  const [startDay, setStartDay] = useState(1);
 
   const handleEditDetails = () => {
     setInitialStep();

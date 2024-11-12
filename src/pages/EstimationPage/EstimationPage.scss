@@ -5,6 +5,7 @@
     font-family: Mulish;
     position: relative;
     height: 100%;
+
     .purple-bg {
         height: 201px;
         width: 100%;
@@ -14,6 +15,7 @@
         background-color: base.$color-purple;
         z-index: 1;
     }
+
     .headers {
         margin-top: 20px;
         display: flex;
@@ -22,28 +24,35 @@
         color: #ffffff;
         position: relative;
         z-index: 2;
-        .left-part, .right-part{
+
+        .left-part,
+        .right-part {
             display: flex;
             flex-direction: column;
             gap: 10px;
+
             .title {
                 font-size: 28px;
                 line-height: 35.14px;
             }
+
             .subtitle {
                 font-size: 17px;
                 line-height: 21.34px;
                 opacity: 0.4;
             }
         }
+
         .right-part {
             text-align: end;
         }
     }
+
     .chart {
         position: relative;
         z-index: 2;
         margin-top: 20px;
+
         .tabs {
             height: 51px;
             width: 151px;
@@ -56,15 +65,16 @@
             justify-content: center;
             align-items: center;
         }
-        .chart{
+
+        .chart {
             margin-top: 0;
-            border: 0.6px solid base.$color-grey;;
+            border: 0.6px solid base.$color-grey;
             border-radius: 6px;
             border-top-left-radius: 0px;
-            height: calc(100vh - 320px);
             width: 100%;
             background-color: #ffffff;
             position: relative;
+
             .warning {
                 position: absolute;
                 top: 0;
@@ -78,28 +88,11 @@
                 opacity: 0.4;
             }
         }
-        .chart-actions{
-            margin: 20px 0;
-            width: 100%;
-            display: flex;
-            justify-content: space-between;
-            .right-actions {
-                display: flex;
-                justify-content: flex-end;
-                align-items: center;
-                gap: 10px;
 
-                .buttons {
-                    height: 30px;
-                    padding: 5px 20px;
-                    border: 1px solid #ccc;
-                    border-radius: 10px;
-                    background-color: white;
-                    cursor: pointer;
-                }
-            }
-        }
-   }
+    }
+
+
+  
 }
 
 .hide-scroll {

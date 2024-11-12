@@ -73,6 +73,10 @@ export const PROJECT_DOMAINS: CardDetails[] = [
   {
     name: 'Data Science',
     imageUrl: 'other'
+  },
+  {
+    name: 'Other',
+    imageUrl: 'other'
   }
 ];
 

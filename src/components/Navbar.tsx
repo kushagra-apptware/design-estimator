@@ -1,6 +1,7 @@
 import classNames from 'classnames';
 import Logo from '../assets/Logo.png';
 import { useCallback } from 'react';
+import { ChartActions } from './ChartActions';
 
 const Navbar = () => {
   const isChartPage = window.location.href.includes('project-estimation');
@@ -12,7 +13,8 @@ const Navbar = () => {
      * when in chart page, the background of the navbar should be purple too
      */
     return classNames(defaultClassName, {
-      'purple-bg': isChartPage
+      'purple-bg': isChartPage,
+      'sticky-wrapper': isChartPage
     });
   }, [isChartPage]);
 
@@ -22,6 +24,10 @@ const Navbar = () => {
         <a href="/">
           <img src={Logo} />
         </a>
+        {
+          isChartPage && <ChartActions />
+        }
+        
       </nav>
     </div>
   );

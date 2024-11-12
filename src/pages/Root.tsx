@@ -7,7 +7,8 @@ const Root = () => {
 
   /** Styles  for setting background image*/
   const style = {
-    backgroundImage: pathname === '/' ? 'url("../assets/Background.png")' : 'none',
+    backgroundImage:
+      pathname === '/' ? 'url("../assets/Background.png")' : 'none',
     backgroundSize: 'cover',
     backgroundPosition: 'center',
     height: '100vh',
@@ -19,8 +20,8 @@ const Root = () => {
       className="app"
       style={style}
     >
-      <Navbar />
       <FormProvider>
+        <Navbar />
         <Outlet />
       </FormProvider>
     </div>

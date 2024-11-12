@@ -33,6 +33,15 @@ const ProjectDetails = () => {
     return '42px';
   }, [formData.projectDetails?.projectDescription]);
 
+  const textAreaLineHeight = useMemo(() => {
+    if (
+      formData.projectDetails?.projectDescription &&
+      formData.projectDetails?.projectDescription?.length > 24
+    )
+      return '40px';
+    return '53px';
+  }, [formData.projectDetails?.projectDescription]);
+
   const handleBackButtonClick = () => {
     setInitialStep();
     navigate(-1);
@@ -100,7 +109,7 @@ const ProjectDetails = () => {
           value={formData.projectDetails?.projectDescription}
           onChange={handleUpdateDescription}
           required
-          style={{ fontSize: textAreaFontSize }}
+          style={{ fontSize: textAreaFontSize, lineHeight: textAreaLineHeight }}
         />
       </div>
       <ErrorText

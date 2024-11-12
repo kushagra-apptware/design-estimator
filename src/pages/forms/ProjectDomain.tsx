@@ -56,7 +56,7 @@ const ProjectDomain = () => {
           description="This information is collected to better understand needs and preferences. It will help us tailor the timeline that will suit specific requirements."
         />
       </div>
-      <div className="card-container">
+      <div className="card-container project-domain-wrapper">
         <Card
           values={PROJECT_DOMAINS}
           currentValues={domain?.projectDomain || []}

@@ -1,0 +1,36 @@
+.chart-actions {
+    margin: 20px 0;
+    width: fit-content;
+    display: flex;
+    justify-content: space-between;
+
+    .left-actions {
+        display: flex;
+        justify-content: flex-end;
+        align-items: center;
+        gap: 10px;
+
+        button {
+            height: 30px;
+            padding: 5px 20px;
+            border: transparent;
+            border-radius: 30px;
+            background-color: transparent;
+            cursor: pointer;
+            font-size: 14px;
+            line-height: 18px;
+            width: fit-content;
+            color: #fff;
+
+            &:hover {
+                background-color: #272569;
+            }
+
+            &:last-child {
+                background-color: #fff;
+                color: #000;
+            }
+        }
+
+    }
+}

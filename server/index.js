@@ -21,16 +21,16 @@ const upload = multer({ dest: 'uploads/' });
 
 // Configure Nodemailer
 const transporter = nodemailer.createTransport({
-  service: 'gmail', // use your email provider's service (e.g., 'hotmail', 'yahoo')
+  service: 'gmail',
   auth: {
-    user: process.env.GMAIL_USER, // Use the environment variable
-    pass: process.env.GMAIL_PASS // Use the environment variable
+    user: process.env.GMAIL_USER,
+    pass: process.env.GMAIL_PASS
   }
 });
 
 app.post('/send-email', upload.single('attachment'), async (req, res) => {
   const { name, email, message } = req.body;
-  const filePath = req?.file?.path;
+  const filePath = req.file.path;
 
   const mailOptions = {
     from: process.env.GMAIL_USER,
@@ -39,7 +39,7 @@ app.post('/send-email', upload.single('attachment'), async (req, res) => {
     text: message,
     attachments: [
       {
-        filename: req?.file?.originalname,
+        filename: req.file.originalname,
         path: filePath
       }
     ]
@@ -47,7 +47,11 @@ app.post('/send-email', upload.single('attachment'), async (req, res) => {
 
   try {
     await transporter.sendMail(mailOptions);
-    fs.unlinkSync(filePath); // Delete the file after sending
+    // Delete the uploaded file
+    fs.unlink(filePath, (err) => {
+      if (err) console.error('Failed to delete file:', err);
+      else console.log('File deleted after sending email');
+    });
     res.status(200).send('Email sent successfully');
   } catch (error) {
     res.status(500).send('Failed to send email');

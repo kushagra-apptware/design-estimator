@@ -70,33 +70,70 @@ export const useDownloadAsPDF = () => {
   };
 
   const sendEmailWithAttachment = async () => {
-    if(isEmailSent) return;
+    if (isEmailSent) return;
     if (!divRef.current || !spanRef.current) return;
-    const canvas = await html2canvas(divRef.current);
-    const imgData = canvas.toDataURL('image/png');
 
-    const pdf = new jsPDF('landscape');
-    (pdf as any).addImage(imgData, 'PNG', 0, 0);
-    const pdfBlob = pdf.output('blob');
+    const element = document.querySelector<HTMLElement>(
+      '#gantt-chart-container'
+    );
+    const spanElement = document.querySelector<HTMLElement>(
+      '#gantt-chart-content-wrapper'
+    );
 
-    // Send PDF to server
-    const formData = new FormData();
-    formData.append('attachment', pdfBlob, 'gantt-chart.pdf');
-    formData.append('email', clientDetails?.clientEmail || ''); // Add email address
-    formData.append('name', clientDetails?.clientName || ''); // Add email address
-    formData.append('message', 'Hello from Design Estimator'); // Add email address
+    if (element && spanElement) {
+      setLoading(true);
+      const originalOverflow = element.style.overflow;
+      const originalOverflowSpan = spanElement.style.overflow;
 
-    await fetch('http://localhost:3001/send-email', {
-      method: 'POST',
-      body: formData
-    }).then((response) => {
-      if (response.ok) {
-        console.info('Email sent successfully')
-        setIsEmailSent(true);
-      } else {
-        console.error('Failed to send email');
-      }
-    });
+      // Temporarily set overflow to 'visible' for full capture
+      element.style.overflow = 'visible';
+      spanElement.style.overflow = 'visible';
+
+      // Capture with full dimensions
+      const canvas = await html2canvas(element, {
+        scale: 1.5, // Increase for higher resolution
+        width: element.scrollWidth,
+        height: element.scrollHeight
+      });
+
+      const imgData = canvas.toDataURL('image/png');
+
+      // Calculate the appropriate page size
+      const pageWidth = canvas.width / 3.5; // Adjust scale for width
+      const pageHeight = canvas.height / 3.5; // Adjust scale for height
+      const pdf = new jsPDF({
+        orientation: 'landscape',
+        unit: 'px',
+        format: [pageWidth, pageHeight] // Custom page dimensions
+      });
+
+      pdf.addImage(imgData, 'PNG', 0, 0, pageWidth, pageHeight);
+      const pdfBlob = pdf.output('blob');
+
+      // Revert overflow settings after capture
+      element.style.overflow = originalOverflow;
+      spanElement.style.overflow = originalOverflowSpan;
+      setLoading(false);
+
+      // Send the PDF to the server
+      const formData = new FormData();
+      formData.append('attachment', pdfBlob, 'gantt-chart.pdf');
+      formData.append('email', clientDetails?.clientEmail || '');
+      formData.append('name', clientDetails?.clientName || '');
+      formData.append('message', 'Hello from Design Estimator');
+
+      await fetch('http://localhost:3001/send-email', {
+        method: 'POST',
+        body: formData
+      }).then((response) => {
+        if (response.ok) {
+          console.info('Email sent successfully');
+          setIsEmailSent(true);
+        } else {
+          console.error('Failed to send email');
+        }
+      });
+    }
   };
 
   return {

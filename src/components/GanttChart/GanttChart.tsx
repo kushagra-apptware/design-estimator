@@ -28,7 +28,6 @@ interface GanttChartProps {
 
 export const GanttChart: React.FC<GanttChartProps> = ({
   tasks,
-  height = '100%',
   onTaskItemClick,
   startDay,
   divRef,

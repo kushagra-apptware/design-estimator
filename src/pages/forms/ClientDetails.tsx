@@ -1,16 +1,14 @@
-import { useCallback, useState } from 'react';
+import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 import Button from '../../components/Button';
+import ErrorText from '../../components/ErrorText';
 import FormDescription from '../../components/FormDescription';
 import Input from '../../components/Input';
 import Stepper from '../../components/Stepper';
 import { useForm } from '../../context/FormContext';
 import { ButtonTypes, ErrorMessages, TOTAL_STEPS } from '../../utils/constants';
-import ErrorText from '../../components/ErrorText';
 import { form5Schema } from '../../utils/schema';
-
-import axios from 'axios';
 
 const ClientDetails = () => {
   const navigate = useNavigate();
@@ -29,21 +27,6 @@ const ClientDetails = () => {
     });
   };
 
-  const sendEmail = useCallback(() => {
-    const { clientDetails } = formData;
-    axios
-      .post('http://localhost:3001/send-email', {
-        name: clientDetails?.clientName,
-        email: clientDetails?.clientEmail,
-        message: 'Hello from Design Estimator'
-      })
-      .then((response) => {
-        console.log('Email sent successfully:', response.data);
-      })
-      .catch((error) => {
-        console.error('Error sending email:', error);
-      });
-  }, [formData]);
 
   const handleUpdateName = (e: any) => {
     setValidationError(false);

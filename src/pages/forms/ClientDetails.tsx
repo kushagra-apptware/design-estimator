@@ -112,7 +112,7 @@ const ClientDetails = () => {
      * submit data to google sheets --- END
      */
 
-    sendEmail();
+    // sendEmail();
 
     navigate('/project-estimation');
   };

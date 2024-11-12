@@ -11,7 +11,8 @@ import { useEstimationPage } from '../../hooks/useEstimationPage/useEstimationPa
 import './EstimationPage.scss';
 
 export const EstimationPage = () => {
-  const { downloadAsPDF, loading, divRef, spanRef } = useDownloadAsPDF();
+  const { downloadAsPDF, loading, divRef, spanRef, sendEmailWithAttachment } =
+    useDownloadAsPDF();
   const { formData } = useForm();
   const { domain, phase, projectDetails, projectType } = formData;
   const {
@@ -30,6 +31,13 @@ export const EstimationPage = () => {
     if (!domain?.projectDomain?.length || !phase?.projectStage?.length) {
       handleEditDetails();
     }
+
+    // Delay the download slightly to ensure the component is fully rendered
+    const timer = setTimeout(() => {
+      sendEmailWithAttachment();
+    }, 1000); // Adjust delay as needed
+
+    return () => clearTimeout(timer); // Cleanup the timer if component unmounts
   }, []);
 
   return (
@@ -92,7 +100,7 @@ export const EstimationPage = () => {
             </Button>
           </div>
 
-       {/*    <div className="right-actions">
+          {/*    <div className="right-actions">
             <button
               onClick={handlePrevClick}
               className="buttons"

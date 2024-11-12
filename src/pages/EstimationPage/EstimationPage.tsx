@@ -64,6 +64,10 @@ export const EstimationPage = () => {
       </div>
       <div className="chart">
         <div className="chart">
+          <div
+            className="linear-gradient"
+            id="linear-gradient"
+          ></div>
           {Boolean(standardData.length) && (
             <GanttChart
               tasks={standardData}

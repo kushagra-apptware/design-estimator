@@ -282,7 +282,7 @@ export const GanttChart: React.FC<GanttChartProps> = ({
       style={containerStyle}
       ref={divRef}
       id="gantt-chart-container"
-      className='gantt-chart-container'
+      className="gantt-chart-container"
     >
       <div style={timelineStyle}>
         {days.map((day) => (
@@ -304,7 +304,7 @@ export const GanttChart: React.FC<GanttChartProps> = ({
       <span
         ref={spanRef}
         id="gantt-chart-content-wrapper"
-        className='gantt-chart-content-wrapper'
+        className="gantt-chart-content-wrapper"
       >
         {finalTasks.map((finalTasksItem, finalTaskItemIndex) => {
           const [task] = finalTasksItem;

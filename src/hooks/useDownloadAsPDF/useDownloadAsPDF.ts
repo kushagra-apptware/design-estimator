@@ -91,7 +91,7 @@ export const useDownloadAsPDF = () => {
 
       // Capture with full dimensions
       const canvas = await html2canvas(element, {
-        scale: 1.5, // Increase for higher resolution
+        scale: 1, // Increase for higher resolution
         width: element.scrollWidth,
         height: element.scrollHeight
       });
@@ -115,9 +115,20 @@ export const useDownloadAsPDF = () => {
       spanElement.style.overflow = originalOverflowSpan;
       setLoading(false);
 
+      const fileName =
+          projectDetails?.projectName &&
+          domain?.projectDomain &&
+          phase?.projectStage
+            ? projectDetails?.projectName +
+              '-' +
+              domain?.projectDomain +
+              '-' +
+              phase?.projectStage
+            : 'gantt-chart';
+
       // Send the PDF to the server
       const formData = new FormData();
-      formData.append('attachment', pdfBlob, 'gantt-chart.pdf');
+      formData.append('attachment', pdfBlob, `${fileName.toLowerCase()}.pdf`);
       formData.append('email', clientDetails?.clientEmail || '');
       formData.append('name', clientDetails?.clientName || '');
       formData.append('message', 'Hello from Design Estimator');

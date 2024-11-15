@@ -1,8 +1,10 @@
-import { useCallback, useMemo } from 'react';
+import { useCallback, useEffect, useMemo } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { ganttChartConstants } from '../../constants/ganttChartConstants';
 import { useForm } from '../../context/FormContext';
 import { modifyStandardData } from '../../utils/estimationPageUtils/modifyStandardData';
+import { generateServiceEstimates } from '../../utils';
+import { serviceEstimates } from '../../constants/serviceEstimates';
 
 const { domainWiseComplexityInPercentage, stageWiseComplexityInHours } =
   ganttChartConstants;
@@ -32,6 +34,14 @@ export const useEstimationPage = () => {
       phase?.projectStage as unknown as (keyof typeof stageWiseComplexityInHours)[]
     );
   }, [domain?.projectDomain, phase?.projectStage]);
+
+  useEffect(() => {
+    console.info(standardData, '...standardData');
+    console.info(
+      generateServiceEstimates(serviceEstimates),
+      '...generatedServiceEstimates'
+    );
+  }, [standardData]);
 
   const totalDays = standardData.reduce(
     (acc: any, next: { duration: any }) => acc + next.duration,

@@ -5,47 +5,84 @@
 /** RULE 4: if needsReview is false AND reviews key is absent, just ignore this case */
 /** RULE 5: if no durationInDays key is present, then can safely calculate from durationInHours */
 
-import { REVIEW_AND_ITERATION } from '../../constants/serviceEstimates';
+import {
+  REVIEW_AND_ITERATION,
+  serviceEstimates
+} from '../../constants/serviceEstimates';
 import {
   RestructuredServiceEstimates,
   ServiceEstimates,
   ServiceEstimatesTask
 } from '../../types/serviceEstimates';
 
+let count = 0;
+
 const restructureServiceEstimates = (
   serviceEstimateTasks: ServiceEstimatesTask[]
 ): RestructuredServiceEstimates[] => {
   return serviceEstimateTasks.flatMap((serviceEstimateTask) => {
-    const { reviews, task } = serviceEstimateTask;
+    const {
+      reviews,
+      task,
+      backgroundColor: parentBackgroundColor,
+      color: parentColor
+    } = serviceEstimateTask;
+    delete serviceEstimateTask.reviews;
 
-    if (reviews) {
-      delete serviceEstimateTask.reviews;
+    if (reviews && reviews.length) {
+      const [review] = reviews;
+
+      const { backgroundColor: reviewBackgroundColor, color: reviewColor } =
+        review;
 
       return [
         {
           ...serviceEstimateTask,
-          isReviewTask: false
+          isReviewTask: false,
+          id: (++count).toString()
         } as RestructuredServiceEstimates,
         {
-          ...reviews?.[0],
+          ...review,
           needsReview: false,
           primaryTask: task,
-          isReviewTask: true
+          isReviewTask: true,
+          backgroundColor: reviewBackgroundColor || parentBackgroundColor,
+          color: reviewColor || parentColor,
+          id: (++count).toString()
         } as unknown as RestructuredServiceEstimates
       ];
     }
 
-    return [serviceEstimateTask as RestructuredServiceEstimates];
+    return [
+      {
+        ...serviceEstimateTask,
+        isReviewTask: false,
+        id: (++count).toString()
+      } as RestructuredServiceEstimates
+    ];
   });
 };
 
-export const generateServiceEstimates = (
+const generateServiceEstimates = (
   serviceEstimates: ServiceEstimates[]
 ): RestructuredServiceEstimates[] => {
+  count = 0;
   return serviceEstimates.flatMap((serviceEstimate) => {
-    const { tasks, phase } = serviceEstimate;
+    const {
+      tasks,
+      phase,
+      backgroundColor: parentBackgroundColor,
+      color: parentColor
+    } = serviceEstimate;
     const modifiedTasks = tasks.map((task) => {
-      const { needsReview, reviews, durationInDays, durationInHours } = task;
+      const {
+        needsReview,
+        reviews,
+        durationInDays,
+        durationInHours,
+        backgroundColor: taskBackgroundColor,
+        color: taskColor
+      } = task;
       task.parentTask = phase;
       if (!reviews && needsReview) {
         // RULE 1
@@ -59,6 +96,12 @@ export const generateServiceEstimates = (
         // RULE 5
         task.durationInDays = Math.ceil(durationInHours / 8);
       }
+      if (!taskBackgroundColor) {
+        task.backgroundColor = parentBackgroundColor;
+      }
+      if (!taskColor) {
+        task.color = parentColor;
+      }
       return task;
     });
     const restructuredServiceEstimates: RestructuredServiceEstimates[] =
@@ -67,13 +110,18 @@ export const generateServiceEstimates = (
   });
 };
 
+export const getTasksFromServiceEstimates = (
+  serviceEstimates: ServiceEstimates[]
+) => {
+  const generatedServiceEstimates = generateServiceEstimates(serviceEstimates);
+  return generatedServiceEstimates;
+};
+
 /**
  * Algorithm
  *
+ * calculate start date, end date
+ * add icons
  *
  *
- *
- *
- * The final array should include list of all chart items, the tasks and ths review items in linear passion
- * Ids should appended at the end after creating all the chartItems including review items
  */

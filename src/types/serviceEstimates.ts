@@ -1,4 +1,9 @@
-export interface ReviewsAndIteration {
+export interface ChartItemProps {
+  backgroundColor?: string;
+  color?: string;
+}
+
+export interface ReviewsAndIteration extends ChartItemProps{
   /**
    * name of the task
    */
@@ -9,7 +14,7 @@ export interface ReviewsAndIteration {
   durationInDays: number;
 }
 
-export interface ServiceEstimatesTask {
+export interface ServiceEstimatesTask extends ChartItemProps {
   /**
    * this is the name of the task
    * this name will be used to identify the task and display as label in the graph
@@ -45,7 +50,7 @@ export interface ServiceEstimatesTask {
   parentTask?: string;
 }
 
-export interface ServiceEstimates {
+export interface ServiceEstimates extends ChartItemProps {
   /**
    * this is the name of the phase under which the tasks are available
    * this is like the main category
@@ -66,4 +71,8 @@ export interface RestructuredServiceEstimates extends ServiceEstimatesTask {
    * this key clears the confusion and helps decide which design to implement
    */
   isReviewTask: boolean;
+  /**
+   * id for each task
+   */
+  id: string;
 }

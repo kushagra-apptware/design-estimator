@@ -17,6 +17,8 @@ export const REVIEW_AND_ITERATION: ReviewsAndIteration = {
 export const serviceEstimates: ServiceEstimates[] = [
   {
     phase: 'Discovery & Planning',
+    backgroundColor: '#A1C90F',
+    color: '#FFFFFF',
     tasks: [
       {
         task: 'Project Kickoff & Stakeholder Interviews',
@@ -43,6 +45,8 @@ export const serviceEstimates: ServiceEstimates[] = [
   },
   {
     phase: 'Information Architecture & Wireframing',
+    backgroundColor: '#E47912',
+    color: '#FFFFFF',
     tasks: [
       {
         task: 'Define User Journeys & Flows',
@@ -68,6 +72,8 @@ export const serviceEstimates: ServiceEstimates[] = [
   },
   {
     phase: 'Visual Design & Prototyping',
+    backgroundColor: '#729DE7',
+    color: '#FFFFFF',
     tasks: [
       {
         task: 'UI Style Guide Development',
@@ -93,6 +99,8 @@ export const serviceEstimates: ServiceEstimates[] = [
   },
   {
     phase: 'Testing & Handoff',
+    backgroundColor: '#1EB7AA',
+    color: 'white',
     tasks: [
       {
         task: 'Usability Testing',
@@ -113,6 +121,8 @@ export const serviceEstimates: ServiceEstimates[] = [
   },
   {
     phase: 'Post-Handoff Support & Optimization',
+    backgroundColor: '#FC3A74',
+    color: 'white',
     tasks: [
       {
         task: 'Development Support & Clarifications',

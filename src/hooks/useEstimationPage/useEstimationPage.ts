@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { ganttChartConstants } from '../../constants/ganttChartConstants';
 import { useForm } from '../../context/FormContext';
 import { modifyStandardData } from '../../utils/estimationPageUtils/modifyStandardData';
-import { generateServiceEstimates } from '../../utils';
+import { getTasksFromServiceEstimates } from '../../utils';
 import { serviceEstimates } from '../../constants/serviceEstimates';
 
 const { domainWiseComplexityInPercentage, stageWiseComplexityInHours } =
@@ -38,8 +38,8 @@ export const useEstimationPage = () => {
   useEffect(() => {
     console.info(standardData, '...standardData');
     console.info(
-      generateServiceEstimates(serviceEstimates),
-      '...generatedServiceEstimates'
+      getTasksFromServiceEstimates(serviceEstimates),
+      '...tasksFromServiceEstimates'
     );
   }, [standardData]);
 

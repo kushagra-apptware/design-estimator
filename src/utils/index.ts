@@ -1,1 +1,1 @@
-export { generateServiceEstimates } from "./serviceEstimatesUtils";
+export { getTasksFromServiceEstimates } from './serviceEstimatesUtils';

@@ -3,7 +3,7 @@ export interface ChartItemProps {
   color?: string;
 }
 
-export interface ReviewsAndIteration extends ChartItemProps{
+export interface ReviewsAndIteration extends ChartItemProps {
   /**
    * name of the task
    */
@@ -75,4 +75,20 @@ export interface RestructuredServiceEstimates extends ServiceEstimatesTask {
    * id for each task
    */
   id: string;
+}
+
+export interface ServiceEstimatesWithDatesAndIcons
+  extends RestructuredServiceEstimates {
+  /**
+   * denotes the start date of a particular service estimate task
+   */
+  startDate: number;
+  /**
+   * denotes the end date of a particular service estimate task
+   */
+  endDate: number;
+  /**
+   * user icons to display with the task on the chart
+   */
+  icons?: Array<{ type: 'user' | 'logo'; content: string }>;
 }

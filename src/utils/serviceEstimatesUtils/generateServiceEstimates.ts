@@ -5,15 +5,14 @@
 /** RULE 4: if needsReview is false AND reviews key is absent, just ignore this case */
 /** RULE 5: if no durationInDays key is present, then can safely calculate from durationInHours */
 
-import {
-  REVIEW_AND_ITERATION,
-  serviceEstimates
-} from '../../constants/serviceEstimates';
+import { REVIEW_AND_ITERATION } from '../../constants/serviceEstimates';
 import {
   RestructuredServiceEstimates,
   ServiceEstimates,
-  ServiceEstimatesTask
+  ServiceEstimatesTask,
+  ServiceEstimatesWithDatesAndIcons
 } from '../../types/serviceEstimates';
+import { weekDays } from '../estimationPageUtils/modifyStandardData';
 
 let count = 0;
 
@@ -65,7 +64,7 @@ const restructureServiceEstimates = (
 
 const generateServiceEstimates = (
   serviceEstimates: ServiceEstimates[]
-): RestructuredServiceEstimates[] => {
+): ServiceEstimatesTask[] => {
   count = 0;
   return serviceEstimates.flatMap((serviceEstimate) => {
     const {
@@ -104,9 +103,64 @@ const generateServiceEstimates = (
       }
       return task;
     });
-    const restructuredServiceEstimates: RestructuredServiceEstimates[] =
-      restructureServiceEstimates(modifiedTasks);
-    return restructuredServiceEstimates;
+    return modifiedTasks;
+  });
+};
+
+const adjustDatesToIgnoreWeekends = (startDate: number, endDate: number) => {
+  for (let i = startDate; i <= endDate; i++) {
+    if (weekDays[(i - 1) % 7] === 'S' && i == startDate) {
+      startDate += 1;
+      endDate += 1;
+    }
+    if (weekDays[(i - 1) % 7] === 'S' && i == endDate) {
+      endDate += 1;
+    }
+  }
+
+  return { startDate, endDate };
+};
+
+export const addDatesToServiceEstimates = (
+  serviceEstimates: RestructuredServiceEstimates[]
+) => {
+  let totalNumberOfDays = 0;
+  return serviceEstimates.map((serviceEstimateItem) => {
+    const serviceEstimateItemWithDates: ServiceEstimatesWithDatesAndIcons = {
+      ...serviceEstimateItem,
+      startDate: 0,
+      endDate: 0
+    };
+    const { durationInDays, isReviewTask } = serviceEstimateItemWithDates;
+    const startDate = ++totalNumberOfDays;
+    const endDate = startDate + (durationInDays || 0) - 1;
+    const { startDate: adjustedStartDate, endDate: adjustedEndDate } =
+      adjustDatesToIgnoreWeekends(startDate, endDate);
+    serviceEstimateItemWithDates.startDate = adjustedStartDate;
+    serviceEstimateItemWithDates.endDate = adjustedEndDate;
+    /**
+     * TODO: consider rework on following expression if task's start/end dates are plotted on weekends
+     */
+    totalNumberOfDays = isReviewTask ? adjustedEndDate - 1 : adjustedEndDate;
+    return serviceEstimateItemWithDates;
+  });
+};
+
+const addIconsToServiceEstimates = (
+  serviceEstimates: ServiceEstimatesWithDatesAndIcons[]
+) => {
+  return serviceEstimates.map((serviceEstimateItem) => {
+    const { isReviewTask } = serviceEstimateItem;
+    if (isReviewTask) {
+      /**
+       * Review Tasks do not need icons to be displayed
+       */
+      return serviceEstimateItem;
+    }
+    return {
+      ...serviceEstimateItem,
+      icons: [{ type: 'user', content: 'A' }]
+    };
   });
 };
 
@@ -114,14 +168,12 @@ export const getTasksFromServiceEstimates = (
   serviceEstimates: ServiceEstimates[]
 ) => {
   const generatedServiceEstimates = generateServiceEstimates(serviceEstimates);
-  return generatedServiceEstimates;
+  const restructuredServiceEstimates: RestructuredServiceEstimates[] =
+    restructureServiceEstimates(generatedServiceEstimates);
+  const serviceEstimatesWithDates: ServiceEstimatesWithDatesAndIcons[] =
+    addDatesToServiceEstimates(restructuredServiceEstimates);
+  const serviceEstimatesWithIcons = addIconsToServiceEstimates(
+    serviceEstimatesWithDates
+  );
+  return serviceEstimatesWithIcons;
 };
-
-/**
- * Algorithm
- *
- * calculate start date, end date
- * add icons
- *
- *
- */

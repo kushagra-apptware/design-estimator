@@ -1,10 +1,13 @@
-import { useCallback, useEffect, useMemo } from 'react';
+import { useCallback, useMemo } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { ganttChartConstants } from '../../constants/ganttChartConstants';
-import { useForm } from '../../context/FormContext';
-import { modifyStandardData } from '../../utils/estimationPageUtils/modifyStandardData';
-import { getTasksFromServiceEstimates } from '../../utils';
 import { serviceEstimates } from '../../constants/serviceEstimates';
+import { useForm } from '../../context/FormContext';
+import {
+  ServiceEstimatesWithDatesAndIcons
+} from '../../types/serviceEstimates';
+import { getTasksFromServiceEstimates } from '../../utils';
+import { modifyStandardData } from '../../utils/estimationPageUtils/modifyStandardData';
 
 const { domainWiseComplexityInPercentage, stageWiseComplexityInHours } =
   ganttChartConstants;
@@ -35,16 +38,11 @@ export const useEstimationPage = () => {
     );
   }, [domain?.projectDomain, phase?.projectStage]);
 
-  useEffect(() => {
-    console.info(standardData, '...standardData');
-    console.info(
-      getTasksFromServiceEstimates(serviceEstimates),
-      '...tasksFromServiceEstimates'
-    );
-  }, [standardData]);
+  const serviceEstimatesToPlot = getTasksFromServiceEstimates(serviceEstimates);
 
-  const totalDays = standardData.reduce(
-    (acc: any, next: { duration: any }) => acc + next.duration,
+  const totalDays = serviceEstimatesToPlot.reduce(
+    (acc: number, next: ServiceEstimatesWithDatesAndIcons) =>
+      acc + (next.durationInDays || 0),
     0
   );
 
@@ -78,6 +76,7 @@ export const useEstimationPage = () => {
     isDrawerOpen,
     setIsDrawerOpen,
     startDay,
-    setStartDay
+    setStartDay,
+    serviceEstimatesToPlot
   };
 };

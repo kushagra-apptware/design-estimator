@@ -90,5 +90,5 @@ export interface ServiceEstimatesWithDatesAndIcons
   /**
    * user icons to display with the task on the chart
    */
-  icons?: Array<{ type: 'user' | 'logo'; content: string }>;
+  icons?: Array<{ type: string; content: string }>;
 }

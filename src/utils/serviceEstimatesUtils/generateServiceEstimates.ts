@@ -73,36 +73,44 @@ const generateServiceEstimates = (
       backgroundColor: parentBackgroundColor,
       color: parentColor
     } = serviceEstimate;
-    const modifiedTasks = tasks.map((task) => {
-      const {
-        needsReview,
-        reviews,
-        durationInDays,
-        durationInHours,
-        backgroundColor: taskBackgroundColor,
-        color: taskColor
-      } = task;
-      task.parentTask = phase;
-      if (!reviews && needsReview) {
-        // RULE 1
-        task.reviews = [REVIEW_AND_ITERATION];
-      }
-      if (!needsReview && reviews) {
-        // RULE 3
-        delete task.reviews;
-      }
-      if (!durationInDays && durationInHours) {
-        // RULE 5
-        task.durationInDays = Math.ceil(durationInHours / 8);
-      }
-      if (!taskBackgroundColor) {
-        task.backgroundColor = parentBackgroundColor;
-      }
-      if (!taskColor) {
-        task.color = parentColor;
-      }
-      return task;
-    });
+    let totalDurationInDays = 0;
+    const modifiedTasks = tasks
+      .map((task) => {
+        const {
+          needsReview,
+          reviews,
+          durationInDays,
+          durationInHours,
+          backgroundColor: taskBackgroundColor,
+          color: taskColor
+        } = task;
+        task.parentTask = phase;
+        if (!reviews && needsReview) {
+          // RULE 1
+          task.reviews = [REVIEW_AND_ITERATION];
+        }
+        if (!needsReview && reviews) {
+          // RULE 3
+          delete task.reviews;
+        }
+        if (!durationInDays && durationInHours) {
+          // RULE 5
+          task.durationInDays = Math.ceil(durationInHours / 8);
+        }
+        if (!taskBackgroundColor) {
+          task.backgroundColor = parentBackgroundColor;
+        }
+        if (!taskColor) {
+          task.color = parentColor;
+        }
+        totalDurationInDays += task.durationInDays || 0;
+        return task;
+      })
+      .map((task) => {
+        return { ...task, totalDurationInDays };
+      });
+    totalDurationInDays = 0;
+
     return modifiedTasks;
   });
 };
@@ -164,16 +172,30 @@ const addIconsToServiceEstimates = (
   });
 };
 
+const getServiceEstimatesWithDomaninsAndStagesAdjustment = (
+  restructuredServiceEstimates: RestructuredServiceEstimates[]
+) => {
+  return restructuredServiceEstimates.map((serviceEstimate) => {
+    console.info(serviceEstimate, '...serviceEstimate');
+    return serviceEstimate;
+  });
+};
+
 export const getTasksFromServiceEstimates = (
   serviceEstimates: ServiceEstimates[]
 ) => {
   const generatedServiceEstimates = generateServiceEstimates(serviceEstimates);
   const restructuredServiceEstimates: RestructuredServiceEstimates[] =
     restructureServiceEstimates(generatedServiceEstimates);
+  const serviceEstimatesWithDomainsAndStagesAdjustment =
+    getServiceEstimatesWithDomaninsAndStagesAdjustment(
+      restructuredServiceEstimates
+    );
   const serviceEstimatesWithDates: ServiceEstimatesWithDatesAndIcons[] =
-    addDatesToServiceEstimates(restructuredServiceEstimates);
+    addDatesToServiceEstimates(serviceEstimatesWithDomainsAndStagesAdjustment);
   const serviceEstimatesWithIcons = addIconsToServiceEstimates(
     serviceEstimatesWithDates
   );
+  console.info(serviceEstimatesWithIcons, '...serviceEstimatesWithIcons');
   return serviceEstimatesWithIcons;
 };

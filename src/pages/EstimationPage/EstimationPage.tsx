@@ -1,13 +1,12 @@
 import { useEffect } from 'react';
-import { GanttChart } from '../../components/GanttChart/GanttChart';
 import Loader from '../../components/Loader/Loader';
 import { TaskDrawer } from '../../components/TaskDrawer/TaskDrawer';
 import { useForm } from '../../context/FormContext';
 import { useDownloadAsPDF } from '../../hooks/useDownloadAsPDF/useDownloadAsPDF';
 import { useEstimationPage } from '../../hooks/useEstimationPage/useEstimationPage';
+import { GanttChartPlot } from '../../components/GanttChart/GanttChartPlot';
 
 import './EstimationPage.scss';
-import { GanttChartPlot } from '../../components/GanttChart/GanttChartPlot';
 
 export const EstimationPage = () => {
   const { loading, divRef, spanRef, sendEmailWithAttachment, chartHeight } =
@@ -81,18 +80,7 @@ export const EstimationPage = () => {
           ></div>
           {Boolean(serviceEstimatesToPlot.length) && (
             <GanttChartPlot
-              tasks={standardData}
               plots={serviceEstimatesToPlot}
-              onTaskItemClick={handleTaskItemClick}
-              startDay={startDay}
-              divRef={divRef}
-              spanRef={spanRef}
-              height={containerHeight}
-            />
-          )}
-          {Boolean(standardData.length) && (
-            <GanttChart
-              tasks={standardData}
               onTaskItemClick={handleTaskItemClick}
               startDay={startDay}
               divRef={divRef}

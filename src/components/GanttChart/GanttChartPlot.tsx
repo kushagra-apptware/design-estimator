@@ -20,7 +20,6 @@ export interface Task {
 }
 
 interface GanttChartProps {
-  tasks: Task[];
   plots: ServiceEstimatesWithDatesAndIcons[];
   height?: number;
   onTaskItemClick: (id: string) => void;
@@ -31,7 +30,6 @@ interface GanttChartProps {
 
 export const GanttChartPlot: React.FC<GanttChartProps> = ({
   height,
-  tasks,
   plots,
   onTaskItemClick,
   startDay,
@@ -50,15 +48,15 @@ export const GanttChartPlot: React.FC<GanttChartProps> = ({
   }, [totalDays]);
 
   const rowHeight = 100;
-  const totalTasksHeight = tasks.length * rowHeight;
+  const totalTasksHeight = plots.length * rowHeight;
   const totalChartHeight = Math.min(totalTasksHeight, divHeight);
 
   useEffect(() => {
-    const totalTasksHeight = tasks.length * rowHeight;
+    const totalTasksHeight = plots.length * rowHeight;
     const remainingSpace = totalChartHeight - totalTasksHeight;
     const emptyRowCount = Math.max(0, Math.ceil(remainingSpace / rowHeight));
     setEmptyRows(emptyRowCount);
-  }, [tasks, totalChartHeight, rowHeight]);
+  }, [plots, totalChartHeight, rowHeight]);
 
   useEffect(() => {
     if (divRef.current) {
@@ -231,12 +229,9 @@ export const GanttChartPlot: React.FC<GanttChartProps> = ({
     onTaskItemClick(id);
   };
 
-  const [finalTasks, setFinalTasks] = useState<Task[][]>([tasks]);
   const [finalPlots, setFinalPlots] = useState<
     ServiceEstimatesWithDatesAndIcons[][]
   >([plots]);
-  console.info(finalTasks, '...finalTasks');
-  console.info(plots, '...plots');
 
   useEffect(() => {
     setFinalPlots(
@@ -282,49 +277,7 @@ export const GanttChartPlot: React.FC<GanttChartProps> = ({
         return newarr;
       })
     );
-    setFinalTasks(
-      tasks.map((eachTask) => {
-        let isSub = false;
-        let subCount = 0;
-        let { startDate, endDate } = eachTask;
-        const newarr = [];
-        for (let i = startDate; i < endDate; i++) {
-          if (weekDays[i % 7] === 'S') {
-            isSub = true;
-            newarr.push({
-              ...eachTask,
-              startDate,
-              endDate: i,
-              isSub,
-              content: subCount === 0 ? eachTask.content : '',
-              id: eachTask.id + '-' + subCount++
-            });
-            newarr.push({
-              ...eachTask,
-              startDate: i + 1,
-              endDate: i + 2,
-              isSub,
-              content: subCount === 0 ? eachTask.content : '',
-              id: eachTask.id + '-' + subCount++,
-              opacity: 0.65
-            });
-            i = i + 2;
-            startDate = i + 1;
-            endDate = endDate;
-          }
-        }
-        newarr.push({
-          ...eachTask,
-          startDate,
-          endDate,
-          isSub,
-          content: subCount === 0 ? eachTask.content : '',
-          id: eachTask.id + '-' + subCount++
-        });
-        return newarr;
-      })
-    );
-  }, [tasks]);
+  }, [plots]);
 
   return (
     <div
@@ -411,8 +364,6 @@ export const GanttChartPlot: React.FC<GanttChartProps> = ({
                         opacity,
                         hasBorder
                       );
-
-                console.info(eachTaskItem, '...each task item');
 
                 let opacity = 1;
                 if (eachTaskItem.isReviewTask) {

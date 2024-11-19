@@ -7,6 +7,7 @@ import { useDownloadAsPDF } from '../../hooks/useDownloadAsPDF/useDownloadAsPDF'
 import { useEstimationPage } from '../../hooks/useEstimationPage/useEstimationPage';
 
 import './EstimationPage.scss';
+import { GanttChartPlot } from '../../components/GanttChart/GanttChartPlot';
 
 export const EstimationPage = () => {
   const { loading, divRef, spanRef, sendEmailWithAttachment, chartHeight } =
@@ -21,7 +22,8 @@ export const EstimationPage = () => {
     selectedTaskId,
     isDrawerOpen,
     setIsDrawerOpen,
-    startDay
+    startDay,
+    serviceEstimatesToPlot
   } = useEstimationPage();
 
   useEffect(() => {
@@ -77,6 +79,17 @@ export const EstimationPage = () => {
             id="linear-gradient"
             style={{ height: containerHeight }}
           ></div>
+          {Boolean(serviceEstimatesToPlot.length) && (
+            <GanttChartPlot
+              tasks={standardData}
+              plots={serviceEstimatesToPlot}
+              onTaskItemClick={handleTaskItemClick}
+              startDay={startDay}
+              divRef={divRef}
+              spanRef={spanRef}
+              height={containerHeight}
+            />
+          )}
           {Boolean(standardData.length) && (
             <GanttChart
               tasks={standardData}

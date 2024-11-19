@@ -91,4 +91,8 @@ export interface ServiceEstimatesWithDatesAndIcons
    * user icons to display with the task on the chart
    */
   icons?: Array<{ type: string; content: string }>;
+  /**
+   * denotes whether the task item is weekend
+   */
+  isWeekend?: boolean;
 }

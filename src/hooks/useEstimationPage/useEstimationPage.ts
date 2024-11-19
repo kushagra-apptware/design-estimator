@@ -3,9 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { ganttChartConstants } from '../../constants/ganttChartConstants';
 import { serviceEstimates } from '../../constants/serviceEstimates';
 import { useForm } from '../../context/FormContext';
-import {
-  ServiceEstimatesWithDatesAndIcons
-} from '../../types/serviceEstimates';
+import { ServiceEstimatesWithDatesAndIcons } from '../../types/serviceEstimates';
 import { getTasksFromServiceEstimates } from '../../utils';
 import { modifyStandardData } from '../../utils/estimationPageUtils/modifyStandardData';
 
@@ -38,7 +36,11 @@ export const useEstimationPage = () => {
     );
   }, [domain?.projectDomain, phase?.projectStage]);
 
-  const serviceEstimatesToPlot = getTasksFromServiceEstimates(serviceEstimates);
+  const serviceEstimatesToPlot = getTasksFromServiceEstimates(
+    serviceEstimates,
+    domain?.projectDomain,
+    phase?.projectStage
+  );
 
   const totalDays = serviceEstimatesToPlot.reduce(
     (acc: number, next: ServiceEstimatesWithDatesAndIcons) =>

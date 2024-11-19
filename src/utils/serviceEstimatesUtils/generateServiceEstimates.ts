@@ -5,6 +5,7 @@
 /** RULE 4: if needsReview is false AND reviews key is absent, just ignore this case */
 /** RULE 5: if no durationInDays key is present, then can safely calculate from durationInHours */
 
+import { ganttChartConstants } from '../../constants/ganttChartConstants';
 import { REVIEW_AND_ITERATION } from '../../constants/serviceEstimates';
 import {
   RestructuredServiceEstimates,
@@ -63,9 +64,25 @@ const restructureServiceEstimates = (
 };
 
 const generateServiceEstimates = (
-  serviceEstimates: ServiceEstimates[]
+  serviceEstimates: ServiceEstimates[],
+  projectDomains?: string[] | undefined,
+  projectStages?: string[] | undefined
 ): ServiceEstimatesTask[] => {
   count = 0;
+  const { domainWiseComplexityInPercentage, stageWiseComplexityInHours } =
+    ganttChartConstants;
+  const domainAmount =
+    projectDomains?.reduce(
+      (acc, domain) => acc + (domainWiseComplexityInPercentage as any)[domain],
+      0
+    ) || 0;
+
+  const stageHours =
+    projectStages?.reduce(
+      (acc, stage) => acc + (stageWiseComplexityInHours as any)[stage],
+      0
+    ) || 0;
+
   return serviceEstimates.flatMap((serviceEstimate) => {
     const {
       tasks,
@@ -107,7 +124,22 @@ const generateServiceEstimates = (
         return task;
       })
       .map((task) => {
-        return { ...task, totalDurationInDays };
+        const totalDurationInHours = totalDurationInDays * 8;
+        const updatedTotalDurationInHours = Math.ceil(
+          totalDurationInHours + (totalDurationInHours * domainAmount) / 100
+        );
+        const durationInHours = Math.ceil(
+          ((task.durationInHours ?? 0) * updatedTotalDurationInHours) /
+            totalDurationInHours
+        );
+        const durationInDays = Math.ceil(durationInHours / 8);
+
+        return {
+          ...task,
+          totalDurationInDays,
+          durationInHours,
+          durationInDays
+        };
       });
     totalDurationInDays = 0;
 
@@ -172,30 +204,22 @@ const addIconsToServiceEstimates = (
   });
 };
 
-const getServiceEstimatesWithDomaninsAndStagesAdjustment = (
-  restructuredServiceEstimates: RestructuredServiceEstimates[]
-) => {
-  return restructuredServiceEstimates.map((serviceEstimate) => {
-    console.info(serviceEstimate, '...serviceEstimate');
-    return serviceEstimate;
-  });
-};
-
 export const getTasksFromServiceEstimates = (
-  serviceEstimates: ServiceEstimates[]
+  serviceEstimates: ServiceEstimates[],
+  projectDomains?: string[] | undefined,
+  projectStages?: string[] | undefined
 ) => {
-  const generatedServiceEstimates = generateServiceEstimates(serviceEstimates);
+  const generatedServiceEstimates = generateServiceEstimates(
+    serviceEstimates,
+    projectDomains,
+    projectStages
+  );
   const restructuredServiceEstimates: RestructuredServiceEstimates[] =
     restructureServiceEstimates(generatedServiceEstimates);
-  const serviceEstimatesWithDomainsAndStagesAdjustment =
-    getServiceEstimatesWithDomaninsAndStagesAdjustment(
-      restructuredServiceEstimates
-    );
   const serviceEstimatesWithDates: ServiceEstimatesWithDatesAndIcons[] =
-    addDatesToServiceEstimates(serviceEstimatesWithDomainsAndStagesAdjustment);
+    addDatesToServiceEstimates(restructuredServiceEstimates);
   const serviceEstimatesWithIcons = addIconsToServiceEstimates(
     serviceEstimatesWithDates
   );
-  console.info(serviceEstimatesWithIcons, '...serviceEstimatesWithIcons');
   return serviceEstimatesWithIcons;
 };

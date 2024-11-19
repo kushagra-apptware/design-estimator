@@ -88,7 +88,7 @@ export const EstimationPage = () => {
               height={containerHeight}
             />
           )}
-          {!Boolean(standardData.length) && (
+          {!Boolean(serviceEstimatesToPlot.length) && (
             <div className="warning">
               Please update your selections to view a timeline
             </div>

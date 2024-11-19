@@ -124,6 +124,9 @@ const generateServiceEstimates = (
         return task;
       })
       .map((task) => {
+        /**
+         * domain specific adjustments START
+         */
         const totalDurationInHours = totalDurationInDays * 8;
         const updatedTotalDurationInHours = Math.ceil(
           totalDurationInHours + (totalDurationInHours * domainAmount) / 100
@@ -133,13 +136,39 @@ const generateServiceEstimates = (
             totalDurationInHours
         );
         const durationInDays = Math.ceil(durationInHours / 8);
-
+        /**
+         * domain specific adjustments END
+         */
         return {
           ...task,
           totalDurationInDays,
           durationInHours,
           durationInDays
         };
+      })
+      .map((task) => {
+        /**
+         * stage specific adjustments START
+         */
+        const { totalDurationInDays, durationInHours } = task;
+        const totalDurationInHours = totalDurationInDays * 8;
+        const updatedTotalDurationInHours = totalDurationInHours + stageHours;
+        const updatedDurationInHours = Math.ceil(
+          (durationInHours * updatedTotalDurationInHours) / totalDurationInHours
+        );
+        const updatedDurationInDays = Math.ceil(updatedDurationInHours / 8);
+        /**
+         * stage specific adjustments END
+         */
+        return {
+          ...task,
+          totalDurationInDays,
+          durationInHours: updatedDurationInHours,
+          durationInDays: updatedDurationInDays
+        };
+      })
+      .filter((task) => {
+        if (task.durationInHours > 0 && task.durationInDays > 0) return task;
       });
     totalDurationInDays = 0;
 

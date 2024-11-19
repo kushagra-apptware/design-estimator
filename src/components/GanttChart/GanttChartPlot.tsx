@@ -1,9 +1,8 @@
 import React, { useEffect, useMemo, useState } from 'react';
 import Avatar from '../../assets/avatar.png';
-import { taskItemTypes } from '../../utils/constants';
-import { weekDays } from '../../utils/estimationPageUtils/modifyStandardData';
-import { ServiceEstimatesWithDatesAndIcons } from '../../types/serviceEstimates';
 import { useEstimationPage } from '../../hooks/useEstimationPage/useEstimationPage';
+import { ServiceEstimatesWithDatesAndIcons } from '../../types/serviceEstimates';
+import { weekDays } from '../../utils/estimationPageUtils/modifyStandardData';
 
 export interface Task {
   id: string;
@@ -40,12 +39,7 @@ export const GanttChartPlot: React.FC<GanttChartProps> = ({
   const [emptyRows, setEmptyRows] = useState<number>(0);
   const [divHeight, setDivHeight] = useState<number>(0);
 
-  const { totalDays } = useEstimationPage();
-
-  const chartDays = useMemo(() => {
-    const weeks = Math.floor(totalDays / 5) + 1;
-    return Math.max(weeks * 7, 18);
-  }, [totalDays]);
+  const { chartDays } = useEstimationPage();
 
   const rowHeight = 100;
   const totalTasksHeight = plots.length * rowHeight;

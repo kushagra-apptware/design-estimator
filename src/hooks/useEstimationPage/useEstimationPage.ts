@@ -50,7 +50,7 @@ export const useEstimationPage = () => {
 
   const chartDays = useMemo(() => {
     const weeks = Math.floor(totalDays / 5) + 1;
-    return Math.max(weeks * 7, 16);
+    return Math.max(weeks * 5 + 5, 18);
   }, [totalDays]);
 
   const handleTaskItemClick = (id: string) => {

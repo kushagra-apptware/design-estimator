@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import Avatar from '../../assets/avatar.png';
 import { useEstimationPage } from '../../hooks/useEstimationPage/useEstimationPage';
 import { ServiceEstimatesWithDatesAndIcons } from '../../types/serviceEstimates';
@@ -434,15 +434,7 @@ export const GanttChartPlot: React.FC<GanttChartProps> = ({
                         <div
                           style={{ display: 'flex', flexDirection: 'column' }}
                         >
-                          <span>
-                            {eachTaskItem.task
-                              .split(' ')
-                              .map(
-                                (each, itemIndex) =>
-                                  (itemIndex === 0 && each + ' ') || each[0]
-                              )
-                              .join('')}
-                          </span>
+                          <span>{eachTaskItem.task}</span>
                           {eachTaskItem.task && (
                             <span>{eachTaskItem.durationInDays} days</span>
                           )}

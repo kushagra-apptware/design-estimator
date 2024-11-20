@@ -367,6 +367,8 @@ export const GanttChartPlot: React.FC<GanttChartProps> = ({
                   opacity = 0.65;
                 }
 
+                console.info(eachTaskItem, '...eachTaskItem');
+
                 return (
                   <div
                     role="button"
@@ -384,24 +386,27 @@ export const GanttChartPlot: React.FC<GanttChartProps> = ({
                     onClick={() => handleItemClick(eachTaskItem.id)}
                     key={eachTaskItem.id}
                   >
-                    {taskItemIndex === 0 && eachTaskItem.isReviewTask && (
-                      <div style={iconContainerStyle}>
-                        {eachTaskItem?.icons?.map((icon, index) => (
-                          <div
-                            key={index}
-                            style={iconStyle(
-                              icon.type as 'user' | 'logo',
-                              index
-                            )}
-                          >
-                            <img
-                              src={Avatar}
-                              style={{ backgroundColor: '#fff' }}
-                            />
-                          </div>
-                        ))}
-                      </div>
-                    )}
+                    {taskItemIndex === 0 &&
+                      !eachTaskItem.isReviewTask &&
+                      eachTaskItem.durationInDays &&
+                      eachTaskItem.durationInDays >= 2 && (
+                        <div style={iconContainerStyle}>
+                          {eachTaskItem?.icons?.map((icon, index) => (
+                            <div
+                              key={index}
+                              style={iconStyle(
+                                icon.type as 'user' | 'logo',
+                                index
+                              )}
+                            >
+                              <img
+                                src={Avatar}
+                                style={{ backgroundColor: '#fff' }}
+                              />
+                            </div>
+                          ))}
+                        </div>
+                      )}
                     <span
                       style={{
                         position: 'relative',

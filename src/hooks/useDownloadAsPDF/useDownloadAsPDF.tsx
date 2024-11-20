@@ -1,8 +1,10 @@
 import html2canvas from 'html2canvas';
 import jsPDF from 'jspdf';
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { useForm } from '../../context/FormContext';
 import { PDFDocument } from 'pdf-lib';
+import { EmailTemplate } from './EmailTemplate';
+import ReactDOMServer from 'react-dom/server';
 
 async function compressPDF(pdfBlob: Blob): Promise<Blob> {
   // Convert Blob to ArrayBuffer
@@ -88,8 +90,10 @@ export const useDownloadAsPDF = () => {
     }
   };
 
-  const sendEmailWithAttachment = async () => {
+  const sendEmailWithAttachment = useCallback(async () => {
+    if (!clientDetails?.clientName || !projectDetails?.projectName) return;
     if (isEmailSent) return;
+    console.info('i am called');
     if (!divRef.current || !spanRef.current) return;
 
     const element = document.querySelector<HTMLElement>(
@@ -126,7 +130,16 @@ export const useDownloadAsPDF = () => {
         format: [pageWidth, pageHeight] // Custom page dimensions
       });
 
-      pdf.addImage(imgData, 'PNG', 0, 0, pageWidth, pageHeight, undefined, 'FAST');
+      pdf.addImage(
+        imgData,
+        'PNG',
+        0,
+        0,
+        pageWidth,
+        pageHeight,
+        undefined,
+        'FAST'
+      );
       const pdfBlob = pdf.output('blob');
 
       // Revert overflow settings after capture
@@ -156,21 +169,13 @@ export const useDownloadAsPDF = () => {
       formData.append('email', clientDetails?.clientEmail || '');
       formData.append('name', clientDetails?.clientName || '');
 
-      const htmlMessage = `
-        <div style="font-family: Arial, sans-serif; font-size: 16px; line-height: 1.5;">
-          <p>Namaste! ${clientDetails?.clientName || 'Client'},</p>
-          <p>Your roadmap for your <strong>${
-            projectDetails?.projectName
-          }</strong> is attached with this email.</p>
-          <p>Thank you for reaching out! We are excited to collaborate with your <strong>${
-            projectDetails?.projectName
-          }.</strong></p>
-          <p>Kindly book your free consultation call with our Design Team for more inputs.</p>
-          <p><strong>Apptware Design Team</strong></p>
-        </div>
-      `;
-
-      formData.append('message', htmlMessage);
+      const renderEmailTemplate = ReactDOMServer.renderToString(
+        <EmailTemplate
+          clientName={clientDetails?.clientName}
+          projectName={projectDetails?.projectName}
+        />
+      );
+      formData.append('message', renderEmailTemplate);
 
       await fetch('http://localhost:3001/send-email', {
         method: 'POST',
@@ -184,7 +189,7 @@ export const useDownloadAsPDF = () => {
         }
       });
     }
-  };
+  }, [clientDetails?.clientName, projectDetails?.projectName]);
 
   return {
     downloadAsPDF,

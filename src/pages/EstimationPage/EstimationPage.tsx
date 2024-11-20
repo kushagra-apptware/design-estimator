@@ -1,10 +1,10 @@
 import { useEffect } from 'react';
+import { GanttChartPlot } from '../../components/GanttChart/GanttChartPlot';
 import Loader from '../../components/Loader/Loader';
 import { TaskDrawer } from '../../components/TaskDrawer/TaskDrawer';
 import { useForm } from '../../context/FormContext';
 import { useDownloadAsPDF } from '../../hooks/useDownloadAsPDF/useDownloadAsPDF';
 import { useEstimationPage } from '../../hooks/useEstimationPage/useEstimationPage';
-import { GanttChartPlot } from '../../components/GanttChart/GanttChartPlot';
 
 import './EstimationPage.scss';
 
@@ -94,6 +94,7 @@ export const EstimationPage = () => {
           )}
         </div>
       </div>
+      {/* <EmailTemplate /> */}
     </div>
   );
 };

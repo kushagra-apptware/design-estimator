@@ -2,6 +2,22 @@ import html2canvas from 'html2canvas';
 import jsPDF from 'jspdf';
 import { useEffect, useState } from 'react';
 import { useForm } from '../../context/FormContext';
+import { PDFDocument } from 'pdf-lib';
+
+async function compressPDF(pdfBlob: Blob): Promise<Blob> {
+  // Convert Blob to ArrayBuffer
+  const arrayBuffer = await pdfBlob.arrayBuffer();
+  const uint8Array = new Uint8Array(arrayBuffer);
+
+  // Load the PDF document
+  const pdfDoc = await PDFDocument.load(uint8Array);
+
+  // Compress the PDF (optional setting like useObjectStreams: false reduces file size)
+  const compressedPdf = await pdfDoc.save({ useObjectStreams: false });
+
+  // Return as a new Blob
+  return new Blob([compressedPdf], { type: 'application/pdf' });
+}
 
 export const useDownloadAsPDF = () => {
   const { formData, divRef, spanRef } = useForm();
@@ -99,7 +115,7 @@ export const useDownloadAsPDF = () => {
         height: element.scrollHeight
       });
 
-      const imgData = canvas.toDataURL('image/png');
+      const imgData = canvas.toDataURL('image/png', 0.5);
 
       // Calculate the appropriate page size
       const pageWidth = canvas.width / 3.5; // Adjust scale for width
@@ -110,7 +126,7 @@ export const useDownloadAsPDF = () => {
         format: [pageWidth, pageHeight] // Custom page dimensions
       });
 
-      pdf.addImage(imgData, 'PNG', 0, 0, pageWidth, pageHeight);
+      pdf.addImage(imgData, 'PNG', 0, 0, pageWidth, pageHeight, undefined, 'FAST');
       const pdfBlob = pdf.output('blob');
 
       // Revert overflow settings after capture
@@ -131,10 +147,30 @@ export const useDownloadAsPDF = () => {
 
       // Send the PDF to the server
       const formData = new FormData();
-      formData.append('attachment', pdfBlob, `${fileName.toLowerCase()}.pdf`);
+      const compressedPDFBlob = await compressPDF(pdfBlob);
+      formData.append(
+        'attachment',
+        compressedPDFBlob,
+        `${fileName.toLowerCase()}.pdf`
+      );
       formData.append('email', clientDetails?.clientEmail || '');
       formData.append('name', clientDetails?.clientName || '');
-      formData.append('message', 'Hello from Design Estimator');
+
+      const htmlMessage = `
+        <div style="font-family: Arial, sans-serif; font-size: 16px; line-height: 1.5;">
+          <p>Namaste! ${clientDetails?.clientName || 'Client'},</p>
+          <p>Your roadmap for your <strong>${
+            projectDetails?.projectName
+          }</strong> is attached with this email.</p>
+          <p>Thank you for reaching out! We are excited to collaborate with your <strong>${
+            projectDetails?.projectName
+          }.</strong></p>
+          <p>Kindly book your free consultation call with our Design Team for more inputs.</p>
+          <p><strong>Apptware Design Team</strong></p>
+        </div>
+      `;
+
+      formData.append('message', htmlMessage);
 
       await fetch('http://localhost:3001/send-email', {
         method: 'POST',

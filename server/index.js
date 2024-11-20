@@ -29,14 +29,14 @@ const transporter = nodemailer.createTransport({
 });
 
 app.post('/send-email', upload.single('attachment'), async (req, res) => {
-  const { name, email, message } = req.body;
+  const { email, message } = req.body;
   const filePath = req.file.path;
 
   const mailOptions = {
     from: process.env.GMAIL_USER,
     to: email,
-    subject: `Message from ${name}`,
-    text: message,
+    subject: `Design Estimates from Apptware Design Team`,
+    html: message,
     attachments: [
       {
         filename: req.file.originalname,
@@ -46,6 +46,7 @@ app.post('/send-email', upload.single('attachment'), async (req, res) => {
   };
 
   try {
+    console.log('Sending Email...');
     await transporter.sendMail(mailOptions);
     // Delete the uploaded file
     fs.unlink(filePath, (err) => {
@@ -54,7 +55,8 @@ app.post('/send-email', upload.single('attachment'), async (req, res) => {
     });
     res.status(200).send('Email sent successfully');
   } catch (error) {
-    res.status(500).send('Failed to send email');
+    console.error('Failed to send Email', error);
+    res.status(500).send('Failed to send email', error);
   }
 });
 

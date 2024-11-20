@@ -31,7 +31,7 @@ export const EstimationPage = () => {
 
     // Delay the download slightly to ensure the component is fully rendered
     const timer = setTimeout(() => {
-      // sendEmailWithAttachment();
+      sendEmailWithAttachment();
     }, 1000); // Adjust delay as needed
 
     return () => clearTimeout(timer); // Cleanup the timer if component unmounts

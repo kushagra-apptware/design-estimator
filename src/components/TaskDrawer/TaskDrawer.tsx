@@ -1,8 +1,8 @@
 import React, { Dispatch, SetStateAction, useEffect, useRef } from 'react';
 import { TaskCard } from '../TaskCard/TaskCard';
-import { Task } from '../GanttChart/GanttChart';
 import './TaskDrawer.scss';
 import { Link } from 'react-router-dom';
+import { ServiceEstimatesWithDatesAndIcons } from '../../types/serviceEstimates';
 
 export const TaskDrawer = ({
   isDrawerOpen,
@@ -13,7 +13,7 @@ export const TaskDrawer = ({
   isDrawerOpen: boolean;
   setIsDrawerOpen: Dispatch<SetStateAction<boolean>>;
   selectedTaskId: string | null;
-  tasks: Task[];
+  tasks: ServiceEstimatesWithDatesAndIcons[];
 }) => {
   const itemRefs = useRef<{ [key: number]: HTMLDivElement | null }>({});
 
@@ -105,7 +105,7 @@ export const TaskDrawer = ({
           <div
             className="task-card"
             ref={(el) => (itemRefs.current[task.id as any] = el)}
-            key={task.content}
+            key={task.task}
           >
             <TaskCard task={task} />
           </div>

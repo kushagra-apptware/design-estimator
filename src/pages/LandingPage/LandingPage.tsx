@@ -1,9 +1,9 @@
 import { Link } from 'react-router-dom';
-import Button from '../../components/Button';
 import SunLogo from '../../assets/Sun-logo.svg';
 import Vector1 from '../../assets/Vector1.svg';
 import Vector4 from '../../assets/Vector4.svg';
 import GanttChartPreview from '../../assets/landing-page-gantt-chart-preview.png';
+import Button from '../../components/Button';
 
 import './LandingPage.scss';
 
@@ -15,7 +15,11 @@ const LandingPage = () => {
           src={SunLogo}
           alt="Sun Logo"
         />
-        <h1>Turn Big Ideas Into<br/>Actionable Steps</h1>
+        <h1>
+          Turn Big Ideas Into
+          <br />
+          Actionable Steps
+        </h1>
       </div>
       <div className="landing-description">
         <p>

@@ -1,12 +1,14 @@
-import { Task } from '../GanttChart/GanttChart';
 import VideoConference from '../../assets/VideoConference.svg';
 import banner1 from '../../assets/banner1.png';
+import { ServiceEstimatesWithDatesAndIcons } from '../../types/serviceEstimates';
 import './TaskCard.scss';
 
-export const TaskCard = (props: { task: Task }) => {
+export const TaskCard = (props: {
+  task: ServiceEstimatesWithDatesAndIcons;
+}) => {
   const { task } = props;
 
-  const { duration } = task;
+  const { durationInDays } = task;
   return (
     <div className="task-card">
       <div className="banner-image">
@@ -38,11 +40,11 @@ export const TaskCard = (props: { task: Task }) => {
             <div className="title-content">
               <div
                 className="title-header"
-                title={task.content}
+                title={task.task}
               >
-                {task.content}
+                {task.task}
               </div>
-              <div className="title-subheader">{duration} Days</div>
+              <div className="title-subheader">{durationInDays} Days</div>
             </div>
           </div>
         </div>

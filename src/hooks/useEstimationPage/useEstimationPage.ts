@@ -1,7 +1,10 @@
 import { useCallback, useMemo } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { ganttChartConstants } from '../../constants/ganttChartConstants';
+import { serviceEstimates } from '../../constants/serviceEstimates';
 import { useForm } from '../../context/FormContext';
+import { ServiceEstimatesWithDatesAndIcons } from '../../types/serviceEstimates';
+import { getTasksFromServiceEstimates } from '../../utils';
 import { modifyStandardData } from '../../utils/estimationPageUtils/modifyStandardData';
 
 const { domainWiseComplexityInPercentage, stageWiseComplexityInHours } =
@@ -33,14 +36,34 @@ export const useEstimationPage = () => {
     );
   }, [domain?.projectDomain, phase?.projectStage]);
 
-  const totalDays = standardData.reduce(
-    (acc: any, next: { duration: any }) => acc + next.duration,
+  const serviceEstimatesToPlot = getTasksFromServiceEstimates(
+    serviceEstimates,
+    domain?.projectDomain,
+    phase?.projectStage
+  );
+
+  const totalDays = serviceEstimatesToPlot.reduce(
+    (
+      acc: number,
+      next: ServiceEstimatesWithDatesAndIcons,
+      currentIndex: number
+    ) =>
+      acc +
+      (!next.isReviewTask && currentIndex >= 2
+        ? (next.durationInDays || 0) - 1
+        : next.durationInDays || 0),
+    0
+  );
+
+  const chartTotalDays = serviceEstimatesToPlot.reduce(
+    (acc: number, next: ServiceEstimatesWithDatesAndIcons) =>
+      acc + (next.durationInDays || 0),
     0
   );
 
   const chartDays = useMemo(() => {
-    const weeks = Math.floor(totalDays / 5) + 1;
-    return Math.max(weeks * 7, 16);
+    const weeks = Math.floor(chartTotalDays / 5) + 1;
+    return Math.max(weeks * 5 + 5, 18);
   }, [totalDays]);
 
   const handleTaskItemClick = (id: string) => {
@@ -68,6 +91,7 @@ export const useEstimationPage = () => {
     isDrawerOpen,
     setIsDrawerOpen,
     startDay,
-    setStartDay
+    setStartDay,
+    serviceEstimatesToPlot
   };
 };

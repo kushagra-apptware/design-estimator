@@ -1,10 +1,10 @@
 import { useEffect } from 'react';
-import { GanttChart } from '../../components/GanttChart/GanttChart';
 import Loader from '../../components/Loader/Loader';
 import { TaskDrawer } from '../../components/TaskDrawer/TaskDrawer';
 import { useForm } from '../../context/FormContext';
 import { useDownloadAsPDF } from '../../hooks/useDownloadAsPDF/useDownloadAsPDF';
 import { useEstimationPage } from '../../hooks/useEstimationPage/useEstimationPage';
+import { GanttChartPlot } from '../../components/GanttChart/GanttChartPlot';
 
 import './EstimationPage.scss';
 
@@ -16,12 +16,12 @@ export const EstimationPage = () => {
   const {
     handleEditDetails,
     handleTaskItemClick,
-    standardData,
     totalDays,
     selectedTaskId,
     isDrawerOpen,
     setIsDrawerOpen,
-    startDay
+    startDay,
+    serviceEstimatesToPlot
   } = useEstimationPage();
 
   useEffect(() => {
@@ -31,7 +31,7 @@ export const EstimationPage = () => {
 
     // Delay the download slightly to ensure the component is fully rendered
     const timer = setTimeout(() => {
-      sendEmailWithAttachment();
+      // sendEmailWithAttachment();
     }, 1000); // Adjust delay as needed
 
     return () => clearTimeout(timer); // Cleanup the timer if component unmounts
@@ -47,7 +47,7 @@ export const EstimationPage = () => {
           isDrawerOpen
           setIsDrawerOpen={setIsDrawerOpen}
           selectedTaskId={selectedTaskId}
-          tasks={standardData}
+          tasks={serviceEstimatesToPlot}
         />
       )}
       <div className="navbar"></div>
@@ -77,9 +77,9 @@ export const EstimationPage = () => {
             id="linear-gradient"
             style={{ height: containerHeight }}
           ></div>
-          {Boolean(standardData.length) && (
-            <GanttChart
-              tasks={standardData}
+          {Boolean(serviceEstimatesToPlot.length) && (
+            <GanttChartPlot
+              plots={serviceEstimatesToPlot}
               onTaskItemClick={handleTaskItemClick}
               startDay={startDay}
               divRef={divRef}
@@ -87,7 +87,7 @@ export const EstimationPage = () => {
               height={containerHeight}
             />
           )}
-          {!Boolean(standardData.length) && (
+          {!Boolean(serviceEstimatesToPlot.length) && (
             <div className="warning">
               Please update your selections to view a timeline
             </div>

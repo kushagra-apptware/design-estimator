@@ -387,7 +387,7 @@ export const GanttChartPlot: React.FC<GanttChartProps> = ({
                     {taskItemIndex === 0 &&
                       !eachTaskItem.isReviewTask &&
                       eachTaskItem.durationInDays &&
-                      eachTaskItem.durationInDays >= 3 && (
+                      /* eachTaskItem.durationInDays >= 3 && */ (
                         <div style={iconContainerStyle}>
                           {eachTaskItem?.icons?.map((icon, index) => (
                             <div

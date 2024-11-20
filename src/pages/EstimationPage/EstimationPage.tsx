@@ -16,7 +16,6 @@ export const EstimationPage = () => {
   const {
     handleEditDetails,
     handleTaskItemClick,
-    standardData,
     totalDays,
     selectedTaskId,
     isDrawerOpen,
@@ -48,7 +47,7 @@ export const EstimationPage = () => {
           isDrawerOpen
           setIsDrawerOpen={setIsDrawerOpen}
           selectedTaskId={selectedTaskId}
-          tasks={standardData}
+          tasks={serviceEstimatesToPlot}
         />
       )}
       <div className="navbar"></div>

@@ -194,25 +194,33 @@ export const addDatesToServiceEstimates = (
   serviceEstimates: RestructuredServiceEstimates[]
 ) => {
   let totalNumberOfDays = 0;
-  return serviceEstimates.map((serviceEstimateItem) => {
-    const serviceEstimateItemWithDates: ServiceEstimatesWithDatesAndIcons = {
-      ...serviceEstimateItem,
-      startDate: 0,
-      endDate: 0
-    };
-    const { durationInDays, isReviewTask } = serviceEstimateItemWithDates;
-    const startDate = ++totalNumberOfDays;
-    const endDate = startDate + (durationInDays || 0) - 1;
-    const { startDate: adjustedStartDate, endDate: adjustedEndDate } =
-      adjustDatesToIgnoreWeekends(startDate, endDate);
-    serviceEstimateItemWithDates.startDate = adjustedStartDate;
-    serviceEstimateItemWithDates.endDate = adjustedEndDate;
-    /**
-     * TODO: consider rework on following expression if task's start/end dates are plotted on weekends
-     */
-    totalNumberOfDays = isReviewTask ? adjustedEndDate - 1 : adjustedEndDate;
-    return serviceEstimateItemWithDates;
-  });
+  return serviceEstimates.map(
+    (serviceEstimateItem, serviceEstimateItemIndex) => {
+      const serviceEstimateItemWithDates: ServiceEstimatesWithDatesAndIcons = {
+        ...serviceEstimateItem,
+        startDate: 0,
+        endDate: 0
+      };
+      const { durationInDays, isReviewTask } = serviceEstimateItemWithDates;
+      if (serviceEstimateItemIndex === 2) {
+        /**
+         * a special case where we have a new task immediately after kickoff and understanding
+         */
+        --totalNumberOfDays;
+      }
+      const startDate = ++totalNumberOfDays;
+      const endDate = startDate + (durationInDays || 0) - 1;
+      const { startDate: adjustedStartDate, endDate: adjustedEndDate } =
+        adjustDatesToIgnoreWeekends(startDate, endDate);
+      serviceEstimateItemWithDates.startDate = adjustedStartDate;
+      serviceEstimateItemWithDates.endDate = adjustedEndDate;
+      /**
+       * TODO: consider rework on following expression if task's start/end dates are plotted on weekends
+       */
+      totalNumberOfDays = isReviewTask ? adjustedEndDate - 1 : adjustedEndDate;
+      return serviceEstimateItemWithDates;
+    }
+  );
 };
 
 const addIconsToServiceEstimates = (

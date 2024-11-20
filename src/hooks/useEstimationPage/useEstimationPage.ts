@@ -43,13 +43,26 @@ export const useEstimationPage = () => {
   );
 
   const totalDays = serviceEstimatesToPlot.reduce(
+    (
+      acc: number,
+      next: ServiceEstimatesWithDatesAndIcons,
+      currentIndex: number
+    ) =>
+      acc +
+      (!next.isReviewTask && currentIndex >= 2
+        ? (next.durationInDays || 0) - 1
+        : next.durationInDays || 0),
+    0
+  );
+
+  const chartTotalDays = serviceEstimatesToPlot.reduce(
     (acc: number, next: ServiceEstimatesWithDatesAndIcons) =>
       acc + (next.durationInDays || 0),
     0
   );
 
   const chartDays = useMemo(() => {
-    const weeks = Math.floor(totalDays / 5) + 1;
+    const weeks = Math.floor(chartTotalDays / 5) + 1;
     return Math.max(weeks * 5 + 5, 18);
   }, [totalDays]);
 

@@ -94,7 +94,6 @@ export const EstimationPage = () => {
           )}
         </div>
       </div>
-      {/* <EmailTemplate /> */}
     </div>
   );
 };

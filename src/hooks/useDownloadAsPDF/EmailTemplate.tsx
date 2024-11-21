@@ -1,9 +1,9 @@
 export const EmailTemplate = ({
-  clientName,
-  projectName
+  clientName = '',
+  projectName = ''
 }: {
-  clientName: string;
-  projectName: string;
+  clientName?: string;
+  projectName?: string;
 }) => {
   return (
     <div style={{ width: '600px', boxSizing: 'border-box' }}>
@@ -27,7 +27,7 @@ export const EmailTemplate = ({
             lineHeight: '78.76px'
           }}
         >
-          {clientName}
+          {clientName}.
         </div>
         <div
           style={{
@@ -57,7 +57,15 @@ export const EmailTemplate = ({
           <div>Thank you for reaching out! we are excited to collaborate</div>
           <div>with you for {projectName}.</div>
           <div style={{ marginTop: '20px' }}>
-            Kindly book your free consultation call with our
+            Kindly book your free&nbsp;
+            <a
+              href="https://example.com/verify-email"
+              target="_blank"
+              style={{ color: '#007bff', textDecoration: 'underline' }}
+            >
+              consultation call
+            </a>
+            &nbsp;with our
           </div>
           <div>Design Team for more inputs.</div>
         </div>

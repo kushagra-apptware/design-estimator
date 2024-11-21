@@ -15,7 +15,13 @@ export const EmailTemplate = ({
         }}
       >
         <div
-          style={{ fontWeight: 110, fontSize: '36px', lineHeight: '42.96px' }}
+          style={{
+            fontWeight: 110,
+            fontSize: '36px',
+            lineHeight: '42.96px',
+            backgroundColor: '#5350C3',
+            color: '#FFFFFF'
+          }}
         >
           Namaste!
         </div>
@@ -24,7 +30,9 @@ export const EmailTemplate = ({
             marginTop: '20px',
             fontWeight: 400,
             fontSize: '66px',
-            lineHeight: '78.76px'
+            lineHeight: '78.76px',
+            backgroundColor: '#5350C3',
+            color: '#FFFFFF'
           }}
         >
           {clientName}.
@@ -34,12 +42,22 @@ export const EmailTemplate = ({
             marginTop: '40px',
             fontWeight: 400,
             fontSize: '26px',
-            lineHeight: '34px'
+            lineHeight: '34px',
+            backgroundColor: '#5350C3',
+            color: '#FFFFFF'
           }}
         >
           Here's your roadmap for your
         </div>
-        <div style={{ fontWeight: 400, fontSize: '26px', lineHeight: '34px' }}>
+        <div
+          style={{
+            fontWeight: 400,
+            fontSize: '26px',
+            lineHeight: '34px',
+            backgroundColor: '#5350C3',
+            color: '#FFFFFF'
+          }}
+        >
           {projectName}
         </div>
       </div>
@@ -59,7 +77,7 @@ export const EmailTemplate = ({
           <div style={{ marginTop: '20px' }}>
             Kindly book your free&nbsp;
             <a
-              href="https://example.com/verify-email"
+              href="https://calendly.com/d/cmhp-444-dvt/book-a-free-ux-strategy-call"
               target="_blank"
               style={{ color: '#007bff', textDecoration: 'underline' }}
             >

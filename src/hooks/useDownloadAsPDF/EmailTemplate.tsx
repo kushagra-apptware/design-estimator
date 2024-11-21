@@ -6,12 +6,19 @@ export const EmailTemplate = ({
   projectName?: string;
 }) => {
   return (
-    <div style={{ width: '600px', boxSizing: 'border-box' }}>
+    <div
+      style={{
+        width: '600px',
+        boxSizing: 'border-box',
+        fontFamily: 'system-ui'
+      }}
+    >
       <div
         style={{
           backgroundColor: '#5350C3',
           color: '#FFFFFF',
-          padding: '50px'
+          padding: '50px',
+          fontFamily: 'system-ui'
         }}
       >
         <div
@@ -20,19 +27,20 @@ export const EmailTemplate = ({
             fontSize: '36px',
             lineHeight: '42.96px',
             backgroundColor: '#5350C3',
-            color: '#FFFFFF'
+            color: '#FFFFFF',
+            fontFamily: 'system-ui'
           }}
         >
           Namaste!
         </div>
         <div
           style={{
-            marginTop: '20px',
             fontWeight: 400,
             fontSize: '66px',
             lineHeight: '78.76px',
             backgroundColor: '#5350C3',
-            color: '#FFFFFF'
+            color: '#FFFFFF',
+            fontFamily: 'system-ui'
           }}
         >
           {clientName}.
@@ -44,7 +52,8 @@ export const EmailTemplate = ({
             fontSize: '26px',
             lineHeight: '34px',
             backgroundColor: '#5350C3',
-            color: '#FFFFFF'
+            color: '#FFFFFF',
+            fontFamily: 'system-ui'
           }}
         >
           Here's your roadmap for your
@@ -55,7 +64,8 @@ export const EmailTemplate = ({
             fontSize: '26px',
             lineHeight: '34px',
             backgroundColor: '#5350C3',
-            color: '#FFFFFF'
+            color: '#FFFFFF',
+            fontFamily: 'system-ui'
           }}
         >
           {projectName}
@@ -68,7 +78,8 @@ export const EmailTemplate = ({
           padding: '50px',
           fontWeight: 400,
           fontSize: '16px',
-          lineHeight: '24px'
+          lineHeight: '24px',
+          fontFamily: 'system-ui'
         }}
       >
         <div>
@@ -79,7 +90,11 @@ export const EmailTemplate = ({
             <a
               href="https://calendly.com/d/cmhp-444-dvt/book-a-free-ux-strategy-call"
               target="_blank"
-              style={{ color: '#007bff', textDecoration: 'underline' }}
+              style={{
+                color: '#007bff',
+                textDecoration: 'underline',
+                fontFamily: 'system-ui'
+              }}
             >
               consultation call
             </a>
@@ -93,7 +108,8 @@ export const EmailTemplate = ({
           backgroundColor: '#333333',
           color: '#FFFFFF',
           padding: '20px 50px',
-          textAlign: 'center'
+          textAlign: 'center',
+          fontFamily: 'system-ui'
         }}
       >
         <div>&copy; Apptware 2024</div>

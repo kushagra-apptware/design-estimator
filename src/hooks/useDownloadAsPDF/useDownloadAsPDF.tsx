@@ -93,7 +93,6 @@ export const useDownloadAsPDF = () => {
   const sendEmailWithAttachment = useCallback(async () => {
     if (!clientDetails?.clientName || !projectDetails?.projectName) return;
     if (isEmailSent) return;
-    console.info('i am called');
     if (!divRef.current || !spanRef.current) return;
 
     const element = document.querySelector<HTMLElement>(

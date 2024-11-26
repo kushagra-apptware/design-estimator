@@ -25,7 +25,8 @@ const restructureServiceEstimates = (
       reviews,
       task,
       backgroundColor: parentBackgroundColor,
-      color: parentColor
+      color: parentColor,
+      parentTask
     } = serviceEstimateTask;
     delete serviceEstimateTask.reviews;
 
@@ -45,6 +46,7 @@ const restructureServiceEstimates = (
           ...review,
           needsReview: false,
           primaryTask: task,
+          parentTask,
           isReviewTask: true,
           backgroundColor: reviewBackgroundColor || parentBackgroundColor,
           color: reviewColor || parentColor,
@@ -83,7 +85,7 @@ const generateServiceEstimates = (
       0
     ) || 0;
 
-  return serviceEstimates.flatMap((serviceEstimate) => {
+  return serviceEstimates.flatMap((serviceEstimate, serviceEstimateItemIndex) => {
     const {
       tasks,
       phase,
@@ -123,7 +125,7 @@ const generateServiceEstimates = (
         totalDurationInDays += task.durationInDays || 0;
         return task;
       })
-      .map((task, taskIndex) => {
+      .map((task) => {
         /**
          * domain specific adjustments START
          */
@@ -133,7 +135,7 @@ const generateServiceEstimates = (
          */
         const updatedTotalDurationInHours = Math.ceil(
           totalDurationInHours +
-            (totalDurationInHours * (taskIndex === 0 ? domainAmount : 0)) / 100
+            (totalDurationInHours * (serviceEstimateItemIndex === 0 ? domainAmount : 0)) / 100
         );
         const durationInHours = Math.ceil(
           ((task.durationInHours ?? 0) * updatedTotalDurationInHours) /
@@ -150,7 +152,7 @@ const generateServiceEstimates = (
           durationInDays
         };
       })
-      .map((task, taskIndex) => {
+      .map((task) => {
         /**
          * stage specific adjustments START
          */
@@ -160,7 +162,7 @@ const generateServiceEstimates = (
          * stageHours adjustments are applicable only for index 0 which is Discovery and Planning phase
          */
         const updatedTotalDurationInHours =
-          totalDurationInHours + (taskIndex === 0 ? stageHours : 0);
+          totalDurationInHours + (serviceEstimateItemIndex === 0 ? stageHours : 0);
         const updatedDurationInHours = Math.ceil(
           (durationInHours * updatedTotalDurationInHours) / totalDurationInHours
         );
@@ -210,6 +212,18 @@ export const addDatesToServiceEstimates = (
         endDate: 0
       };
       const { durationInDays, isReviewTask } = serviceEstimateItemWithDates;
+      let isNewParent = false;
+      if (serviceEstimateItemIndex > 0) {
+        const lastEstimateItemParent =
+          serviceEstimates[serviceEstimateItemIndex - 1].parentTask;
+        const { parentTask: currentEstimateItemParent } = serviceEstimateItem;
+        if (lastEstimateItemParent !== currentEstimateItemParent) {
+          isNewParent = true;
+        }
+      }
+      if(isNewParent){
+        ++totalNumberOfDays;
+      }
       if (serviceEstimateItemIndex === 2) {
         /**
          * a special case where we have a new task immediately after kickoff and understanding

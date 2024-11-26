@@ -47,23 +47,28 @@ export const useEstimationPage = () => {
       acc: number,
       next: ServiceEstimatesWithDatesAndIcons,
       currentIndex: number
-    ) =>
-      acc +
-      (!next.isReviewTask && currentIndex >= 2
-        ? (next.durationInDays || 0) - 1
-        : next.durationInDays || 0),
-    0
-  );
-
-  const chartTotalDays = serviceEstimatesToPlot.reduce(
-    (acc: number, next: ServiceEstimatesWithDatesAndIcons) =>
-      acc + (next.durationInDays || 0),
+    ) => {
+      let isNewParent = false;
+      if (currentIndex > 0) {
+        const lastEstimateItemParent =
+          serviceEstimatesToPlot[currentIndex - 1].parentTask;
+        const { parentTask: currentEstimateItemParent } = next;
+        if (lastEstimateItemParent !== currentEstimateItemParent) {
+          isNewParent = true;
+        }
+      }
+      return (
+        acc +
+        (!next.isReviewTask && currentIndex >= 2 && !isNewParent
+          ? (next.durationInDays || 0) - 1
+          : next.durationInDays || 0)
+      );
+    },
     0
   );
 
   const chartDays = useMemo(() => {
-    const weeks = Math.floor(chartTotalDays / 5) + 1;
-    return Math.max(weeks * 5 + 5, 18);
+    return Math.max(Math.ceil((totalDays / 5) * 7), 18);
   }, [totalDays]);
 
   const handleTaskItemClick = (id: string) => {

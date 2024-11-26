@@ -116,7 +116,7 @@ export const serviceEstimates: ServiceEstimates[] = [
         task: 'Design Handoff to Development Team',
         durationInHours: 8,
         needsReview: true,
-        backgroundColor: 'paleyellow',
+        backgroundColor: 'brown',
         color: 'white'
       }
     ]

@@ -123,13 +123,17 @@ const generateServiceEstimates = (
         totalDurationInDays += task.durationInDays || 0;
         return task;
       })
-      .map((task) => {
+      .map((task, taskIndex) => {
         /**
          * domain specific adjustments START
          */
         const totalDurationInHours = totalDurationInDays * 8;
+        /**
+         * domainAmount adjustments are applicable only for index 0 which is Discovery and Planning phase
+         */
         const updatedTotalDurationInHours = Math.ceil(
-          totalDurationInHours + (totalDurationInHours * domainAmount) / 100
+          totalDurationInHours +
+            (totalDurationInHours * (taskIndex === 0 ? domainAmount : 0)) / 100
         );
         const durationInHours = Math.ceil(
           ((task.durationInHours ?? 0) * updatedTotalDurationInHours) /
@@ -146,13 +150,17 @@ const generateServiceEstimates = (
           durationInDays
         };
       })
-      .map((task) => {
+      .map((task, taskIndex) => {
         /**
          * stage specific adjustments START
          */
         const { totalDurationInDays, durationInHours } = task;
         const totalDurationInHours = totalDurationInDays * 8;
-        const updatedTotalDurationInHours = totalDurationInHours + stageHours;
+        /**
+         * stageHours adjustments are applicable only for index 0 which is Discovery and Planning phase
+         */
+        const updatedTotalDurationInHours =
+          totalDurationInHours + (taskIndex === 0 ? stageHours : 0);
         const updatedDurationInHours = Math.ceil(
           (durationInHours * updatedTotalDurationInHours) / totalDurationInHours
         );

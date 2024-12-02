@@ -7,6 +7,7 @@ import { useDownloadAsPDF } from '../../hooks/useDownloadAsPDF/useDownloadAsPDF'
 import { useEstimationPage } from '../../hooks/useEstimationPage/useEstimationPage';
 
 import './EstimationPage.scss';
+import { useGanttChart } from './useGanttChart';
 
 export const EstimationPage = () => {
   const { loading, divRef, spanRef, sendEmailWithAttachment, chartHeight } =
@@ -20,9 +21,10 @@ export const EstimationPage = () => {
     selectedTaskId,
     isDrawerOpen,
     setIsDrawerOpen,
-    startDay,
-    serviceEstimatesToPlot
+    startDay
   } = useEstimationPage();
+  const {finalResult} = useGanttChart();
+  
 
   useEffect(() => {
     if (!domain?.projectDomain?.length || !phase?.projectStage?.length) {
@@ -47,7 +49,7 @@ export const EstimationPage = () => {
           isDrawerOpen
           setIsDrawerOpen={setIsDrawerOpen}
           selectedTaskId={selectedTaskId}
-          tasks={serviceEstimatesToPlot}
+          tasks={finalResult}
         />
       )}
       <div className="navbar"></div>
@@ -77,9 +79,9 @@ export const EstimationPage = () => {
             id="linear-gradient"
             style={{ height: containerHeight }}
           ></div>
-          {Boolean(serviceEstimatesToPlot.length) && (
+          {Boolean(finalResult.length) && (
             <GanttChartPlot
-              plots={serviceEstimatesToPlot}
+              plots={finalResult}
               onTaskItemClick={handleTaskItemClick}
               startDay={startDay}
               divRef={divRef}
@@ -87,7 +89,7 @@ export const EstimationPage = () => {
               height={containerHeight}
             />
           )}
-          {!Boolean(serviceEstimatesToPlot.length) && (
+          {!Boolean(finalResult.length) && (
             <div className="warning">
               Please update your selections to view a timeline
             </div>

@@ -223,56 +223,6 @@ export const GanttChartPlot: React.FC<GanttChartProps> = ({
     onTaskItemClick(id);
   };
 
-  const [finalPlots, setFinalPlots] = useState<
-    ServiceEstimatesWithDatesAndIcons[][]
-  >([plots]);
-
-  useEffect(() => {
-    setFinalPlots(
-      plots.map((eachTask) => {
-        let isSub = false;
-        let subCount = 0;
-        let { startDate, endDate } = eachTask;
-        const newarr = [];
-        for (let i = startDate; i < endDate; i++) {
-          if (weekDays[i % 7] === 'S') {
-            isSub = true;
-            newarr.push({
-              ...eachTask,
-              startDate,
-              endDate: i,
-              isSub,
-              task: subCount === 0 ? eachTask.task : '',
-              id: eachTask.id + '-' + subCount++
-            });
-            newarr.push({
-              ...eachTask,
-              startDate: i + 1,
-              endDate: i + 2,
-              isSub,
-              task: subCount === 0 ? eachTask.task : '',
-              id: eachTask.id + '-' + subCount++,
-              opacity: 0.65,
-              isWeekend: true
-            });
-            i = i + 2;
-            startDate = i + 1;
-            endDate = endDate;
-          }
-        }
-        newarr.push({
-          ...eachTask,
-          startDate,
-          endDate,
-          isSub,
-          task: subCount === 0 ? eachTask.task : '',
-          id: eachTask.id + '-' + subCount++
-        });
-        return newarr;
-      })
-    );
-  }, [plots]);
-
   return (
     <div
       style={containerStyle}
@@ -302,7 +252,7 @@ export const GanttChartPlot: React.FC<GanttChartProps> = ({
         id="gantt-chart-content-wrapper"
         className="gantt-chart-content-wrapper"
       >
-        {finalPlots.map((finalTasksItem, finalTaskItemIndex) => {
+        {plots.map((finalTasksItem: any, finalTaskItemIndex: any) => {
           const [task] = finalTasksItem;
           return (
             <div
@@ -319,20 +269,22 @@ export const GanttChartPlot: React.FC<GanttChartProps> = ({
                 />
               ))}
 
-              {finalTasksItem.map((eachTaskItem, taskItemIndex) => {
+              {finalTasksItem.map((eachTaskItem: any) => {
+                const { isStart, isEnd, isReviewTask } = eachTaskItem;
                 let isSquare: 'start' | 'end' | boolean = false; // both sides are round
-                if (finalTasksItem.length >= 2) {
-                  if (taskItemIndex === 0) {
-                    isSquare = 'end'; // end side is square
-                  } else if (taskItemIndex === finalTasksItem.length - 1) {
-                    isSquare = 'start'; // start side is square
-                  } else {
-                    isSquare = true; // both sides are square
-                  }
+
+                if (isStart && isEnd) {
+                  isSquare = false;
+                } else if (isStart) {
+                  isSquare = 'end'; // end side is square
+                } else if (isEnd) {
+                  isSquare = 'start';
+                } else {
+                  isSquare = true;
                 }
 
                 let hasBorder = false;
-                if (taskItemIndex === 0) hasBorder = true;
+                if (isReviewTask && isStart) hasBorder = true;
 
                 const getItemStyles = (
                   color: string | undefined,
@@ -384,12 +336,13 @@ export const GanttChartPlot: React.FC<GanttChartProps> = ({
                     onClick={() => handleItemClick(eachTaskItem.id)}
                     key={eachTaskItem.id}
                   >
-                    {taskItemIndex === 0 &&
-                      !eachTaskItem.isReviewTask &&
-                      eachTaskItem.durationInDays &&
-                      /* eachTaskItem.durationInDays >= 3 && */ (
-                        <div style={iconContainerStyle}>
-                          {eachTaskItem?.icons?.map((icon, index) => (
+                    {!isReviewTask &&
+                      isStart &&
+                      eachTaskItem.durationInDays && (
+                        /* eachTaskItem.durationInDays >= 3 && */ <div
+                          style={iconContainerStyle}
+                        >
+                          {eachTaskItem?.icons?.map((icon: any, index: any) => (
                             <div
                               key={index}
                               style={iconStyle(
@@ -410,18 +363,22 @@ export const GanttChartPlot: React.FC<GanttChartProps> = ({
                         position: 'relative',
                         zIndex: 100,
                         overflow:
-                          finalTasksItem.length > 1 ? 'visible' : 'hidden',
+                          !isEnd ? 'visible' : 'hidden',
                         textOverflow:
-                          finalTasksItem.length > 1 ? 'unset' : 'ellipsis',
+                          !isEnd ? 'unset' : 'ellipsis',
                         margin: '0 10px',
                         display: 'flex',
-                        flexDirection: 'column'
+                        flexDirection: 'column',
                       }}
                       title={eachTaskItem.task}
                     >
                       {eachTaskItem.isReviewTask ? (
                         <div
-                          style={{ display: 'flex', flexDirection: 'column' }}
+                          style={{
+                            display: 'flex',
+                            flexDirection: 'column',
+                            
+                          }}
                         >
                           <span>{eachTaskItem.task}</span>
                           {eachTaskItem.task && (

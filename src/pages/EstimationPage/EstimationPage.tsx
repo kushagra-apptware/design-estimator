@@ -5,6 +5,7 @@ import { TaskDrawer } from '../../components/TaskDrawer/TaskDrawer';
 import { useForm } from '../../context/FormContext';
 import { useDownloadAsPDF } from '../../hooks/useDownloadAsPDF/useDownloadAsPDF';
 import { useEstimationPage } from '../../hooks/useEstimationPage/useEstimationPage';
+import { useGanttChart } from './useGanttChart';
 
 import './EstimationPage.scss';
 
@@ -23,6 +24,7 @@ export const EstimationPage = () => {
     startDay,
     serviceEstimatesToPlot
   } = useEstimationPage();
+  const { finalResult } = useGanttChart();
 
   useEffect(() => {
     if (!domain?.projectDomain?.length || !phase?.projectStage?.length) {
@@ -77,9 +79,9 @@ export const EstimationPage = () => {
             id="linear-gradient"
             style={{ height: containerHeight }}
           ></div>
-          {Boolean(serviceEstimatesToPlot.length) && (
+          {Boolean(finalResult.length) && (
             <GanttChartPlot
-              plots={serviceEstimatesToPlot}
+              plots={finalResult}
               onTaskItemClick={handleTaskItemClick}
               startDay={startDay}
               divRef={divRef}
@@ -87,7 +89,7 @@ export const EstimationPage = () => {
               height={containerHeight}
             />
           )}
-          {!Boolean(serviceEstimatesToPlot.length) && (
+          {!Boolean(finalResult.length) && (
             <div className="warning">
               Please update your selections to view a timeline
             </div>

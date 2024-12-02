@@ -60,12 +60,12 @@ export const serviceEstimates: ServiceEstimates[] = [
       },
       {
         task: 'Low-Fidelity Wireframe Creation',
-        durationInHours: 8,
+        durationInHours: 24,
         needsReview: true
       },
       {
         task: 'Client Review & Feedback',
-        durationInHours: 6,
+        durationInHours: 8,
         needsReview: true
       }
     ]
@@ -82,7 +82,7 @@ export const serviceEstimates: ServiceEstimates[] = [
       },
       {
         task: 'High-Fidelity UI Mockups',
-        durationInHours: 12,
+        durationInHours: 32,
         needsReview: true
       },
       {
@@ -92,7 +92,7 @@ export const serviceEstimates: ServiceEstimates[] = [
       },
       {
         task: 'Client Review & Design Revisions',
-        durationInHours: 6,
+        durationInHours: 8,
         needsReview: true
       }
     ]
@@ -104,7 +104,7 @@ export const serviceEstimates: ServiceEstimates[] = [
     tasks: [
       {
         task: 'Usability Testing',
-        durationInHours: 8,
+        durationInHours: 16,
         needsReview: true
       },
       {
@@ -115,7 +115,9 @@ export const serviceEstimates: ServiceEstimates[] = [
       {
         task: 'Design Handoff to Development Team',
         durationInHours: 8,
-        needsReview: true
+        needsReview: true,
+        backgroundColor: 'brown',
+        color: 'white'
       }
     ]
   },

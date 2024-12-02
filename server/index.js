@@ -16,6 +16,11 @@ app.use(bodyParser.urlencoded({ extended: true }));
 
 const PORT = process.env.PORT || 3001;
 
+app.use((req, res, next) => {
+  console.log(`${req.method} ${req.url}`);
+  next();
+});
+
 // Set up multer for file handling
 const upload = multer({ dest: 'uploads/' });
 
@@ -61,5 +66,5 @@ app.post('/send-email', upload.single('attachment'), async (req, res) => {
 });
 
 app.listen(PORT, () => {
-  console.log('Server started on port 3001');
+  console.log(`Server started on port ${PORT}`);
 });

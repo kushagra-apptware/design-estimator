@@ -223,6 +223,8 @@ export const GanttChartPlot: React.FC<GanttChartProps> = ({
     onTaskItemClick(id);
   };
 
+  console.log(plots, '...plots');
+
   return (
     <div
       style={containerStyle}
@@ -270,8 +272,29 @@ export const GanttChartPlot: React.FC<GanttChartProps> = ({
               ))}
 
               {finalTasksItem.map((eachTaskItem: any, taskItemIndex: any) => {
+                const { isStart, isEnd, isReviewTask } = eachTaskItem;
+                /* console.info(
+                  'isStart=',
+                  isStart,
+                  'isEnd=',
+                  isEnd,
+                  'task',
+                  task,
+                  '...check here',
+                  taskItemIndex
+                ); */
                 let isSquare: 'start' | 'end' | boolean = false; // both sides are round
-                if (finalTasksItem.length >= 2) {
+
+                if (isStart && isEnd) {
+                  isSquare = false;
+                } else if (isStart) {
+                  isSquare = 'end'; // end side is square
+                } else if (isEnd) {
+                  isSquare = 'start';
+                } else {
+                  isSquare = true;
+                }
+                /* if (finalTasksItem.length >= 2) {
                   if (taskItemIndex === 0) {
                     isSquare = 'end'; // end side is square
                   } else if (taskItemIndex === finalTasksItem.length - 1) {
@@ -279,10 +302,10 @@ export const GanttChartPlot: React.FC<GanttChartProps> = ({
                   } else {
                     isSquare = true; // both sides are square
                   }
-                }
+                } */
 
                 let hasBorder = false;
-                if (taskItemIndex === 0) hasBorder = true;
+                if (isReviewTask && isStart) hasBorder = true;
 
                 const getItemStyles = (
                   color: string | undefined,
@@ -334,28 +357,26 @@ export const GanttChartPlot: React.FC<GanttChartProps> = ({
                     onClick={() => handleItemClick(eachTaskItem.id)}
                     key={eachTaskItem.id}
                   >
-                    {taskItemIndex === 0 &&
-                      !eachTaskItem.isReviewTask &&
-                      eachTaskItem.durationInDays && (
-                        /* eachTaskItem.durationInDays >= 3 && */ <div
-                          style={iconContainerStyle}
-                        >
-                          {eachTaskItem?.icons?.map((icon: any, index: any) => (
-                            <div
-                              key={index}
-                              style={iconStyle(
-                                icon.type as 'user' | 'logo',
-                                index
-                              )}
-                            >
-                              <img
-                                src={Avatar}
-                                style={{ backgroundColor: '#fff' }}
-                              />
-                            </div>
-                          ))}
-                        </div>
-                      )}
+                    {!isReviewTask && isStart && eachTaskItem.durationInDays && (
+                      /* eachTaskItem.durationInDays >= 3 && */ <div
+                        style={iconContainerStyle}
+                      >
+                        {eachTaskItem?.icons?.map((icon: any, index: any) => (
+                          <div
+                            key={index}
+                            style={iconStyle(
+                              icon.type as 'user' | 'logo',
+                              index
+                            )}
+                          >
+                            <img
+                              src={Avatar}
+                              style={{ backgroundColor: '#fff' }}
+                            />
+                          </div>
+                        ))}
+                      </div>
+                    )}
                     <span
                       style={{
                         position: 'relative',

@@ -19,6 +19,8 @@ export const useGanttChart = () => {
             startDate,
             endDate: i,
             isSub,
+            isStart: subCount === 0,
+            isEnd: i === endDate - 1,
             task: subCount === 0 ? eachTask.task : '',
             id: eachTask.id + '-' + subCount++
           });
@@ -27,6 +29,8 @@ export const useGanttChart = () => {
             startDate: i + 1,
             endDate: i + 2,
             isSub,
+            isStart: subCount === 0,
+            isEnd: i === endDate - 1,
             task: subCount === 0 ? eachTask.task : '',
             id: eachTask.id + '-' + subCount++,
             opacity: 0.65,
@@ -42,6 +46,8 @@ export const useGanttChart = () => {
         startDate,
         endDate,
         isSub,
+        isStart: subCount === 0,
+        isEnd: true,
         task: subCount === 0 ? eachTask.task : '',
         id: eachTask.id + '-' + subCount++
       });
@@ -69,12 +75,14 @@ export const useGanttChart = () => {
 
         if (previousParentTask !== currentParentTask) {
           currentIndex = 0;
+        } else {
+          currentIndex++;
         }
         if (result[currentIndex]) {
-          result[currentIndex++].push(eachPlot);
+          result[currentIndex].push(eachPlot);
         } else {
           result[currentIndex] = [];
-          result[currentIndex++].push(eachPlot);
+          result[currentIndex].push(eachPlot);
         }
       }
     });

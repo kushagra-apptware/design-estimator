@@ -5,9 +5,9 @@ import { TaskDrawer } from '../../components/TaskDrawer/TaskDrawer';
 import { useForm } from '../../context/FormContext';
 import { useDownloadAsPDF } from '../../hooks/useDownloadAsPDF/useDownloadAsPDF';
 import { useEstimationPage } from '../../hooks/useEstimationPage/useEstimationPage';
+import { useGanttChart } from './useGanttChart';
 
 import './EstimationPage.scss';
-import { useGanttChart } from './useGanttChart';
 
 export const EstimationPage = () => {
   const { loading, divRef, spanRef, sendEmailWithAttachment, chartHeight } =
@@ -21,10 +21,10 @@ export const EstimationPage = () => {
     selectedTaskId,
     isDrawerOpen,
     setIsDrawerOpen,
-    startDay
+    startDay,
+    serviceEstimatesToPlot
   } = useEstimationPage();
-  const {finalResult} = useGanttChart();
-  
+  const { finalResult } = useGanttChart();
 
   useEffect(() => {
     if (!domain?.projectDomain?.length || !phase?.projectStage?.length) {
@@ -49,7 +49,7 @@ export const EstimationPage = () => {
           isDrawerOpen
           setIsDrawerOpen={setIsDrawerOpen}
           selectedTaskId={selectedTaskId}
-          tasks={finalResult}
+          tasks={serviceEstimatesToPlot}
         />
       )}
       <div className="navbar"></div>

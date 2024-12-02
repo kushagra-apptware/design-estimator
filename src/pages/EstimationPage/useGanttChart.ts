@@ -90,6 +90,7 @@ export const useGanttChart = () => {
   }, [finalPlots]);
 
   return {
-    finalResult
+    finalResult,
+    finalPlots
   };
 };
